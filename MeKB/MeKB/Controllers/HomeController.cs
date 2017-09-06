@@ -13,7 +13,7 @@ namespace MeKB.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult Questions()
         {
             ViewBag.Message = "Your application description page.";
 

@@ -84,7 +84,6 @@
 \\Mac\Home\Desktop\Comp Sci 3\MeKB Repo\MeKB\MeKB\MeKB\bin\Microsoft.AI.ServerTelemetryChannel.xml
 \\Mac\Home\Desktop\Comp Sci 3\MeKB Repo\MeKB\MeKB\MeKB\bin\Microsoft.AI.WindowsServer.xml
 \\Mac\Home\Desktop\Comp Sci 3\MeKB Repo\MeKB\MeKB\MeKB\bin\Microsoft.AI.Web.xml
-\\Mac\Home\Desktop\Comp Sci 3\MeKB Repo\MeKB\MeKB\MeKB\obj\Debug\MeKB.csprojResolveAssemblyReference.cache
 \\Mac\Home\Desktop\Comp Sci 3\MeKB Repo\MeKB\MeKB\MeKB\obj\Debug\MeKB.csproj.CoreCompileInputs.cache
 \\Mac\Home\Desktop\Comp Sci 3\MeKB Repo\MeKB\MeKB\MeKB\obj\Debug\MeKB.dll
 \\Mac\Home\Desktop\Comp Sci 3\MeKB Repo\MeKB\MeKB\MeKB\obj\Debug\MeKB.pdb
