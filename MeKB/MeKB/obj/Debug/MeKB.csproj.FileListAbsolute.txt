@@ -87,3 +87,4 @@
 \\Mac\Home\Desktop\Comp Sci 3\MeKB Repo\MeKB\MeKB\MeKB\obj\Debug\MeKB.csproj.CoreCompileInputs.cache
 \\Mac\Home\Desktop\Comp Sci 3\MeKB Repo\MeKB\MeKB\MeKB\obj\Debug\MeKB.dll
 \\Mac\Home\Desktop\Comp Sci 3\MeKB Repo\MeKB\MeKB\MeKB\obj\Debug\MeKB.pdb
+\\Mac\Home\Desktop\Comp Sci 3\MeKB Repo\MeKB\MeKB\MeKB\obj\Debug\MeKB.csprojResolveAssemblyReference.cache
