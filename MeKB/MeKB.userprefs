@@ -1,0 +1,14 @@
+﻿<Properties StartupConfiguration="{293A9F95-3F5D-410E-8D19-5EC553D12466}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MeKB/Views/Login/Index.cshtml">
+    <Files>
+      <File FileName="MeKB/Views/Login/Index.cshtml" Line="6" Column="6" />
+      <File FileName="MeKB/Views/Home/Index.cshtml" Line="31" Column="7" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>

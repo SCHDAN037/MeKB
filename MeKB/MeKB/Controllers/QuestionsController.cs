@@ -6,17 +6,11 @@ using System.Web.Mvc;
 
 namespace MeKB.Controllers
 {
-    public class HomeController : Controller
+    public class QuestionsController : Controller
     {
+        // GET: Questions
         public ActionResult Index()
         {
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
     }
