@@ -13116,7 +13116,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Panashe\\.nuget\\packages\\": {},
+    "C:\\Users\\Andrew\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
@@ -13125,17 +13125,17 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\Panashe\\Documents\\MeKB\\MentorWebApp\\MentorWebApp\\MentorWebApp.csproj",
+      "projectUniqueName": "C:\\Users\\Andrew\\Desktop\\MEKB\\MeKB\\MentorWebApp\\MentorWebApp\\MentorWebApp.csproj",
       "projectName": "MentorWebApp",
-      "projectPath": "C:\\Users\\Panashe\\Documents\\MeKB\\MentorWebApp\\MentorWebApp\\MentorWebApp.csproj",
-      "packagesPath": "C:\\Users\\Panashe\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Panashe\\Documents\\MeKB\\MentorWebApp\\MentorWebApp\\obj\\",
+      "projectPath": "C:\\Users\\Andrew\\Desktop\\MEKB\\MeKB\\MentorWebApp\\MentorWebApp\\MentorWebApp.csproj",
+      "packagesPath": "C:\\Users\\Andrew\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Andrew\\Desktop\\MEKB\\MeKB\\MentorWebApp\\MentorWebApp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Panashe\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Andrew\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
