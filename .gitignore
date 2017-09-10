@@ -1,5 +1,1 @@
-
-*.ide
-MentorWebApp/.vs/MentorWebApp/v15/.suo
-MentorWebApp/.vs/MentorWebApp/v15/sqlite3/storage.ide
-*.ide
+MentorWebApp/.vs/*
