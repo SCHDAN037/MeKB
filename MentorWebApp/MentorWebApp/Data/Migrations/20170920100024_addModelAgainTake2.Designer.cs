@@ -11,9 +11,10 @@ using System;
 namespace MentorWebApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170920100024_addModelAgainTake2")]
+    partial class addModelAgainTake2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,7 +60,7 @@ namespace MentorWebApp.Data.Migrations
 
                     b.Property<bool>("TwoFactorEnabled");
 
-                    b.Property<string>("UctiId");
+                    b.Property<string>("Uctid");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
@@ -75,42 +76,6 @@ namespace MentorWebApp.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("MentorWebApp.Models.Question", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("Anonymous");
-
-                    b.Property<DateTime>("DatePosted");
-
-                    b.Property<string>("MessageContent");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Questions");
-                });
-
-            modelBuilder.Entity("MentorWebApp.Models.Reply", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("DatePosted");
-
-                    b.Property<string>("MessageContent");
-
-                    b.Property<string>("QuestionId");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Replies");
                 });
 
             modelBuilder.Entity("MentorWebApp.Models.Resource", b =>
