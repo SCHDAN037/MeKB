@@ -1,11 +1,10 @@
-﻿
+﻿@model IEnumerable<MentorWebApp.Models.Resource>
 @{
-    ViewData["Title"] = "Resources";
+    ViewData["Title"] = "Browse";
 }
 
+
 <h2>@ViewData["Title"]</h2>
-
-
 
 
 <div class="row">
@@ -14,12 +13,14 @@
         <div id="imaginary_container">
 
             <div class="input-group col-md-12">
-                <input type="text" class="search-query form-control" placeholder="Search resources">
+                <form method="get" action="@Url.Action("Index", "Resource")">
+                <input type="text" name="search" id="search" class="search-query form-control" placeholder="Search resources">
                 <span class="input-group-btn">
-                    <button class="btn .btn-primary" type="button">
+                    <button class="btn .btn-primary" type="submit">
                         <span class="glyphicon glyphicon-search"></span>
                     </button>
                 </span>
+                </form>
             </div>
         </div>
     </div>
@@ -33,25 +34,25 @@
         <!-- Table -->
         <table class="table">
             <tr>
-                <th>Title</th>
-                <th>Source</th>
-                <th>Date</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Type)
+                </th>
             </tr>
-            <tr>
-                <td>Time Mangement Tips</td>
-                <td>University of Oxford</td>
-                <td>50</td>
-            </tr>
-            <tr>
-                <td>Developing a Mindset for Successful Learning</td>
-                <td>Samford University</td>
-                <td>94</td>
-            </tr>
-            <tr>
-                <td>Preparing for exams</td>
-                <td>University of Reading</td>
-                <td>80</td>
-            </tr>
+            @foreach (var item in Model) {
+                <tr>
+                    <td>
+                        <a href="@Html.DisplayFor(modelItem => item.Link)">@Html.DisplayFor(modelItem => item.Title)</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>
+            
+                </tr>
+            }
+            
 
         </table>
     </div>

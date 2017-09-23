@@ -22,6 +22,7 @@ namespace MentorWebApp.Controllers
         // GET: Resources
         public async Task<IActionResult> Index()
         {
+            
             return View(await _context.Resources.ToListAsync());
         }
 
@@ -54,7 +55,7 @@ namespace MentorWebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DateAdded,Title,Tags,Type,UserId")] Resource resource)
+        public async Task<IActionResult> Create([Bind("Id,DateAdded,Title,Tags,Type,UserId,Link")] Resource resource)
         {
             if (ModelState.IsValid)
             {
