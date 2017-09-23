@@ -9,9 +9,9 @@ namespace MentorWebApp.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
-        public string name { get; set; }
-        public string email { get; set; }
-        public string role { get; set; }
+        public string UctiId { get; set; }
+        public string Role { get; set; }
+        public bool Enabled { get; set; }
 
     }
 }

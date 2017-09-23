@@ -12,6 +12,17 @@ namespace MentorWebApp.Controllers
     {
         public IActionResult Index()
         {
+
+            var M = new MentorModel
+            {
+                Email = "s",
+                UserName = "" +
+                           "HERE IT IS U FUCKS" +
+                           ""
+            };
+
+            Debug.WriteLine(M.UserName);
+
             return View();
         }
 

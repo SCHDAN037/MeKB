@@ -1,1 +1,6 @@
 MentorWebApp/.vs/*
+*.config
+MentorWebApp/.vs/MentorWebApp/v15/.suo
+*.ide
+MentorWebApp/MentorWebApp/bin/*
+MentorWebApp/MentorWebApp/obj/*
