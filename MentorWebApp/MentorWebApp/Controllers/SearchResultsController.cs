@@ -47,7 +47,7 @@ namespace MentorWebApp.Controllers
                 {
                     current = words[i];
                     tempRes = tempRes.Intersect(res.Where(s => s.Tags.Contains(current)));
-                    tempQues = tempQues.Intersect(ques.Where(s => s.Tags.Contains(current));
+                    tempQues = tempQues.Intersect(ques.Where(s => s.Tags.Contains(current)));
                     i++;
                 }
 
@@ -56,8 +56,8 @@ namespace MentorWebApp.Controllers
 
 
 
-                var final = tempRes.Union(tempQues.ToList());
-                    await tempRes.ToListAsync();
+                var final = tempRes.GroupJoin(tempQues, tempQues.Select(s => s.Title));
+                    
                 return View(final);
 
 
@@ -67,7 +67,7 @@ namespace MentorWebApp.Controllers
                 return View(await _context.Resources.ToListAsync());
             }
 
-            return View(await res.ToListAsync());
+            //return View(await res.ToListAsync());
         }
 
         // GET: SearchResults/Details/5
