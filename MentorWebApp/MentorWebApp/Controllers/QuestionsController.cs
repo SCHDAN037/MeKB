@@ -54,7 +54,7 @@ namespace MentorWebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Anonymous,MessageContent,Id,UserId,DatePosted")] Question question)
+        public async Task<IActionResult> Create([Bind("Anonymous,MessageContent,Id,UserId,DatePosted,Title,Tags")] Question question)
         {
             if (ModelState.IsValid)
             {

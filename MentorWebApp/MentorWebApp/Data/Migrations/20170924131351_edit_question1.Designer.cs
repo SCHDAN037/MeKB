@@ -11,9 +11,10 @@ using System;
 namespace MentorWebApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170924131351_edit_question1")]
+    partial class edit_question1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,8 +89,6 @@ namespace MentorWebApp.Data.Migrations
 
                     b.Property<string>("MessageContent");
 
-                    b.Property<string>("Tags");
-
                     b.Property<string>("Title");
 
                     b.Property<string>("UserId");
@@ -109,6 +108,8 @@ namespace MentorWebApp.Data.Migrations
                     b.Property<string>("MessageContent");
 
                     b.Property<string>("QuestionId");
+
+                    b.Property<string>("Title");
 
                     b.Property<string>("UserId");
 
