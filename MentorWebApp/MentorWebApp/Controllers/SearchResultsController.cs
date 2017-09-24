@@ -3,23 +3,86 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using MentorWebApp.Data;
+using MentorWebApp.Models;
 
 namespace MentorWebApp.Controllers
 {
     public class SearchResultsController : Controller
     {
-        public IActionResult Index()
+        private readonly ApplicationDbContext _context;
+
+        public SearchResultsController(ApplicationDbContext context)
         {
-            return View();
+            _context = context;
         }
 
-        // recieve search from home search bar
-        // create search query based on search
-        // fetch resources from controller and models obv
-        // search by tags
-        // create search result list
-        // send list to view
+        // GET: SearchResults
+        public async Task<IActionResult> Index(string search)
+        {
+            var res = from r in _context.Resources
+                select r;
+            var ques = from q in _context.Questions
+                select q;
+
+            var tempRes = res;
+
+            //Debug.WriteLine("***********************************" + res.ToListAsync().Result.ToArray());
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                
 
 
+                string[] words = search.Split(' ');
+                int i = 0;
+                string current = words[0];
+                tempRes = res.Where(s => s.Tags.Contains(current));
+                tempRes = ques.Where(s => s.Title.Contains(current));
+                i++;
+                while (i <= words.Length - 1)
+                {
+                    current = words[i];
+                    tempRes = tempRes.Intersect(res.Where(s => s.Tags.Contains(current)));
+                    i++;
+                }
+
+                tempRes = tempRes.Union(res.Where(s => s.Title.Contains(search)));
+
+
+                var final = await tempRes.ToListAsync();
+                return View(final);
+
+
+            }
+            else
+            {
+                return View(await _context.Resources.ToListAsync());
+            }
+
+            return View(await res.ToListAsync());
+        }
+
+        // GET: SearchResults/Details/5
+        public async Task<IActionResult> Details(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var resource = await _context.Resources
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (resource == null)
+            {
+                return NotFound();
+            }
+
+            return View(resource);
+        }
+
+        
     }
 }
