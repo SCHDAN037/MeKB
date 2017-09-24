@@ -31,8 +31,7 @@ namespace MentorWebApp.Controllers
 
             if (!String.IsNullOrEmpty(search))
             {
-                //return View(await ).ToListAsync());
-                //search = "test resource";
+                
                 string[] words = search.Split(' ');
                 int i = 0;
                 string current = words[0];

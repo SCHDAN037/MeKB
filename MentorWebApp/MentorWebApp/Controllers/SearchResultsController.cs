@@ -28,6 +28,7 @@ namespace MentorWebApp.Controllers
                 select q;
 
             var tempRes = res;
+            var tempQues = ques;
 
             //Debug.WriteLine("***********************************" + res.ToListAsync().Result.ToArray());
 
@@ -40,19 +41,23 @@ namespace MentorWebApp.Controllers
                 int i = 0;
                 string current = words[0];
                 tempRes = res.Where(s => s.Tags.Contains(current));
-                tempRes = ques.Where(s => s.Title.Contains(current));
+                tempQues = ques.Where(s => s.Tags.Contains(current));
                 i++;
                 while (i <= words.Length - 1)
                 {
                     current = words[i];
                     tempRes = tempRes.Intersect(res.Where(s => s.Tags.Contains(current)));
+                    tempQues = tempQues.Intersect(ques.Where(s => s.Tags.Contains(current));
                     i++;
                 }
 
                 tempRes = tempRes.Union(res.Where(s => s.Title.Contains(search)));
+                tempQues = tempQues.Union(ques.Where(s => s.Title.Contains(search)));
 
 
-                var final = await tempRes.ToListAsync();
+
+                var final = tempRes.Union(tempQues.ToList());
+                    await tempRes.ToListAsync();
                 return View(final);
 
 
