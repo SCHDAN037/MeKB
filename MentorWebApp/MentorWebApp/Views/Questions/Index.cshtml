@@ -16,6 +16,12 @@
                     @Html.DisplayNameFor(model => model.Anonymous)
                 </th>
                 <th>
+                   @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                  @Html.DisplayNameFor(model => model.Tags)
+                </th>
+                 <th>
                     @Html.DisplayNameFor(model => model.MessageContent)
                 </th>
                 <th>
@@ -32,6 +38,12 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Anonymous)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tags)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.MessageContent)
