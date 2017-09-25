@@ -16,12 +16,15 @@
             <div id="imaginary_container">
                 
                 <div class="input-group col-md-12">
-                    <input type="text" class="search-query form-control" placeholder="Search resources, ask a question">
+                    <form method="get" action="@Url.Action("Index", "SearchResults")">
+                          
+                    <input type="text" id="search" class="search-query form-control" placeholder="Search resources, ask a question">
                     <span class="input-group-btn">
-                        <button class="btn .btn-primary" type="button">
+                        <button class="btn .btn-primary" type="submit">
                             <span class="glyphicon glyphicon-search"></span>
                         </button>
                     </span>
+                    </form>
                 </div>
             </div>
         </div>
