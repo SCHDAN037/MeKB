@@ -14,10 +14,12 @@ namespace MentorWebApp.Controllers
     public class SearchResultsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        //public SearchResult _sr;
 
         public SearchResultsController(ApplicationDbContext context)
         {
             _context = context;
+            //_sr = new SearchResult();
         }
 
         // GET: SearchResults
@@ -78,7 +80,8 @@ namespace MentorWebApp.Controllers
 
         public async Task<IActionResult> Index(string search)
         {
-            SearchResult sr = new SearchResult();
+
+            
 
             var res = from r in _context.Resources
                 select r;
@@ -112,16 +115,15 @@ namespace MentorWebApp.Controllers
                 tempRes = tempRes.Union(res.Where(s => s.Title.Contains(search)));
                 tempQues = tempQues.Union(ques.Where(s => s.Title.Contains(search)));
 
+                SearchResult resObject = new SearchResult();
+                var wait = await tempRes.ToListAsync();
+                resObject.ResourcesList = wait;
+                var anotherWait = await tempQues.ToListAsync();
+                resObject.QuestionsList = anotherWait;
 
-
-                var final = (from r in tempRes select r.Title)
-                    .Union(from q in tempQues select q.Title);
-
-                sr.ResultsList = await final.ToListAsync();
-
-
-
-                return View(sr);
+                resObject.TitleResultsList = resObject.CreateSearchList();
+                
+                return View(resObject);
 
 
             }

@@ -1,5 +1,4 @@
-﻿
-@model SearchResult
+﻿@model SearchResult
 
 @{
     ViewData["Title"] = "Index";
@@ -10,22 +9,22 @@
 
 <table class="table">
     <thead>
-        <tr>
-                <th>
-                    Title
-                </th>
-                
-        </tr>
+    <tr>
+        <th>
+            Title
+        </th>
+
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.ResultsList) {
+    @for (int i = 0; i < Model.TitleResultsList.Count; i++)
+    {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item)
+                @Html.ViewData.Model.TitleResultsList[i]
             </td>
-            
-            
         </tr>
-}
+    }
+    
     </tbody>
 </table>
