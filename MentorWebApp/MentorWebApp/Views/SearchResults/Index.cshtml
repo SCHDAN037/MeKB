@@ -13,15 +13,27 @@
         <th>
             Title
         </th>
+        <th>
+            Link
+        </th>
+        <th>
+            Id
+        </th>
 
     </tr>
     </thead>
     <tbody>
-    @for (int i = 0; i < Model.TitleResultsList.Count; i++)
+    @for (int i = 0; i < Model.ResultsList.Count; i++)
     {
         <tr>
             <td>
-                @Html.ViewData.Model.TitleResultsList[i]
+                @Html.ViewData.Model.ResultsList[i][0]
+            </td>
+            <td>
+                <a href="@Html.ViewData.Model.ResultsList[i][1]">@Html.ViewData.Model.ResultsList[i][1]</a>
+            </td>
+            <td>
+                @Html.ViewData.Model.ResultsList[i][2]
             </td>
         </tr>
     }
