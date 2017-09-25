@@ -121,7 +121,7 @@ namespace MentorWebApp.Controllers
                 var anotherWait = await tempQues.ToListAsync();
                 resObject.QuestionsList = anotherWait;
 
-                resObject.TitleResultsList = resObject.CreateSearchList();
+                resObject.TitleResultsList = resObject.CreateSearchLists();
                 
                 return View(resObject);
 
