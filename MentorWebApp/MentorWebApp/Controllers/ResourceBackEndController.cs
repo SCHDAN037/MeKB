@@ -1,32 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using MentorWebApp.Data;
 using MentorWebApp.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace MentorWebApp.Controllers
 {
-    public class ResourcesController : Controller
+    public class ResourceBackEndController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ResourcesController(ApplicationDbContext context)
+        public ResourceBackEndController(ApplicationDbContext context)
         {
             _context = context;
         }
 
 
-        
-
-
         // GET: Resources
         public async Task<IActionResult> Index()
         {
-            
             return View(await _context.Resources.ToListAsync());
         }
 
@@ -34,16 +27,12 @@ namespace MentorWebApp.Controllers
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var resource = await _context.Resources
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (resource == null)
-            {
                 return NotFound();
-            }
 
             return View(resource);
         }
@@ -74,15 +63,11 @@ namespace MentorWebApp.Controllers
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var resource = await _context.Resources.SingleOrDefaultAsync(m => m.Id == id);
             if (resource == null)
-            {
                 return NotFound();
-            }
             return View(resource);
         }
 
@@ -91,12 +76,11 @@ namespace MentorWebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,DateAdded,Title,Tags,Type,UserId")] Resource resource)
+        public async Task<IActionResult> Edit(string id,
+            [Bind("Id,DateAdded,Title,Tags,Type,UserId")] Resource resource)
         {
             if (id != resource.Id)
-            {
                 return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
@@ -108,13 +92,8 @@ namespace MentorWebApp.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!ResourceExists(resource.Id))
-                    {
                         return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -125,22 +104,19 @@ namespace MentorWebApp.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var resource = await _context.Resources
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (resource == null)
-            {
                 return NotFound();
-            }
 
             return View(resource);
         }
 
         // POST: Resources/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
+        [ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {

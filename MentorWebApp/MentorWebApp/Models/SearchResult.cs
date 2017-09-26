@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Security.Cryptography.X509Certificates;
 
 namespace MentorWebApp.Models
 {
@@ -19,28 +18,56 @@ namespace MentorWebApp.Models
             ResultsList = new List<List<string>>();
             foreach (var item in ResourcesList)
             {
-                List<string> temp = new List<string>();
+                var temp = new List<string>();
                 temp.Add(item.Title);
                 temp.Add(item.Link);
                 temp.Add(item.Id);
+                //Add a type so we can see if RES or QUES
                 ResultsList.Add(temp);
             }
             foreach (var item in QuestionsList)
             {
-                List<string> temp = new List<string>();
+                var temp = new List<string>();
                 temp.Add(item.Title);
                 temp.Add("/Questions/Details/" + item.Id);
                 temp.Add(item.Id);
                 ResultsList.Add(temp);
             }
 
-            
+
             //sort results alphabetically
-            
-
-
         }
-        
-        
+
+        public void sortAlpha(bool? rev)
+        {
+
+            List<List<string>> newResList = ResultsList;
+
+            if (rev == null || rev == false)
+            {
+                //sort a to z
+               
+
+                newResList.Sort((x, y) => String.Compare(x.FirstOrDefault(), y.FirstOrDefault()));
+
+                
+            }
+            else
+            {
+                //sort z to a
+
+                newResList.Sort((x, y) => String.Compare(y.FirstOrDefault(), x.FirstOrDefault()));
+
+            }
+            ResultsList = newResList;
+        }
+
+        public void sortDate()
+        {
+            
+        }
+
+
+
     }
 }

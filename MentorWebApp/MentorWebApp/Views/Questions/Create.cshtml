@@ -1,4 +1,4 @@
-﻿@model MentorWebApp.Models.Question
+﻿@model Question
 
 @{
     ViewData["Title"] = "Create";
@@ -7,7 +7,7 @@
 <h2>Create</h2>
 
 <h4>Question</h4>
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -15,37 +15,37 @@
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input asp-for="Anonymous" /> @Html.DisplayNameFor(model => model.Anonymous)
+                        <input asp-for="Anonymous"/> @Html.DisplayNameFor(model => model.Anonymous)
                     </label>
                 </div>
             </div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
+                <input asp-for="Title" class="form-control"/>
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Tags" class="control-label"></label>
-                <input asp-for="Tags" class="form-control" />
+                <input asp-for="Tags" class="form-control"/>
                 <span asp-validation-for="Tags" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="MessageContent" class="control-label"></label>
-                <input asp-for="MessageContent" class="form-control" />
+                <input asp-for="MessageContent" class="form-control"/>
                 <span asp-validation-for="MessageContent" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="UserId" class="control-label"></label>
-                <input asp-for="UserId" class="form-control" />
+                <input asp-for="UserId" class="form-control"/>
                 <span asp-validation-for="UserId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DatePosted" class="control-label"></label>
-                <input asp-for="DatePosted" class="form-control" />
+                <input asp-for="DatePosted" class="form-control"/>
                 <span asp-validation-for="DatePosted" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Create" class="btn btn-default"/>
             </div>
         </form>
     </div>
@@ -54,4 +54,3 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-

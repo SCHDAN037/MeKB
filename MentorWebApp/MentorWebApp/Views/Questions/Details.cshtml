@@ -1,4 +1,4 @@
-﻿@model MentorWebApp.Models.Question
+﻿@model Question
 
 @{
     ViewData["Title"] = "Details";
@@ -11,16 +11,20 @@
 
     <div class="jumbotron">
         <h2>@Html.DisplayFor(model => model.Title)</h2>
-        <div class="well"><p>@Html.DisplayFor(model => model.MessageContent)</p></div>
+        <div class="well">
+            <p>@Html.DisplayFor(model => model.MessageContent)</p>
+        </div>
         <div class="help-block">
 
             <div class="col-xs-6 col-md-3"> asked by @Html.DisplayFor(model => model.UserId)</div>
         </div>
-        
+
     </div>
     <div class="container">
         <div class="col-md-4">
-            <p><a class="btn btn-primary btn-lg" href="#" role="button">Reply</a></p>
+            <p>
+                <a class="btn btn-primary btn-lg" href="#" role="button">Reply</a>
+            </p>
         </div>
     </div>
 
