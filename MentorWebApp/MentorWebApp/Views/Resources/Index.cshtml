@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MentorWebApp.Models.Resource>
+﻿@model IEnumerable<Resource>
 
 @{
     ViewData["Title"] = "Index";
@@ -11,30 +11,31 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Title)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Type)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Tags)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DateAdded)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.UserId)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Link)
-                </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Tags)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateAdded)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Link)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
@@ -54,8 +55,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Link)
             </td>
-            
-            
+
 
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -63,6 +63,6 @@
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

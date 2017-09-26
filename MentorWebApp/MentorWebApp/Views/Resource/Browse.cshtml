@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MentorWebApp.Models.Resource>
+﻿@model IEnumerable<Resource>
 
 @{
     ViewData["Title"] = "Browse";
@@ -25,19 +25,20 @@
 
 <table class="table">
     <thead>
-        <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Title)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Type)
-                </th>
-                
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Type)
+        </th>
+
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 <a href="@Html.DisplayFor(modelItem => item.Link)">@Html.DisplayFor(modelItem => item.Title)</a>
@@ -45,8 +46,8 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Type)
             </td>
-            
+
         </tr>
-}
+    }
     </tbody>
 </table>
