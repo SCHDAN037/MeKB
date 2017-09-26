@@ -18,7 +18,7 @@ namespace MentorWebApp.Controllers
             //_sr = new SearchResult();
         }
 
-        public async Task<IActionResult> Index(string search)
+        public async Task<IActionResult> Index(string search, string sortSelect)
         {
             var res = from r in _context.Resources
                 select r;
@@ -58,6 +58,25 @@ namespace MentorWebApp.Controllers
                 do
                 {
                     resObject.CreateSearchLists();
+                    if (!string.IsNullOrEmpty(sortSelect))
+                    {
+                        switch (sortSelect)
+                        {
+                            case "alpha":
+                                resObject.sortAlpha(false);
+                                break;
+                            case "alphaRev":
+                                resObject.sortAlpha(true);
+                                break;
+                                
+                        }
+                        
+                    }
+                    else
+                    {
+                        resObject.sortAlpha(false);
+                    }
+                    
                 } while (false);
 
                 return View(resObject);
