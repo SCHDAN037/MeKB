@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MentorWebApp.Controllers
 {
-    public class ResourcesController : Controller
+    public class ResourceBackEndController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ResourcesController(ApplicationDbContext context)
+        public ResourceBackEndController(ApplicationDbContext context)
         {
             _context = context;
         }

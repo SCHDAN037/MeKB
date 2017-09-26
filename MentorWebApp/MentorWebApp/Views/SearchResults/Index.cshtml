@@ -5,8 +5,14 @@
 }
 
 <h2>Search Results</h2>
+<form id="sortSelect" name="sortSelect" method="get" action="@Url.Action("Index", "SearchResults")">
+    <p>Sort: </p>
+    <select form="sortSelect">
+        <option name="alpha" selected="selected">A to Z</option>
+        <option name="alphaRev">Z to A</option>
 
-
+    </select>
+</form>
 <table class="table">
     <thead>
     <tr>
