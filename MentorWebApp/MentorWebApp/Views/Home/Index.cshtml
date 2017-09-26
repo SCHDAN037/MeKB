@@ -17,10 +17,10 @@
                 
                 <div class="input-group col-md-12">
                     <form method="get" action="@Url.Action("Index", "SearchResults")">
-                          
-                    <input type="text" id="search" class="search-query form-control" placeholder="Search resources, ask a question">
+                         
+                    <input type="text" id="search" class="search-query form-control" placeholder="Search resources, ask a question" name="search">
                     <span class="input-group-btn">
-                        <button class="btn .btn-primary" type="submit">
+                        <button class="btn .btn-primary" type="submit" id="searchButton">
                             <span class="glyphicon glyphicon-search"></span>
                         </button>
                     </span>
