@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using MentorWebApp.Data;
 using MentorWebApp.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace MentorWebApp.Controllers
 {
@@ -29,16 +26,12 @@ namespace MentorWebApp.Controllers
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var question = await _context.Questions
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (question == null)
-            {
                 return NotFound();
-            }
 
             return View(question);
         }
@@ -54,7 +47,8 @@ namespace MentorWebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Anonymous,MessageContent,Id,UserId,DatePosted,Title,Tags")] Question question)
+        public async Task<IActionResult> Create(
+            [Bind("Anonymous,MessageContent,Id,UserId,DatePosted,Title,Tags")] Question question)
         {
             if (ModelState.IsValid)
             {
@@ -69,15 +63,11 @@ namespace MentorWebApp.Controllers
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var question = await _context.Questions.SingleOrDefaultAsync(m => m.Id == id);
             if (question == null)
-            {
                 return NotFound();
-            }
             return View(question);
         }
 
@@ -86,12 +76,11 @@ namespace MentorWebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Anonymous,MessageContent,Id,UserId,DatePosted")] Question question)
+        public async Task<IActionResult> Edit(string id,
+            [Bind("Anonymous,MessageContent,Id,UserId,DatePosted")] Question question)
         {
             if (id != question.Id)
-            {
                 return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
@@ -103,13 +92,8 @@ namespace MentorWebApp.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!QuestionExists(question.Id))
-                    {
                         return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -120,22 +104,19 @@ namespace MentorWebApp.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var question = await _context.Questions
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (question == null)
-            {
                 return NotFound();
-            }
 
             return View(question);
         }
 
         // POST: Questions/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
+        [ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {

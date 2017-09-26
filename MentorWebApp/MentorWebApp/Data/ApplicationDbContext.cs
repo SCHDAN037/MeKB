@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MentorWebApp.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using MentorWebApp.Models;
-
 
 namespace MentorWebApp.Data
 {
@@ -22,10 +17,9 @@ namespace MentorWebApp.Data
         public DbSet<Reply> Replies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
-            
+
         {
             base.OnModelCreating(builder);
-            
         }
     }
 }
