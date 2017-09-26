@@ -1,8 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
- 
-  <link href="~/css/heroic.css" rel="stylesheet">
+
+<link href="~/css/heroic.css" rel="stylesheet">
 
 <div class="container">
     <div class="row">
@@ -14,16 +14,16 @@
         <div class="col-md-6 col-md-offset-3">
 
             <div id="imaginary_container">
-                
+
                 <div class="input-group col-md-12">
                     <form method="get" action="@Url.Action("Index", "SearchResults")">
-                          
-                    <input type="text" id="search" class="search-query form-control" placeholder="Search resources, ask a question">
-                    <span class="input-group-btn">
-                        <button class="btn .btn-primary" type="submit">
-                            <span class="glyphicon glyphicon-search"></span>
-                        </button>
-                    </span>
+
+                        <input type="text" id="search" class="search-query form-control" placeholder="Search resources, ask a question" name="search">
+                        <span class="input-group-btn">
+                            <button class="btn .btn-primary" type="submit" id="searchButton">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
                     </form>
                 </div>
             </div>
@@ -36,13 +36,13 @@
                 <img src="http://theatelieracademy.com/wp-content/uploads/2016/09/coming-soon-400x400.jpg" width="500" height="500">
                 <div class="caption">
                     <h4>Study skills</h4>
-                    
+
                 </div>
             </div>
         </div>
         <div class="col-xs-6 col-md-3">
             <div class="thumbnail" role="button">
-                <img src="http://theatelieracademy.com/wp-content/uploads/2016/09/coming-soon-400x400.jpg" width="500" height="500"  border: 1px solid #ddd>
+                <img src="http://theatelieracademy.com/wp-content/uploads/2016/09/coming-soon-400x400.jpg" width="500" height="500" border: 1px solid #ddd>
                 <div class="caption">
                     <h4>Time management</h4>
 
@@ -89,7 +89,7 @@
             </div>
         </div>
     </div>
-  <!--  <div class="row">
+    <!-- <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <h3>Popular Resources</h3>
             <div class="jumbotron">
@@ -112,7 +112,9 @@
                             | University of Reading
                         </a>
                     </li>
-                    <li class="list-group-item"><a href="https://students.dartmouth.edu/academic-skills/ " target="_blank">Academic Skills Center | Dartmouth</a></li>
+                    <li class="list-group-item">
+                        <a href="https://students.dartmouth.edu/academic-skills/ " target="_blank">Academic Skills Center | Dartmouth</a>
+                    </li>
                     <li class="list-group-item">
                         <a href="http://lsc.cornell.edu/study-skills/study-skills-videos/ " target="_blank">
                             Study Skills Videos
@@ -165,4 +167,3 @@
         </div>
     </div>*@
 </div>
-

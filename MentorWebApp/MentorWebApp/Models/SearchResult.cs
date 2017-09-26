@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace MentorWebApp.Models
 {
@@ -19,7 +15,7 @@ namespace MentorWebApp.Models
             ResultsList = new List<List<string>>();
             foreach (var item in ResourcesList)
             {
-                List<string> temp = new List<string>();
+                var temp = new List<string>();
                 temp.Add(item.Title);
                 temp.Add(item.Link);
                 temp.Add(item.Id);
@@ -27,20 +23,15 @@ namespace MentorWebApp.Models
             }
             foreach (var item in QuestionsList)
             {
-                List<string> temp = new List<string>();
+                var temp = new List<string>();
                 temp.Add(item.Title);
                 temp.Add("/Questions/Details/" + item.Id);
                 temp.Add(item.Id);
                 ResultsList.Add(temp);
             }
 
-            
+
             //sort results alphabetically
-            
-
-
         }
-        
-        
     }
 }

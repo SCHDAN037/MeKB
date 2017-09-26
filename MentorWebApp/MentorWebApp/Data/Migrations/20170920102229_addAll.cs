@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MentorWebApp.Data.Migrations
 {
@@ -9,61 +8,55 @@ namespace MentorWebApp.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Uctid",
-                table: "AspNetUsers");
+                "Uctid",
+                "AspNetUsers");
 
             migrationBuilder.AddColumn<string>(
-                name: "UctiId",
-                table: "AspNetUsers",
-                type: "nvarchar(max)",
+                "UctiId",
+                "AspNetUsers",
+                "nvarchar(max)",
                 nullable: true);
 
             migrationBuilder.CreateTable(
-                name: "Questions",
-                columns: table => new
+                "Questions",
+                table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Anonymous = table.Column<bool>(type: "bit", nullable: false),
-                    DatePosted = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MessageContent = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<string>("nvarchar(450)", nullable: false),
+                    Anonymous = table.Column<bool>("bit", nullable: false),
+                    DatePosted = table.Column<DateTime>("datetime2", nullable: false),
+                    MessageContent = table.Column<string>("nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>("nvarchar(max)", nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Questions", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_Questions", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                name: "Replies",
-                columns: table => new
+                "Replies",
+                table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    DatePosted = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MessageContent = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    QuestionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<string>("nvarchar(450)", nullable: false),
+                    DatePosted = table.Column<DateTime>("datetime2", nullable: false),
+                    MessageContent = table.Column<string>("nvarchar(max)", nullable: true),
+                    QuestionId = table.Column<string>("nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>("nvarchar(max)", nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Replies", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_Replies", x => x.Id); });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Questions");
+                "Questions");
 
             migrationBuilder.DropTable(
-                name: "Replies");
+                "Replies");
 
             migrationBuilder.DropColumn(
-                name: "UctiId",
-                table: "AspNetUsers");
+                "UctiId",
+                "AspNetUsers");
 
             migrationBuilder.AddColumn<string>(
-                name: "Uctid",
-                table: "AspNetUsers",
+                "Uctid",
+                "AspNetUsers",
                 nullable: true);
         }
     }

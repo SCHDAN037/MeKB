@@ -1,5 +1,3 @@
-using System;
-
 namespace MentorWebApp.Models
 {
     public class ErrorViewModel

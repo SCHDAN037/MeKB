@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
-using System.Collections.Generic;
 
 namespace MentorWebApp.Data.Migrations
 {
@@ -9,25 +7,25 @@ namespace MentorWebApp.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Title",
-                table: "Replies");
+                "Title",
+                "Replies");
 
             migrationBuilder.AddColumn<string>(
-                name: "Tags",
-                table: "Questions",
-                type: "nvarchar(max)",
+                "Tags",
+                "Questions",
+                "nvarchar(max)",
                 nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Tags",
-                table: "Questions");
+                "Tags",
+                "Questions");
 
             migrationBuilder.AddColumn<string>(
-                name: "Title",
-                table: "Replies",
+                "Title",
+                "Replies",
                 nullable: true);
         }
     }
