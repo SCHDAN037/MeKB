@@ -8,5 +8,6 @@ namespace MentorWebApp.Models
         public string UctiId { get; set; }
         public string Role { get; set; }
         public bool Enabled { get; set; }
+        //public IdentityRole Role = new IdentityRole("Administrator");
     }
 }

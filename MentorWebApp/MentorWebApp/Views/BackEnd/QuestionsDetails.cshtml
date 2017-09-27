@@ -1,0 +1,54 @@
+﻿@model MentorWebApp.Models.Question
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Question</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Anonymous)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Anonymous)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Tags)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Tags)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MessageContent)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MessageContent)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DatePosted)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DatePosted)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="QuestionsEdit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="QuestionsIndex">Back to List</a>
+</div>

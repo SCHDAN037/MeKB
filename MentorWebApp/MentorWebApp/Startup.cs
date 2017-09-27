@@ -1,6 +1,8 @@
-﻿using MentorWebApp.Data;
+﻿using System.Collections.Generic;
+using MentorWebApp.Data;
 using MentorWebApp.Models;
 using MentorWebApp.Services;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -31,6 +33,12 @@ namespace MentorWebApp
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddAuthorization(options =>
+            {
+                
+                options.AddPolicy("Administrator",
+                    policy => policy.RequireRole("Administrator"));
+            });
 
             services.AddMvc();
 

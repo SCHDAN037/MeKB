@@ -21,5 +21,7 @@ namespace MentorWebApp.Data
         {
             base.OnModelCreating(builder);
         }
+
+        public DbSet<MentorWebApp.Models.ApplicationUser> ApplicationUser { get; set; }
     }
 }
