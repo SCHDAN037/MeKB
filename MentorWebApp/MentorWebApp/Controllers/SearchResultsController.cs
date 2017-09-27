@@ -18,7 +18,7 @@ namespace MentorWebApp.Controllers
             //_sr = new SearchResult();
         }
 
-        public async Task<IActionResult> Index(string search, string sortSelect)
+        public async Task<IActionResult> Index(string search, string sortSelect, string typeSelect)
         {
             var res = from r in _context.Resources
                 select r;
@@ -50,6 +50,8 @@ namespace MentorWebApp.Controllers
                 tempQues = tempQues.Union(ques.Where(s => s.Title.Contains(search)));
 
                 var resObject = new SearchResult();
+                
+
                 var wait = await tempRes.ToListAsync();
                 resObject.ResourcesList = wait;
                 var anotherWait = await tempQues.ToListAsync();
@@ -57,27 +59,57 @@ namespace MentorWebApp.Controllers
 
                 do
                 {
-                    resObject.CreateSearchLists();
-                    if (!string.IsNullOrEmpty(sortSelect))
+                    if (!string.IsNullOrEmpty(typeSelect))
                     {
-                        switch (sortSelect)
+
+                        resObject.CreateSearchLists(typeSelect);
+                        if (!string.IsNullOrEmpty(sortSelect))
                         {
-                            case "alpha":
-                                resObject.sortAlpha(false);
-                                break;
-                            case "alphaRev":
-                                resObject.sortAlpha(true);
-                                break;
-                                
+                            switch (sortSelect)
+                            {
+                                case "alpha":
+                                    resObject.SortAlpha(false);
+                                    break;
+                                case "alphaRev":
+                                    resObject.SortAlpha(true);
+                                    break;
+                                // add case for date/time here
+                            }
+
                         }
-                        
+                        else
+                        {
+                            resObject.SortAlpha(false);
+                        }
                     }
                     else
                     {
-                        resObject.sortAlpha(false);
+                        resObject.CreateSearchLists("both");
+                        if (!string.IsNullOrEmpty(sortSelect))
+                        {
+                            switch (sortSelect)
+                            {
+                                case "alpha":
+                                    resObject.SortAlpha(false);
+                                    break;
+                                case "alphaRev":
+                                    resObject.SortAlpha(true);
+                                    break;
+                                    // add case for date/time here
+                            }
+
+                        }
+                        else
+                        {
+                            resObject.SortAlpha(false);
+                        }
+
                     }
-                    
                 } while (false);
+
+                resObject.searchVal = search;
+                resObject.sortVal = sortSelect;
+                resObject.typeVal = typeSelect;
 
                 return View(resObject);
             }
