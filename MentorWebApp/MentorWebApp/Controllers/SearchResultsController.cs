@@ -114,26 +114,39 @@ namespace MentorWebApp.Controllers
                 return View(resObject);
             }
             SearchResult browseAll = new SearchResult();
-            var browseRes = await tempRes.ToListAsync();
-            var browseQues = await tempQues.ToListAsync();
-
-            if (!string.IsNullOrEmpty(browse))
+            do
             {
-                switch (browse)
+                
+                var browseRes = await res.ToListAsync();
+                var browseQues = await ques.ToListAsync();
+
+                browseAll.ResourcesList = browseRes;
+                browseAll.QuestionsList = browseQues;
+                browseAll.sortVal = "alpha";
+                
+
+                if (!string.IsNullOrEmpty(browse))
                 {
-                    case "res":
-                        browseAll.ResultsList.Add(browseRes.);
-                        break;
+                    switch (browse)
+                    {
+                        case "res":
+                            browseAll.typeVal = "res";
+                            browseAll.CreateSearchLists("res");
+                            break;
+                        case "ques":
+                            browseAll.typeVal = "ques";
+                            browseAll.CreateSearchLists("ques");
+                            break;
+                    }
                 }
-            }
-            
-            
+                else
+                {
+                    browse = "null";
+                    browseAll.CreateSearchLists("both");
+                }
+            } while(false);
 
-            
-
-            browseAll.ResultsList.Add();
-
-            return View();
+            return View(browseAll);
         }
     }
 }
