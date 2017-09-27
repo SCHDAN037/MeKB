@@ -18,7 +18,7 @@ namespace MentorWebApp.Controllers
             //_sr = new SearchResult();
         }
 
-        public async Task<IActionResult> Index(string search, string sortSelect, string typeSelect)
+        public async Task<IActionResult> Index(string search, string sortSelect, string typeSelect, string browse)
         {
             var res = from r in _context.Resources
                 select r;
@@ -41,8 +41,8 @@ namespace MentorWebApp.Controllers
                 while (i <= words.Length - 1)
                 {
                     current = words[i];
-                    tempRes = tempRes.Intersect(res.Where(s => s.Tags.Contains(current)));
-                    tempQues = tempQues.Intersect(ques.Where(s => s.Tags.Contains(current)));
+                    tempRes = tempRes.Union(res.Where(s => s.Tags.Contains(current)));
+                    tempQues = tempQues.Union(ques.Where(s => s.Tags.Contains(current)));
                     i++;
                 }
 
@@ -113,9 +113,27 @@ namespace MentorWebApp.Controllers
 
                 return View(resObject);
             }
+            SearchResult browseAll = new SearchResult();
+            var browseRes = await tempRes.ToListAsync();
+            var browseQues = await tempQues.ToListAsync();
 
+            if (!string.IsNullOrEmpty(browse))
+            {
+                switch (browse)
+                {
+                    case "res":
+                        browseAll.ResultsList.Add(browseRes.);
+                        break;
+                }
+            }
+            
+            
 
-            return View(new SearchResult());
+            
+
+            browseAll.ResultsList.Add();
+
+            return View();
         }
     }
 }
