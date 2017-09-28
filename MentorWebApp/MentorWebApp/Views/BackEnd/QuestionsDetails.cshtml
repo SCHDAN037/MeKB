@@ -4,36 +4,29 @@
     ViewData["Title"] = "Details";
 }
 
-@*<h2>Details</h2>*@
+<h2>Details</h2>
 
 <div>
     <h4>Question</h4>
-
-    <div class="jumbotron">
-        <h2>@Html.DisplayFor(model => model.Title)</h2>
-        <div class="well">
-            <p>@Html.DisplayFor(model => model.MessageContent)</p>
-        </div>
-        <div class="help-block">
-
-            <div class="col-xs-6 col-md-3"> asked by @Html.DisplayFor(model => model.UctNumber)</div>
-        </div>
-
-    </div>
-    <div class="container">
-        <div class="col-md-4">
-            <p>
-                <a class="btn btn-primary btn-lg" href="#" Permissions="button">Reply</a>
-            </p>
-        </div>
-    </div>
-
-    @*<dl class="dl-horizontal">
+    <hr/>
+    <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Anonymous)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Anonymous)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Tags)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Tags)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.MessageContent)
@@ -53,10 +46,9 @@
         <dd>
             @Html.DisplayFor(model => model.DatePosted)
         </dd>
-    </dl>*@
+    </dl>
 </div>
-
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="QuestionsEdit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="QuestionsIndex">Back to List</a>
 </div>

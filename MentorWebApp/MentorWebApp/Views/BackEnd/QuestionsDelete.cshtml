@@ -18,6 +18,18 @@
             @Html.DisplayFor(model => model.Anonymous)
         </dd>
         <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Tags)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Tags)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.MessageContent)
         </dt>
         <dd>
@@ -37,9 +49,9 @@
         </dd>
     </dl>
 
-    <form asp-action="Delete">
+    <form asp-action="QuestionsDelete">
         <input type="hidden" asp-for="Id"/>
         <input type="submit" value="Delete" class="btn btn-default"/> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="QuestionsIndex">Back to List</a>
     </form>
 </div>

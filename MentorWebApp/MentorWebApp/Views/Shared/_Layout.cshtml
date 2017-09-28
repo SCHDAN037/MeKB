@@ -19,6 +19,8 @@
     </environment>
 </head>
 <body>
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -36,7 +38,7 @@
                     <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                 </li>
                 <li>
-                    <a asp-area="" asp-controller="Resource" asp-action="Index">Resources</a>
+                    <a asp-area="" asp-controller="SearchResults" asp-action="Index" asp-route-browse="res">Resources</a>
                 </li>
                 <li>
                     <a asp-area="" asp-controller="Questions" asp-action="Index">Questions</a>
@@ -44,19 +46,27 @@
                 <li>
                     <a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
                 </li>
-                <li>
-                    <a asp-area="" asp-controller="ResourceBackEnd" asp-action="Index">Resources Backend</a>
-                </li>
-                <li>
-                    <a asp-area="" asp-controller="SearchResults" asp-action="Index">Search Results</a>
-                </li>
+
+
+                @if ((await AuthorizationService.AuthorizeAsync(User, "MustBeAdmin")).Succeeded)
+                {
+                    <li>
+                        <a asp-area="" asp-controller="BackEnd" asp-action="Index">Resources Backend</a>
+                    </li>
+                }
+
+
 
             </ul>
             @await Html.PartialAsync("_LoginPartial")
         </div>
     </div>
 </nav>
+
 <div class="container body-content">
+
+
+
     @RenderBody()
     <hr/>
     <footer>

@@ -3,6 +3,7 @@ using MentorWebApp.Models;
 using MentorWebApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,13 +26,27 @@ namespace MentorWebApp
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders()
+                .AddRoleManager<RoleManager<IdentityRole>>();
+
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("MustBeAdmin",
+                    policy => policy.RequireRole("Admin"));
+                options.AddPolicy("Mentee",
+                    policy => policy.RequireRole("Mentee"));
+                options.AddPolicy("Mentor",
+                    policy => policy.RequireRole("Mentor"));
+            });
 
+            
+            
             services.AddMvc();
 
 
@@ -39,13 +54,14 @@ namespace MentorWebApp
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
                 app.UseDatabaseErrorPage();
+              
             }
             else
             {
@@ -56,12 +72,19 @@ namespace MentorWebApp
 
             app.UseAuthentication();
 
+            //app.UseMiddleware<UserManager<ApplicationUser>>();
+            //app.UseMiddleware<RoleManager<IdentityRole>>();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     "default",
                     "{controller=Home}/{action=Index}/{id?}");
             });
+
+            RolesData.SeedRoles(app).Wait();
+            ApplicationDbContextSeedData.Seed(app);
+            
         }
     }
 }
