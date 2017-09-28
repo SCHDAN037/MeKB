@@ -41,8 +41,8 @@ namespace MentorWebApp.Controllers
                 while (i <= words.Length - 1)
                 {
                     current = words[i];
-                    tempRes = tempRes.Intersect(res.Where(s => s.Tags.Contains(current)));
-                    tempQues = tempQues.Intersect(ques.Where(s => s.Tags.Contains(current)));
+                    tempRes = tempRes.Union(res.Where(s => s.Tags.Contains(current)));
+                    tempQues = tempQues.Union(ques.Where(s => s.Tags.Contains(current)));
                     i++;
                 }
 

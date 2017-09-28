@@ -1,140 +1,155 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using MentorWebApp.Data;
 using MentorWebApp.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace MentorWebApp.Controllers
 {
-    public class QuestionsController : Controller
+    public class RepliesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public QuestionsController(ApplicationDbContext context)
+        public RepliesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Questions
+        // GET: Replies
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Questions.ToListAsync());
+            return View(await _context.Replies.ToListAsync());
         }
 
-        // GET: Questions/Details/5
-        public async Task<IActionResult> Details(string id, string reply)
+        // GET: Replies/Details/5
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
+            {
                 return NotFound();
+            }
 
-            var question = await _context.Questions
+            var reply = await _context.Replies
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (question == null)
+            if (reply == null)
+            {
                 return NotFound();
-            question.CreateReply(reply);
+            }
 
-
-
-            return View(question);
+            return View(reply);
         }
 
-        // GET: Questions/Create
-        public IActionResult Create()
+        // GET: Replies/Create
+        public IActionResult Create(string qid)
         {
-            return View();
+            Reply r = new Reply();
+            r.QuestionId = qid;
+            return View(r);
         }
 
-        
-
-        // POST: Questions/Create
+        // POST: Replies/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(
-            [Bind("Anonymous,MessageContent,Id,UserId,DatePosted,Title,Tags")] Question question)
+        public async Task<IActionResult> Create([Bind("QuestionId,MessageContent,Id,UserId,DatePosted")] Reply reply)
         {
-            
             if (ModelState.IsValid)
             {
-                _context.Add(question);
+                _context.Add(reply);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(question);
+            return View(reply);
         }
 
-        // GET: Questions/Edit/5
+        // GET: Replies/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
+            {
                 return NotFound();
+            }
 
-            var question = await _context.Questions.SingleOrDefaultAsync(m => m.Id == id);
-            if (question == null)
+            var reply = await _context.Replies.SingleOrDefaultAsync(m => m.Id == id);
+            if (reply == null)
+            {
                 return NotFound();
-            return View(question);
+            }
+            return View(reply);
         }
 
-        // POST: Questions/Edit/5
+        // POST: Replies/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id,
-            [Bind("Anonymous,MessageContent,Id,UserId,DatePosted")] Question question)
+        public async Task<IActionResult> Edit(string id, [Bind("QuestionId,MessageContent,Id,UserId,DatePosted")] Reply reply)
         {
-            if (id != question.Id)
+            if (id != reply.Id)
+            {
                 return NotFound();
+            }
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(question);
+                    _context.Update(reply);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!QuestionExists(question.Id))
+                    if (!ReplyExists(reply.Id))
+                    {
                         return NotFound();
-                    throw;
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(question);
+            return View(reply);
         }
 
-        // GET: Questions/Delete/5
+        // GET: Replies/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
+            {
                 return NotFound();
+            }
 
-            var question = await _context.Questions
+            var reply = await _context.Replies
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (question == null)
+            if (reply == null)
+            {
                 return NotFound();
+            }
 
-            return View(question);
+            return View(reply);
         }
 
-        // POST: Questions/Delete/5
-        [HttpPost]
-        [ActionName("Delete")]
+        // POST: Replies/Delete/5
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var question = await _context.Questions.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Questions.Remove(question);
+            var reply = await _context.Replies.SingleOrDefaultAsync(m => m.Id == id);
+            _context.Replies.Remove(reply);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool QuestionExists(string id)
+        private bool ReplyExists(string id)
         {
-            return _context.Questions.Any(e => e.Id == id);
+            return _context.Replies.Any(e => e.Id == id);
         }
     }
 }

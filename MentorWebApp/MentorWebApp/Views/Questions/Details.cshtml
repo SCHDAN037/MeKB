@@ -18,13 +18,13 @@
 
             <div class="col-xs-6 col-md-3"> asked by @Html.DisplayFor(model => model.UserId)</div>
         </div>
-
+        <h2>@Html.DisplayFor(Model  => Model.Reply) </h2>
     </div>
     <div class="container">
         <div class="col-md-4">
-            <p>
-                <a class="btn btn-primary btn-lg" href="#" role="button">Reply</a>
-            </p>
+            
+           
+
         </div>
     </div>
 
@@ -60,3 +60,23 @@
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+<html>
+<head>
+    <script>
+        function confirmInput() {
+            fname = document.forms[0].fname.value;
+            return fname
+        }
+    </script>
+</head>
+
+<body>
+    <form method = "get" action="@Url.Action("Details", "Questions")">
+        Answer to question: <input id="fname" type="text" size="20">
+        <input type="hidden" value="@Model.Id" name="qid" />
+        <input type="submit">
+    </form>
+</body>
+
+</html>
