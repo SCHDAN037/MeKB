@@ -3,6 +3,7 @@ using MentorWebApp.Models;
 using MentorWebApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -28,7 +29,8 @@ namespace MentorWebApp
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders()
+                .AddRoleManager<RoleManager<IdentityRole>>();
 
 
             // Add application services.
@@ -43,6 +45,8 @@ namespace MentorWebApp
                     policy => policy.RequireRole("Mentor"));
             });
 
+            
+            
             services.AddMvc();
 
 
@@ -50,13 +54,14 @@ namespace MentorWebApp
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, RoleManager<IdentityRole> roleManager)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
                 app.UseDatabaseErrorPage();
+              
             }
             else
             {
@@ -67,6 +72,8 @@ namespace MentorWebApp
 
             app.UseAuthentication();
 
+            //app.UseMiddleware<UserManager<ApplicationUser>>();
+            //app.UseMiddleware<RoleManager<IdentityRole>>();
 
             app.UseMvc(routes =>
             {
@@ -75,9 +82,9 @@ namespace MentorWebApp
                     "{controller=Home}/{action=Index}/{id?}");
             });
 
-
+            RolesData.SeedRoles(app).Wait();
             ApplicationDbContextSeedData.Seed(app);
-            RolesData.SeedRoles(app.ApplicationServices).Wait();
+            
         }
     }
 }

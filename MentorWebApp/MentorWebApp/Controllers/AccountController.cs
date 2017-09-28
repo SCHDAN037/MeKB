@@ -34,13 +34,13 @@ namespace MentorWebApp.Controllers
             _roleManager = roleManager;
             _emailSender = emailSender;
             _logger = logger;
-            createRolesandUsers().Wait();
+            //createRolesandUsers().Wait();
         }
 
         [TempData]
         public string ErrorMessage { get; set; }
 
-
+        /*
         private async Task createRolesandUsers()
         {
             var x = await _roleManager.RoleExistsAsync("Admin");
@@ -89,7 +89,7 @@ namespace MentorWebApp.Controllers
                 await _roleManager.CreateAsync(role);
             }
         }
-
+        */
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
@@ -252,7 +252,7 @@ namespace MentorWebApp.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser {UserName = model.Email, Email = model.Email};
+                var user = new ApplicationUser {UserName = model.Email, Email = model.Email} ;
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

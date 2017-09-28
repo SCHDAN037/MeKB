@@ -36,15 +36,15 @@
             @Html.DisplayFor(model => model.Type)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.UserId)
+            @Html.DisplayNameFor(model => model.UctNumber)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.UserId)
+            @Html.DisplayFor(model => model.UctNumber)
         </dd>
     </dl>
 
     <form asp-action="ResourcesDelete">
-        <input type="hidden" asp-for="Id"/>
+        <input type="hidden" asp-for="ResourceId"/>
         <input type="submit" value="Delete" class="btn btn-default"/> |
         <a asp-action="ResourcesIndex">Back to List</a>
     </form>
