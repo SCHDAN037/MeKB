@@ -6,6 +6,7 @@
 
 <h2>Search Results</h2>
 <div class="form-horizontal">
+<<<<<<< HEAD
 
     <form method="get" action="@Url.Action("Index", "SearchResults")">
 
@@ -19,26 +20,49 @@
         </span>
 
     </form>
+=======
+    
+    <div class="container">
+        <div class="row form-group col-md-6 col-md-offset-3">
+>>>>>>> master
 
+            <form method="get" action="@Url.Action("Index", "SearchResults")">
 
-    <form method="get" action="@Url.Action("Index", "SearchResults")">
-        <label class="label">Sort: </label>
-        <input type="hidden" id="search" name="search" value="@ViewData.Model.searchVal"/>
-        <select id="sortSelect" name="sortSelect">
-            <option value="alpha" selected="@(ViewData.Model.sortVal.Equals("alpha"))">A to Z</option>
-            <option value="alphaRev" selected="@(ViewData.Model.sortVal.Equals("alphaRev"))">Z to A</option>
-        </select>
+                <div class="input-group">
+                    <input type="text" class="search-query form-control" placeholder="Search resources, ask a question" value="@ViewData.Model.searchVal" name="search">
+                    <input type="hidden" name="sortSelect" value="@ViewData.Model.sortVal" />
+                    <input type="hidden" name="typeSelect" value="@ViewData.Model.typeVal" />
+                    <span class="input-group-btn">
+                        <button class="btn .btn-primary" type="submit" id="searchButton">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+                </div>
 
-        <label class="label">Filter: </label>
+            </form>
+        </div>
 
-        <select id="typeSelect2" name="typeSelect">
-            <option value="res" selected="@(ViewData.Model.typeVal.Equals("res"))">Resources Only</option>
-            <option value="ques" selected="@(ViewData.Model.typeVal.Equals("ques"))">Questions Only</option>
-            <option value="both" selected="@(ViewData.Model.typeVal.Equals("both"))">Both</option>
-        </select>
+        <div class="row">
+            <form method="get" action="@Url.Action("Index", "SearchResults")">
+                <label class="label">Sort: </label>
+                <input type="hidden" id="search" name="search" value="@ViewData.Model.searchVal" />
+                <select  id="sortSelect" name="sortSelect">
+                    <option value="alpha" selected="@(ViewData.Model.sortVal.Equals("alpha"))">A to Z</option>
+                    <option value="alphaRev" selected="@(ViewData.Model.sortVal.Equals("alphaRev"))">Z to A</option>
+                </select>
 
-        <input type="submit" class="btn-default"/>
-    </form>
+                <label class="label">Filter: </label>
+
+                <select  id="typeSelect2" name="typeSelect">
+                    <option value="res" selected="@(ViewData.Model.typeVal.Equals("res"))">Resources Only</option>
+                    <option value="ques" selected="@(ViewData.Model.typeVal.Equals("ques"))">Questions Only</option>
+                    <option value="both" selected="@(ViewData.Model.typeVal.Equals("both"))">Both</option>
+                </select>
+
+                <input type="submit" class="btn-default" />
+            </form>
+        </div>
+    </div>
 
 
 </div>
@@ -46,8 +70,8 @@
     <thead>
     <tr>
         <th>Title</th>
-        <th>Link</th>
-        <th>Id</th>
+        <th>Posted by</th>
+        <th>Date</th>
     </tr>
     </thead>
 
@@ -56,14 +80,13 @@
     {
         <tr>
             <td>
-                @Html.ViewData.Model.ResultsList[i][0]
+                <a href="@Html.ViewData.Model.ResultsList[i][1]">@Html.ViewData.Model.ResultsList[i][0]</a>
+
             </td>
             <td>
-                <a href="@Html.ViewData.Model.ResultsList[i][1]">@Html.ViewData.Model.ResultsList[i][1]</a>
+               
             </td>
-            <td>
-                @Html.ViewData.Model.ResultsList[i][2]
-            </td>
+            
         </tr>
     }
     </tbody>
