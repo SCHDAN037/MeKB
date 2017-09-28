@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using MentorWebApp.Models;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MentorWebApp.Data
@@ -9,28 +11,49 @@ namespace MentorWebApp.Data
     {
         public static void Seed(IApplicationBuilder app)
         {
-            using (var context = app.ApplicationServices.GetRequiredService<ApplicationDbContext>())
+            using (var scope = app.ApplicationServices.CreateScope())
             {
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                //var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                
                 ApplicationUser[] defaultUsers =
                 {
                     //Admin
-                    new ApplicationUser("admin", true, "admin@mekb.com", "admin@mekb.com", "adminADMIN#123"),
+                    new ApplicationUser("admin", "Admin", "admin@mekb.com", "admin@mekb.com", "adminADMIN#123"),
 
                     //Mentors
-                    new ApplicationUser("daniel", true, "daniel@mekb.com", "daniel@mekb.com", "danielDANIEL#123"),
-                    new ApplicationUser("andrew", true, "andrew@mekb.com", "andrew@mekb.com", "andrewANDREW#123"),
-                    new ApplicationUser("panashe", true, "panashe@mekb.com", "panashe@mekb.com", "panashePANASHE#123"),
+                    new ApplicationUser("daniel", "Mentor", "daniel@mekb.com", "daniel@mekb.com", "danielDANIEL#123"),
+                    new ApplicationUser("andrew", "Mentor", "andrew@mekb.com", "andrew@mekb.com", "andrewANDREW#123"),
+                    new ApplicationUser("panashe", "Mentor", "panashe@mekb.com", "panashe@mekb.com", "panashePANASHE#123"),
 
                     //Mentees
-                    new ApplicationUser("mentee1", true, "mentee1@mekb.com", "mentee1@mekb.com", "Mentee1#123"),
-                    new ApplicationUser("mentee2", true, "mentee2@mekb.com", "mentee2@mekb.com", "Mentee2#123"),
-                    new ApplicationUser("mentee3", true, "mentee3@mekb.com", "mentee3@mekb.com", "Mentee3#123"),
-                    new ApplicationUser("mentee4", true, "mentee4@mekb.com", "mentee4@mekb.com", "Mentee4#123")
+                    new ApplicationUser("mentee1", "Mentee", "mentee1@mekb.com", "mentee1@mekb.com", "Mentee1#123"),
+                    new ApplicationUser("mentee2", "Mentee", "mentee2@mekb.com", "mentee2@mekb.com", "Mentee2#123"),
+                    new ApplicationUser("mentee3", "Mentee", "mentee3@mekb.com", "mentee3@mekb.com", "Mentee3#123"),
+                    new ApplicationUser("mentee4", "Mentee", "mentee4@mekb.com", "mentee4@mekb.com", "Mentee4#123")
                 };
 
-                for (var i = 0; i < defaultUsers.Length - 1; i++)
+                for (var i = 0; i < defaultUsers.Length; i++)
+                {
                     if (!context.Users.Any(u => u.UserName == defaultUsers[i].UserName))
-                        context.ApplicationUser.Add(defaultUsers[i]);
+                    {
+                        userManager.CreateAsync(defaultUsers[i]).Wait();
+                        string currrentRole = defaultUsers[i].Permissions;
+                        switch (currrentRole)
+                        {
+                            case "Admin":
+                                userManager.AddToRoleAsync(defaultUsers[i], "Admin").Wait();
+                                break;
+                            case "Mentor":
+                                userManager.AddToRoleAsync(defaultUsers[i], "Mentor").Wait();
+                                break;
+                            case "Mentee":
+                                userManager.AddToRoleAsync(defaultUsers[i], "Mentee").Wait();
+                                break;
+                        }
+                    }
+                }
 
                 //Resources
 
@@ -238,9 +261,9 @@ namespace MentorWebApp.Data
                     new Resource("Learning and Memory | Oregon State University", "https://youtu.be/0ijEMtA59lE")
                 };
 
-                for (var i = 0; i < testResources.Length - 1; i++)
+                for (var i = 0; i < testResources.Length; i++)
                     if (!context.Resources.Any(u => u.Link == testResources[i].Link))
-                        context.Resources.Add(testResources[i]);
+                        context.Resources.AddAsync(testResources[i]).Wait();
 
 
                 //Questions
@@ -251,6 +274,7 @@ namespace MentorWebApp.Data
                 };
 
                 //Finished
+
                 context.SaveChanges();
                 context.Dispose();
             }

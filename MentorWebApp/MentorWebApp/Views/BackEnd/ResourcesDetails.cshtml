@@ -41,14 +41,14 @@
             @Html.DisplayFor(model => model.Tags)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.UserId)
+            @Html.DisplayNameFor(model => model.UctNumber)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.UserId)
+            @Html.DisplayFor(model => model.UctNumber)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="ResourcesEdit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="ResourcesEdit" asp-route-id="@Model.ResourceId">Edit</a> |
     <a asp-action="ResourcesIndex">Back to List</a>
 </div>

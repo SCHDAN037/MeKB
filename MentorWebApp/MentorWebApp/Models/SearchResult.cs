@@ -1,16 +1,23 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace MentorWebApp.Models
 {
     public class SearchResult
     {
+        [NotMapped]
         public List<List<string>> ResultsList { get; set; }
+        [NotMapped]
         public List<string> LinkResultsList { get; set; }
+        [NotMapped]
         public List<Resource> ResourcesList { get; set; }
         public List<Question> QuestionsList { get; set; }
+        [NotMapped]
         public string searchVal { get; set; }
+        [NotMapped]
         public string sortVal { get; set; }
+        [NotMapped]
         public string typeVal { get; set; }
 
         public void CreateSearchLists(string type)
@@ -25,7 +32,7 @@ namespace MentorWebApp.Models
                     {
                         item.Title,
                         item.Link,
-                        item.Id
+                        item.ResourceId
                     };
                     //Add a type so we can see if RES or QUES
                     ResultsList.Add(temp);
@@ -49,7 +56,7 @@ namespace MentorWebApp.Models
                     {
                         item.Title,
                         item.Link,
-                        item.Id
+                        item.ResourceId
                     };
                     //Add a type so we can see if RES or QUES
                     ResultsList.Add(temp);

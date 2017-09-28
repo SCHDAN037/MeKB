@@ -60,7 +60,7 @@ namespace MentorWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UserCreate(
             [Bind(
-                "UctiId,Role,Enabled,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")]
+                "UctNumber,Permissions,Enabled,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")]
             ApplicationUser applicationUser)
         {
             if (ModelState.IsValid)
@@ -91,7 +91,7 @@ namespace MentorWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UserEdit(string id,
             [Bind(
-                "UctiId,Role,Enabled,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")]
+                "UctiId,Permissions,Enabled,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")]
             ApplicationUser applicationUser)
         {
             if (id != applicationUser.Id)
@@ -163,7 +163,7 @@ namespace MentorWebApp.Controllers
                 return NotFound();
 
             var resource = await _context.Resources
-                .SingleOrDefaultAsync(m => m.Id == id);
+                .SingleOrDefaultAsync(m => m.ResourceId == id);
             if (resource == null)
                 return NotFound();
 
@@ -182,7 +182,7 @@ namespace MentorWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResourcesCreate(
-            [Bind("Id,DateAdded,Title,Tags,Type,UserId,Link")] Resource resource)
+            [Bind("Id,DateAdded,Title,Tags,Type,UctNumber,Link")] Resource resource)
         {
             if (ModelState.IsValid)
             {
@@ -199,7 +199,7 @@ namespace MentorWebApp.Controllers
             if (id == null)
                 return NotFound();
 
-            var resource = await _context.Resources.SingleOrDefaultAsync(m => m.Id == id);
+            var resource = await _context.Resources.SingleOrDefaultAsync(m => m.ResourceId == id);
             if (resource == null)
                 return NotFound();
             return View(resource);
@@ -211,9 +211,9 @@ namespace MentorWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResourcesEdit(string id,
-            [Bind("Id,DateAdded,Title,Tags,Type,UserId")] Resource resource)
+            [Bind("Id,DateAdded,Title,Tags,Type,UctNumber")] Resource resource)
         {
-            if (id != resource.Id)
+            if (id != resource.ResourceId)
                 return NotFound();
 
             if (ModelState.IsValid)
@@ -225,7 +225,7 @@ namespace MentorWebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ResourceExists(resource.Id))
+                    if (!ResourceExists(resource.ResourceId))
                         return NotFound();
                     throw;
                 }
@@ -241,7 +241,7 @@ namespace MentorWebApp.Controllers
                 return NotFound();
 
             var resource = await _context.Resources
-                .SingleOrDefaultAsync(m => m.Id == id);
+                .SingleOrDefaultAsync(m => m.ResourceId == id);
             if (resource == null)
                 return NotFound();
 
@@ -254,7 +254,7 @@ namespace MentorWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResourcesDeleteConfirmed(string id)
         {
-            var resource = await _context.Resources.SingleOrDefaultAsync(m => m.Id == id);
+            var resource = await _context.Resources.SingleOrDefaultAsync(m => m.ResourceId == id);
             _context.Resources.Remove(resource);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(ResourcesIndex));
@@ -262,7 +262,7 @@ namespace MentorWebApp.Controllers
 
         private bool ResourceExists(string id)
         {
-            return _context.Resources.Any(e => e.Id == id);
+            return _context.Resources.Any(e => e.ResourceId == id);
         }
 
 
@@ -301,7 +301,7 @@ namespace MentorWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> QuestionsCreate(
-            [Bind("Anonymous,Title,Tags,MessageContent,Id,UserId,DatePosted")] Question question)
+            [Bind("Anonymous,Title,Tags,MessageContent,Id,UctNumber,DatePosted")] Question question)
         {
             if (ModelState.IsValid)
             {
@@ -330,7 +330,7 @@ namespace MentorWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> QuestionsEdit(string id,
-            [Bind("Anonymous,Title,Tags,MessageContent,Id,UserId,DatePosted")] Question question)
+            [Bind("Anonymous,Title,Tags,MessageContent,Id,UctNumber,DatePosted")] Question question)
         {
             if (id != question.Id)
                 return NotFound();

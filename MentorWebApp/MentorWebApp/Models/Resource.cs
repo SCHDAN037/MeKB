@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MentorWebApp.Models
 {
@@ -15,15 +17,22 @@ namespace MentorWebApp.Models
             Link = link;
             DateAdded = DateTime.Now;
         }
-
-        public string Id { get; set; }
+        //[Key]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public string ResourceId { get; set; }
+        //[Required]
         public string Title { get; set; }
+        //[Required]
         public string Type { get; set; }
+        //[Required]
         public string Link { get; set; }
+        //[Required]
         public DateTime DateAdded { get; set; }
 
         public string Tags { get; set; }
-
-        public string UserId { get; set; }
+        //[Required]
+        public string UctNumber { get; set; }
+        //[ForeignKey("ApplicationUserId")]
+        public string ApplicationUserId { get; set; }
     }
 }

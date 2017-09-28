@@ -7,7 +7,7 @@
 <h2>Index</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="ResourcesCreate">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -25,7 +25,7 @@
             @Html.DisplayNameFor(model => model.DateAdded)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.UserId)
+            @Html.DisplayNameFor(model => model.UctNumber)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Link)
@@ -50,7 +50,7 @@
                 @Html.DisplayFor(modelItem => item.DateAdded)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UserId)
+                @Html.DisplayFor(modelItem => item.UctNumber)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Link)
@@ -58,9 +58,9 @@
 
 
             <td>
-                <a asp-action="ResourcesEdit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="ResourcesDetails" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="ResourcesDelete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="ResourcesEdit" asp-route-id="@item.ResourceId">Edit</a> |
+                <a asp-action="ResourcesDetails" asp-route-id="@item.ResourceId">Details</a> |
+                <a asp-action="ResourcesDelete" asp-route-id="@item.ResourceId">Delete</a>
             </td>
         </tr>
     }

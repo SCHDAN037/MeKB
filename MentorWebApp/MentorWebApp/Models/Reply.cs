@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MentorWebApp.Models
 {
@@ -9,14 +10,15 @@ namespace MentorWebApp.Models
             DatePosted = DateTime.Now;
         }
 
-        public Reply(string qid, string message, string userid)
+        public Reply(string qid, string message, string uctNumber)
         {
             QuestionId = qid;
             MessageContent = message;
-            UserId = userid;
+            UctNumber = uctNumber;
             DatePosted = DateTime.Now;
         }
 
+        //[ForeignKey("QuestionId")]
         public string QuestionId { get; set; }
     }
 }

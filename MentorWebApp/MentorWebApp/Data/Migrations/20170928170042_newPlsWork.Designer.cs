@@ -11,9 +11,10 @@ using System;
 namespace MentorWebApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170928170042_newPlsWork")]
+    partial class newPlsWork
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,7 +28,9 @@ namespace MentorWebApp.Data.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<string>("ApplicationUserId");
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -51,7 +54,8 @@ namespace MentorWebApp.Data.Migrations
 
                     b.Property<string>("PasswordHash");
 
-                    b.Property<string>("Permissions");
+                    b.Property<string>("Permissions")
+                        .IsRequired();
 
                     b.Property<string>("PhoneNumber");
 
@@ -61,12 +65,15 @@ namespace MentorWebApp.Data.Migrations
 
                     b.Property<bool>("TwoFactorEnabled");
 
-                    b.Property<string>("UctNumber");
+                    b.Property<string>("UctNumber")
+                        .IsRequired();
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("ApplicationUserId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -94,9 +101,11 @@ namespace MentorWebApp.Data.Migrations
 
                     b.Property<string>("Tags");
 
-                    b.Property<string>("Title");
+                    b.Property<string>("Title")
+                        .IsRequired();
 
-                    b.Property<string>("UctNumber");
+                    b.Property<string>("UctNumber")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -116,7 +125,8 @@ namespace MentorWebApp.Data.Migrations
 
                     b.Property<string>("QuestionId");
 
-                    b.Property<string>("UctNumber");
+                    b.Property<string>("UctNumber")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
