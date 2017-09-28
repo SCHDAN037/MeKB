@@ -1,4 +1,4 @@
-﻿@model Resource
+﻿@model Question
 
 @{
     ViewData["Title"] = "Create";
@@ -6,16 +6,18 @@
 
 <h2>Create</h2>
 
-<h4>Resource</h4>
+<h4>Question</h4>
 <hr/>
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="QuestionsCreate">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="DateAdded" class="control-label"></label>
-                <input asp-for="DateAdded" class="form-control"/>
-                <span asp-validation-for="DateAdded" class="text-danger"></span>
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Anonymous"/> @Html.DisplayNameFor(model => model.Anonymous)
+                    </label>
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
@@ -28,19 +30,19 @@
                 <span asp-validation-for="Tags" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Type" class="control-label"></label>
-                <input asp-for="Type" class="form-control"/>
-                <span asp-validation-for="Type" class="text-danger"></span>
+                <label asp-for="MessageContent" class="control-label"></label>
+                <input asp-for="MessageContent" class="form-control"/>
+                <span asp-validation-for="MessageContent" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <input asp-for="UserId" class="form-control"/>
-                <span asp-validation-for="UserId" class="text-danger"></span>
+                <label asp-for="UctNumber" class="control-label"></label>
+                <input asp-for="UctNumber" class="form-control"/>
+                <span asp-validation-for="UctNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Link" class="control-label"></label>
-                <input asp-for="Link" class="form-control"/>
-                <span asp-validation-for="Link" class="text-danger"></span>
+                <label asp-for="DatePosted" class="control-label"></label>
+                <input asp-for="DatePosted" class="form-control"/>
+                <span asp-validation-for="DatePosted" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default"/>
@@ -50,5 +52,5 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="QuestionsIndex">Back to List</a>
 </div>

@@ -18,7 +18,7 @@ namespace MentorWebApp.Controllers
             //_sr = new SearchResult();
         }
 
-        public async Task<IActionResult> Index(string search, string sortSelect, string typeSelect)
+        public async Task<IActionResult> Index(string search, string sortSelect, string typeSelect, string browse)
         {
             var res = from r in _context.Resources
                 select r;
@@ -50,7 +50,7 @@ namespace MentorWebApp.Controllers
                 tempQues = tempQues.Union(ques.Where(s => s.Title.Contains(search)));
 
                 var resObject = new SearchResult();
-                
+
 
                 var wait = await tempRes.ToListAsync();
                 resObject.ResourcesList = wait;
@@ -61,10 +61,8 @@ namespace MentorWebApp.Controllers
                 {
                     if (!string.IsNullOrEmpty(typeSelect))
                     {
-
                         resObject.CreateSearchLists(typeSelect);
                         if (!string.IsNullOrEmpty(sortSelect))
-                        {
                             switch (sortSelect)
                             {
                                 case "alpha":
@@ -75,18 +73,13 @@ namespace MentorWebApp.Controllers
                                     break;
                                 // add case for date/time here
                             }
-
-                        }
                         else
-                        {
                             resObject.SortAlpha(false);
-                        }
                     }
                     else
                     {
                         resObject.CreateSearchLists("both");
                         if (!string.IsNullOrEmpty(sortSelect))
-                        {
                             switch (sortSelect)
                             {
                                 case "alpha":
@@ -95,15 +88,10 @@ namespace MentorWebApp.Controllers
                                 case "alphaRev":
                                     resObject.SortAlpha(true);
                                     break;
-                                    // add case for date/time here
+                                // add case for date/time here
                             }
-
-                        }
                         else
-                        {
                             resObject.SortAlpha(false);
-                        }
-
                     }
                 } while (false);
 
@@ -113,9 +101,39 @@ namespace MentorWebApp.Controllers
 
                 return View(resObject);
             }
+            var browseAll = new SearchResult();
+            do
+            {
+                var browseRes = await res.ToListAsync();
+                var browseQues = await ques.ToListAsync();
+
+                browseAll.ResourcesList = browseRes;
+                browseAll.QuestionsList = browseQues;
+                browseAll.sortVal = "alpha";
 
 
-            return View(new SearchResult());
+                if (!string.IsNullOrEmpty(browse))
+                {
+                    switch (browse)
+                    {
+                        case "res":
+                            browseAll.typeVal = "res";
+                            browseAll.CreateSearchLists("res");
+                            break;
+                        case "ques":
+                            browseAll.typeVal = "ques";
+                            browseAll.CreateSearchLists("ques");
+                            break;
+                    }
+                }
+                else
+                {
+                    browse = "null";
+                    browseAll.CreateSearchLists("both");
+                }
+            } while (false);
+
+            return View(browseAll);
         }
     }
 }

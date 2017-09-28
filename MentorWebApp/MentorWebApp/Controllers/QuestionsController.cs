@@ -53,7 +53,7 @@ namespace MentorWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind("Anonymous,MessageContent,Id,UserId,DatePosted,Title,Tags")] Question question)
+            [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted,Title,Tags")] Question question)
         {
             
             if (ModelState.IsValid)
@@ -83,7 +83,7 @@ namespace MentorWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id,
-            [Bind("Anonymous,MessageContent,Id,UserId,DatePosted")] Question question)
+            [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
         {
             if (id != question.Id)
                 return NotFound();

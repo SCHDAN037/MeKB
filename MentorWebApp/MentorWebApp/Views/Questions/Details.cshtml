@@ -16,15 +16,21 @@
         </div>
         <div class="help-block">
 
-            <div class="col-xs-6 col-md-3"> asked by @Html.DisplayFor(model => model.UserId)</div>
+            <div class="col-xs-6 col-md-3"> asked by @Html.DisplayFor(model => model.UctNumber)</div>
         </div>
         <h2>@Html.DisplayFor(Model  => Model.Reply) </h2>
     </div>
     <div class="container">
         <div class="col-md-4">
+<<<<<<< HEAD
             
            
 
+=======
+            <p>
+                <a class="btn btn-primary btn-lg" href="#" Permissions="button">Reply</a>
+            </p>
+>>>>>>> c2ae4fcc401fe7fb1fe952da4fe5a867b168edbb
         </div>
     </div>
 
@@ -42,10 +48,10 @@
             @Html.DisplayFor(model => model.MessageContent)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.UserId)
+            @Html.DisplayNameFor(model => model.UctNumber)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.UserId)
+            @Html.DisplayFor(model => model.UctNumber)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.DatePosted)
