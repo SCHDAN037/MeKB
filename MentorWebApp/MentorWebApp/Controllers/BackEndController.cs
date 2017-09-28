@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MentorWebApp.Data;
 using MentorWebApp.Models;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace MentorWebApp.Controllers
 {
+    [Authorize(Policy = "MustBeAdmin")]
     public class BackEndController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -145,7 +149,7 @@ namespace MentorWebApp.Controllers
         }
 
         // POST: UserBackEnd/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("UserDelete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
@@ -270,7 +274,7 @@ namespace MentorWebApp.Controllers
 
         // POST: Resources/Delete/5
         [HttpPost]
-        [ActionName("Delete")]
+        [ActionName("ResourcesDelete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResourcesDeleteConfirmed(string id)
         {
@@ -406,7 +410,7 @@ namespace MentorWebApp.Controllers
         }
 
         // POST: QuestionsBackEnd/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("QuestionsDelete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> QuestionsDeleteConfirmed(string id)
         {

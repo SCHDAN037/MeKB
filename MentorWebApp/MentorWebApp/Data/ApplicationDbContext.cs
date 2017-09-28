@@ -1,4 +1,5 @@
 ﻿using MentorWebApp.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,7 @@ namespace MentorWebApp.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+            
         }
 
 
@@ -19,6 +21,7 @@ namespace MentorWebApp.Data
         protected override void OnModelCreating(ModelBuilder builder)
 
         {
+            
             base.OnModelCreating(builder);
         }
 

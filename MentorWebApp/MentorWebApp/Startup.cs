@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,17 +28,26 @@ namespace MentorWebApp
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+
+            
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddAuthorization(options =>
             {
                 
-                options.AddPolicy("Administrator",
-                    policy => policy.RequireRole("Administrator"));
+                options.AddPolicy("MustBeAdmin",
+                    policy => policy.RequireRole("Admin"));
+                options.AddPolicy("Mentee",
+                    policy => policy.RequireRole("Mentee"));
+                options.AddPolicy("Mentor",
+                    policy => policy.RequireRole("Mentor"));
             });
 
             services.AddMvc();
@@ -47,7 +57,7 @@ namespace MentorWebApp
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -64,6 +74,8 @@ namespace MentorWebApp
 
             app.UseAuthentication();
 
+            
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -71,5 +83,7 @@ namespace MentorWebApp
                     "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
+        
     }
 }
