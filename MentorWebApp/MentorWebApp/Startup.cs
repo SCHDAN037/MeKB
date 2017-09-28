@@ -1,12 +1,9 @@
-﻿using System.Collections.Generic;
-using MentorWebApp.Data;
+﻿using MentorWebApp.Data;
 using MentorWebApp.Models;
 using MentorWebApp.Services;
-using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,19 +26,15 @@ namespace MentorWebApp
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
 
-            
-
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-
 
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddAuthorization(options =>
             {
-                
                 options.AddPolicy("MustBeAdmin",
                     policy => policy.RequireRole("Admin"));
                 options.AddPolicy("Mentee",
@@ -74,7 +67,6 @@ namespace MentorWebApp
 
             app.UseAuthentication();
 
-            
 
             app.UseMvc(routes =>
             {
@@ -82,8 +74,10 @@ namespace MentorWebApp
                     "default",
                     "{controller=Home}/{action=Index}/{id?}");
             });
-        }
 
-        
+
+            ApplicationDbContextSeedData.Seed(app);
+            RolesData.SeedRoles(app.ApplicationServices).Wait();
+        }
     }
 }

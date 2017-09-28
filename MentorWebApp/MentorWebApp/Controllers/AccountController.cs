@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using MentorWebApp.Models;
@@ -19,14 +18,14 @@ namespace MentorWebApp.Controllers
     {
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            RoleManager<IdentityRole> roleManager, 
+            RoleManager<IdentityRole> roleManager,
             IEmailSender emailSender,
             ILogger<AccountController> logger)
         {
@@ -38,14 +37,15 @@ namespace MentorWebApp.Controllers
             createRolesandUsers().Wait();
         }
 
+        [TempData]
+        public string ErrorMessage { get; set; }
+
 
         private async Task createRolesandUsers()
         {
-
-            bool x = await _roleManager.RoleExistsAsync("Admin");
+            var x = await _roleManager.RoleExistsAsync("Admin");
             if (!x)
             {
-
                 // first we create Admin role    
                 var role = new IdentityRole
                 {
@@ -53,16 +53,16 @@ namespace MentorWebApp.Controllers
                 };
                 var create = await _roleManager.CreateAsync(role);
 
-                
+
                 //Here we create a Admin super user who will maintain the website                   
 
                 var user = new ApplicationUser();
                 user.UserName = "admin";
                 user.Email = "admin@default.com";
 
-                string userPWD = "adminADMIN#1";
+                var userPWD = "adminADMIN#1";
 
-                IdentityResult chkUser = await _userManager.CreateAsync(user, userPWD);
+                var chkUser = await _userManager.CreateAsync(user, userPWD);
 
                 //Add default User to Role Admin    
                 if (chkUser.Succeeded)
@@ -78,7 +78,6 @@ namespace MentorWebApp.Controllers
                 var role = new IdentityRole();
                 role.Name = "Mentor";
                 await _roleManager.CreateAsync(role);
-
             }
 
             // creating Creating Employee role     
@@ -90,9 +89,6 @@ namespace MentorWebApp.Controllers
                 await _roleManager.CreateAsync(role);
             }
         }
-
-        [TempData]
-        public string ErrorMessage { get; set; }
 
         [HttpGet]
         [AllowAnonymous]

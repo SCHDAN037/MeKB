@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MentorWebApp.Models
 {
@@ -19,7 +16,6 @@ namespace MentorWebApp.Models
         public void CreateSearchLists(string type)
 
         {
-            
             ResultsList = new List<List<string>>();
             if (type.Equals("both"))
             {
@@ -79,28 +75,17 @@ namespace MentorWebApp.Models
 
         public void SortAlpha(bool? rev)
         {
-
-            List<List<string>> newResList = ResultsList;
+            var newResList = ResultsList;
 
             if (rev == null || rev == false)
-            {
-                //sort a to z
-                newResList.Sort((x, y) => String.Compare(x.FirstOrDefault(), y.FirstOrDefault()));
-            }
+                newResList.Sort((x, y) => string.Compare(x.FirstOrDefault(), y.FirstOrDefault()));
             else
-            {
-                //sort z to a
-                newResList.Sort((x, y) => String.Compare(y.FirstOrDefault(), x.FirstOrDefault()));
-            }
+                newResList.Sort((x, y) => string.Compare(y.FirstOrDefault(), x.FirstOrDefault()));
             ResultsList = newResList;
         }
 
         public void SortDate()
         {
-            
         }
-
-
-
     }
 }

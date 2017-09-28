@@ -1,5 +1,4 @@
 ﻿using MentorWebApp.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,7 +9,6 @@ namespace MentorWebApp.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-            
         }
 
 
@@ -18,13 +16,12 @@ namespace MentorWebApp.Data
         public DbSet<Question> Questions { get; set; }
         public DbSet<Reply> Replies { get; set; }
 
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
 
         {
-            
             base.OnModelCreating(builder);
         }
-
-        public DbSet<MentorWebApp.Models.ApplicationUser> ApplicationUser { get; set; }
     }
 }

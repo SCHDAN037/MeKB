@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using MentorWebApp.Data;
 using MentorWebApp.Models;
 using Microsoft.AspNetCore.Authorization;
-
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace MentorWebApp.Controllers
 {
@@ -29,10 +24,9 @@ namespace MentorWebApp.Controllers
             return View();
         }
 
-        
+
         /// User backend
-        
-            
+
         // GET: UserBackEnd
         public async Task<IActionResult> UserIndex()
         {
@@ -43,16 +37,12 @@ namespace MentorWebApp.Controllers
         public async Task<IActionResult> UserDetails(string id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var applicationUser = await _context.ApplicationUser
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (applicationUser == null)
-            {
                 return NotFound();
-            }
 
             return View(applicationUser);
         }
@@ -68,7 +58,10 @@ namespace MentorWebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UserCreate([Bind("UctiId,Role,Enabled,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] ApplicationUser applicationUser)
+        public async Task<IActionResult> UserCreate(
+            [Bind(
+                "UctiId,Role,Enabled,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")]
+            ApplicationUser applicationUser)
         {
             if (ModelState.IsValid)
             {
@@ -83,15 +76,11 @@ namespace MentorWebApp.Controllers
         public async Task<IActionResult> UserEdit(string id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var applicationUser = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == id);
             if (applicationUser == null)
-            {
                 return NotFound();
-            }
             return View(applicationUser);
         }
 
@@ -100,12 +89,13 @@ namespace MentorWebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UserEdit(string id, [Bind("UctiId,Role,Enabled,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] ApplicationUser applicationUser)
+        public async Task<IActionResult> UserEdit(string id,
+            [Bind(
+                "UctiId,Role,Enabled,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")]
+            ApplicationUser applicationUser)
         {
             if (id != applicationUser.Id)
-            {
                 return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
@@ -117,13 +107,8 @@ namespace MentorWebApp.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!ApplicationUserExists(applicationUser.Id))
-                    {
                         return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
                 return RedirectToAction(nameof(UserIndex));
             }
@@ -134,22 +119,19 @@ namespace MentorWebApp.Controllers
         public async Task<IActionResult> UserDelete(string id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var applicationUser = await _context.ApplicationUser
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (applicationUser == null)
-            {
                 return NotFound();
-            }
 
             return View(applicationUser);
         }
 
         // POST: UserBackEnd/Delete/5
-        [HttpPost, ActionName("UserDelete")]
+        [HttpPost]
+        [ActionName("UserDelete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
@@ -165,15 +147,8 @@ namespace MentorWebApp.Controllers
         }
 
 
-
         /////////////
         /// Resources
-        /// 
-
-        
-
-        
-
 
         // GET: Resources
         public async Task<IActionResult> ResourcesIndex()
@@ -206,7 +181,8 @@ namespace MentorWebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ResourcesCreate([Bind("Id,DateAdded,Title,Tags,Type,UserId,Link")] Resource resource)
+        public async Task<IActionResult> ResourcesCreate(
+            [Bind("Id,DateAdded,Title,Tags,Type,UserId,Link")] Resource resource)
         {
             if (ModelState.IsValid)
             {
@@ -290,7 +266,6 @@ namespace MentorWebApp.Controllers
         }
 
 
-
         ////////////
         /// Questions
 
@@ -304,16 +279,12 @@ namespace MentorWebApp.Controllers
         public async Task<IActionResult> QuestionsDetails(string id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var question = await _context.Questions
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (question == null)
-            {
                 return NotFound();
-            }
 
             return View(question);
         }
@@ -329,7 +300,8 @@ namespace MentorWebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> QuestionsCreate([Bind("Anonymous,Title,Tags,MessageContent,Id,UserId,DatePosted")] Question question)
+        public async Task<IActionResult> QuestionsCreate(
+            [Bind("Anonymous,Title,Tags,MessageContent,Id,UserId,DatePosted")] Question question)
         {
             if (ModelState.IsValid)
             {
@@ -344,15 +316,11 @@ namespace MentorWebApp.Controllers
         public async Task<IActionResult> QuestionsEdit(string id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var question = await _context.Questions.SingleOrDefaultAsync(m => m.Id == id);
             if (question == null)
-            {
                 return NotFound();
-            }
             return View(question);
         }
 
@@ -361,12 +329,11 @@ namespace MentorWebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> QuestionsEdit(string id, [Bind("Anonymous,Title,Tags,MessageContent,Id,UserId,DatePosted")] Question question)
+        public async Task<IActionResult> QuestionsEdit(string id,
+            [Bind("Anonymous,Title,Tags,MessageContent,Id,UserId,DatePosted")] Question question)
         {
             if (id != question.Id)
-            {
                 return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
@@ -378,13 +345,8 @@ namespace MentorWebApp.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!QuestionExists(question.Id))
-                    {
                         return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
                 return RedirectToAction(nameof(QuestionsIndex));
             }
@@ -395,22 +357,19 @@ namespace MentorWebApp.Controllers
         public async Task<IActionResult> QuestionsDelete(string id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var question = await _context.Questions
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (question == null)
-            {
                 return NotFound();
-            }
 
             return View(question);
         }
 
         // POST: QuestionsBackEnd/Delete/5
-        [HttpPost, ActionName("QuestionsDelete")]
+        [HttpPost]
+        [ActionName("QuestionsDelete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> QuestionsDeleteConfirmed(string id)
         {
@@ -424,8 +383,5 @@ namespace MentorWebApp.Controllers
         {
             return _context.Questions.Any(e => e.Id == id);
         }
-
-
-
     }
 }
