@@ -58,3 +58,15 @@ C:\Users\daniel\source\MEKB\mekb\MentorWebApp\MentorWebApp\obj\Debug\netcoreapp2
 C:\Users\daniel\source\MEKB\mekb\MentorWebApp\MentorWebApp\obj\Debug\netcoreapp2.0\MentorWebApp.dll
 C:\Users\daniel\source\MEKB\mekb\MentorWebApp\MentorWebApp\obj\Debug\netcoreapp2.0\MentorWebApp.pdb
 C:\Users\daniel\source\MEKB\mekb\MentorWebApp\MentorWebApp\obj\Debug\netcoreapp2.0\MentorWebApp.csprojResolveAssemblyReference.cache
+C:\Users\Panashe\Desktop\Desktop\MeKB\MentorWebApp\MentorWebApp\bin\Debug\netcoreapp2.0\MentorWebApp.deps.json
+C:\Users\Panashe\Desktop\Desktop\MeKB\MentorWebApp\MentorWebApp\bin\Debug\netcoreapp2.0\MentorWebApp.runtimeconfig.json
+C:\Users\Panashe\Desktop\Desktop\MeKB\MentorWebApp\MentorWebApp\bin\Debug\netcoreapp2.0\MentorWebApp.runtimeconfig.dev.json
+C:\Users\Panashe\Desktop\Desktop\MeKB\MentorWebApp\MentorWebApp\bin\Debug\netcoreapp2.0\MentorWebApp.dll
+C:\Users\Panashe\Desktop\Desktop\MeKB\MentorWebApp\MentorWebApp\bin\Debug\netcoreapp2.0\MentorWebApp.pdb
+C:\Users\Panashe\Desktop\Desktop\MeKB\MentorWebApp\MentorWebApp\obj\Debug\netcoreapp2.0\MentorWebApp.csprojResolveAssemblyReference.cache
+C:\Users\Panashe\Desktop\Desktop\MeKB\MentorWebApp\MentorWebApp\obj\Debug\netcoreapp2.0\MentorWebApp.csproj.CoreCompileInputs.cache
+C:\Users\Panashe\Desktop\Desktop\MeKB\MentorWebApp\MentorWebApp\obj\Debug\netcoreapp2.0\UserSecretsAssemblyInfo.cs
+C:\Users\Panashe\Desktop\Desktop\MeKB\MentorWebApp\MentorWebApp\obj\Debug\netcoreapp2.0\MentorWebApp.AssemblyInfoInputs.cache
+C:\Users\Panashe\Desktop\Desktop\MeKB\MentorWebApp\MentorWebApp\obj\Debug\netcoreapp2.0\MentorWebApp.AssemblyInfo.cs
+C:\Users\Panashe\Desktop\Desktop\MeKB\MentorWebApp\MentorWebApp\obj\Debug\netcoreapp2.0\MentorWebApp.dll
+C:\Users\Panashe\Desktop\Desktop\MeKB\MentorWebApp\MentorWebApp\obj\Debug\netcoreapp2.0\MentorWebApp.pdb

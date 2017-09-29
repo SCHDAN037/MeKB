@@ -23,15 +23,47 @@ namespace MentorWebApp.Controllers
         }
 
         // GET: Questions/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<Question> DetailsAddReply(string id, string reply, [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
+        {
+            
+
+            if (ModelState.IsValid)
+            {
+                
+                    Reply r = new Reply(id, reply, "bob");
+                    question.Replies.Add(r);
+                    _context.Update(question);
+                    await _context.SaveChangesAsync();
+                
+                    return question;
+            }
+            return question;
+        }
+
+      
+        public async Task<IActionResult> Details(string id, string reply)
         {
             if (id == null)
                 return NotFound();
 
-            var question = await _context.Questions
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var question = await _context.Questions.SingleOrDefaultAsync(m => m.Id == id);
             if (question == null)
                 return NotFound();
+
+            
+
+            if (!string.IsNullOrEmpty(reply))
+            {
+                var temp = await DetailsAddReply(id, reply, question);
+                question = temp;
+            }
+
+            var rep = from r in _context.Replies
+                      select r;
+            rep = rep.Where(s => s.QuestionId.Equals(id));
+            var repList = await rep.ToListAsync();
+            var sortedList = repList.OrderBy(x => x.DatePosted).ToList();
+            question.RepList = sortedList;
 
             return View(question);
         }
