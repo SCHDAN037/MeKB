@@ -1,12 +1,9 @@
-<<<<<<< HEAD
-﻿namespace MentorWebApp.Models
 
-=======
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace MentorWebApp.Models
->>>>>>> c2ae4fcc401fe7fb1fe952da4fe5a867b168edbb
+
 {
 
 

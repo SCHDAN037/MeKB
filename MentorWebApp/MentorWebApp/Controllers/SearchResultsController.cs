@@ -10,12 +10,12 @@ namespace MentorWebApp.Controllers
     public class SearchResultsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        //public SearchResult _sr;
+        
 
         public SearchResultsController(ApplicationDbContext context)
         {
             _context = context;
-            //_sr = new SearchResult();
+            
         }
 
         public async Task<IActionResult> Index(string search, string sortSelect, string typeSelect, string browse)
@@ -28,7 +28,7 @@ namespace MentorWebApp.Controllers
             var tempRes = res;
             var tempQues = ques;
 
-            //Debug.WriteLine("***********************************" + res.ToListAsync().Result.ToArray());
+            
 
             if (!string.IsNullOrEmpty(search))
             {

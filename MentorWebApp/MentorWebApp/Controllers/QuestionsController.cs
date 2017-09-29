@@ -32,7 +32,7 @@ namespace MentorWebApp.Controllers
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (question == null)
                 return NotFound();
-            question.CreateReply(reply);
+            //question.CreateReply(reply);
 
 
 

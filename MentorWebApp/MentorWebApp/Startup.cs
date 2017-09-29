@@ -36,9 +36,8 @@ namespace MentorWebApp
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
-<<<<<<< HEAD
-            
-=======
+
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("MustBeAdmin",
@@ -48,15 +47,11 @@ namespace MentorWebApp
                 options.AddPolicy("Mentor",
                     policy => policy.RequireRole("Mentor"));
             });
->>>>>>> c2ae4fcc401fe7fb1fe952da4fe5a867b168edbb
 
-            
             
             services.AddMvc();
             
-
-
-            //
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,9 +75,7 @@ namespace MentorWebApp
             app.UseStaticFiles();
 
             app.UseAuthentication();
-
-            //app.UseMiddleware<UserManager<ApplicationUser>>();
-            //app.UseMiddleware<RoleManager<IdentityRole>>();
+            
 
             app.UseMvc(routes =>
             {
