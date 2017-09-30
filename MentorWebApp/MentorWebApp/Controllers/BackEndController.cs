@@ -1,8 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using MentorWebApp.Data;
 using MentorWebApp.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting.Internal;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,10 +15,18 @@ namespace MentorWebApp.Controllers
     public class BackEndController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public BackEndController(ApplicationDbContext context)
+        public BackEndController(ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
+
         }
 
         // GET: BackEnd
@@ -97,10 +108,22 @@ namespace MentorWebApp.Controllers
             if (id != applicationUser.Id)
                 return NotFound();
 
+            var ss = applicationUser.SecurityStamp;
+
             if (ModelState.IsValid)
             {
                 try
                 {
+                    
+                    var roles = await _userManager.GetRolesAsync(applicationUser);
+
+                    if (!roles.Contains(applicationUser.Permissions))
+                    {
+                        
+                        var res = await _userManager.AddToRoleAsync(applicationUser, applicationUser.Permissions);
+                        
+                    }
+                    
                     _context.Update(applicationUser);
                     await _context.SaveChangesAsync();
                 }
@@ -110,6 +133,8 @@ namespace MentorWebApp.Controllers
                         return NotFound();
                     throw;
                 }
+                
+
                 return RedirectToAction(nameof(UserIndex));
             }
             return View(applicationUser);

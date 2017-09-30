@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
@@ -16,11 +17,13 @@ namespace MentorWebApp.Models
         //[Required]
         public string Permissions { get; set; }
         public bool Enabled { get; set; }
+        
 
 
         public ApplicationUser()
         {
-            
+            this.SecurityStamp = Guid.NewGuid().ToString();
+            this.Permissions = "Mentee";
         }
 
         public ApplicationUser(string userID, string permissions, string email, string username, string password)
@@ -34,7 +37,9 @@ namespace MentorWebApp.Models
             var hashed = passwordHasher.HashPassword(this, password);
             this.PasswordHash = hashed;
             this.UserName = username;
-            
+
+            this.SecurityStamp = Guid.NewGuid().ToString();
+
         }
 
         

@@ -6,9 +6,7 @@ namespace MentorWebApp.Models
 
 {
 
-
-   
-
+    
     public class Question : Message
     {
         public Question()
