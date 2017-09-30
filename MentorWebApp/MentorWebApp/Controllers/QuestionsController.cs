@@ -23,6 +23,7 @@ namespace MentorWebApp.Controllers
         }
 
         // GET: Questions/Details/5
+
         public async Task<Question> DetailsAddReply(string id, string reply, [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
         {
             
@@ -40,7 +41,7 @@ namespace MentorWebApp.Controllers
             return question;
         }
 
-      
+     
         public async Task<IActionResult> Details(string id, string reply)
         {
             if (id == null)
@@ -49,6 +50,9 @@ namespace MentorWebApp.Controllers
             var question = await _context.Questions.SingleOrDefaultAsync(m => m.Id == id);
             if (question == null)
                 return NotFound();
+            //question.CreateReply(reply);
+
+
 
             
 
@@ -74,6 +78,8 @@ namespace MentorWebApp.Controllers
             return View();
         }
 
+        
+
         // POST: Questions/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -82,6 +88,7 @@ namespace MentorWebApp.Controllers
         public async Task<IActionResult> Create(
             [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted,Title,Tags")] Question question)
         {
+            
             if (ModelState.IsValid)
             {
                 _context.Add(question);
