@@ -1,6 +1,8 @@
 
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace MentorWebApp.Models
 
@@ -12,6 +14,7 @@ namespace MentorWebApp.Models
         public Question()
         {
             DatePosted = DateTime.Now;
+            Replies = new List<Reply>();
         }
 
         public Question(string title, string message, string uctNumber)
@@ -22,14 +25,14 @@ namespace MentorWebApp.Models
             UctNumber = uctNumber;
         }
 
-        
+        [NotMapped]
+        public List<Reply> RepList { get; set; }
+
+        public List<Reply> Replies { get; set; }
         public bool Anonymous { get; set; }
         //[Required]
         public string Title { get; set; }
         public string Tags { get; set; }
-        
-
-       
 
     }
 }
