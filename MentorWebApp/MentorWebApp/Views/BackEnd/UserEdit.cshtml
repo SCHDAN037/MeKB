@@ -13,19 +13,30 @@
         <form asp-action="UserEdit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="ApplicationUserId" class="control-label"></label>
+                <input type="hidden" asp-for="ApplicationUserId" class="form-control"/>
+                <span asp-validation-for="ApplicationUserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="UctNumber" class="control-label"></label>
                 <input asp-for="UctNumber" class="form-control"/>
                 <span asp-validation-for="UctNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Permissions" class="control-label"></label>
-                <input asp-for="Permissions" class="form-control"/>
+                @*<input asp-for="Permissions" class="form-control"/>*@
+                <select asp-for="Permissions">
+                    <option value="Mentee">Mentee</option>
+                    <option value="Mentor">Mentor</option>
+                    <option value="Admin">Admin</option>
+                </select>
                 <span asp-validation-for="Permissions" class="text-danger"></span>
             </div>
+            <input type="hidden" name="oldPermissions" value="@Model.Permissions"/>
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input asp-for="Enabled"/> @Html.DisplayNameFor(model => model.Enabled)
+                        <input asp-for="Enabled"/> 
                     </label>
                 </div>
             </div>
@@ -35,11 +46,79 @@
                 <input asp-for="UserName" class="form-control"/>
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
-            
+            <div class="form-group">
+                @*<label asp-for="NormalizedUserName" class="control-label"></label>*@
+                <input type="hidden" asp-for="NormalizedUserName" class="form-control"/>
+                <span asp-validation-for="NormalizedUserName" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
                 <input asp-for="Email" class="form-control"/>
                 <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @*<label asp-for="NormalizedEmail" class="control-label"></label>*@
+                <input type="hidden" asp-for="NormalizedEmail" class="form-control"/>
+                <span asp-validation-for="NormalizedEmail" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <div class="checkbox">
+                    <label>*@
+            <input type="hidden" asp-for="EmailConfirmed"/>
+            @*</label>
+                </div>
+            </div>*@
+            <div class="form-group">
+                @*<label asp-for="PasswordHash" class="control-label"></label>*@
+                <input type="hidden" asp-for="PasswordHash" class="form-control"/>
+                <span asp-validation-for="PasswordHash" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @*<label asp-for="SecurityStamp" class="control-label"></label>*@
+                <input type="hidden" asp-for="SecurityStamp" class="form-control"/>
+                <span asp-validation-for="SecurityStamp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @*<label asp-for="ConcurrencyStamp" class="control-label"></label>*@
+                <input type="hidden" asp-for="ConcurrencyStamp" class="form-control"/>
+                <span asp-validation-for="ConcurrencyStamp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @*<label asp-for="PhoneNumber" class="control-label"></label>*@
+                <input type="hidden" asp-for="PhoneNumber" class="form-control"/>
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <div class="checkbox">
+                    <label>*@
+            <input type="hidden" asp-for="PhoneNumberConfirmed"/>
+            @*</label>
+                </div>
+            </div>*@
+            @*<div class="form-group">
+                <div class="checkbox">
+                    <label>*@
+            <input type="hidden" asp-for="TwoFactorEnabled"/>
+            @*</label>
+                </div>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="LockoutEnd" class="control-label"></label>
+                <input type="text" asp-for="LockoutEnd" class="form-control"/>
+                <span asp-validation-for="LockoutEnd" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label asp-for="LockoutEnabled" class="control-label">
+                        Lockout/Block user?
+                        <input type="checkbox" asp-for="LockoutEnabled"/>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                @*<label asp-for="AccessFailedCount" class="control-label"></label>*@
+                <input type="hidden" asp-for="AccessFailedCount" class="form-control"/>
+                <span asp-validation-for="AccessFailedCount" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default"/>
