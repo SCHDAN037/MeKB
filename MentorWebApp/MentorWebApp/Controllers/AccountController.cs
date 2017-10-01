@@ -6,9 +6,11 @@ using MentorWebApp.Models.AccountViewModels;
 using MentorWebApp.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace MentorWebApp.Controllers
 {
@@ -31,6 +33,7 @@ namespace MentorWebApp.Controllers
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            
             _roleManager = roleManager;
             _emailSender = emailSender;
             _logger = logger;
@@ -62,21 +65,38 @@ namespace MentorWebApp.Controllers
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result =
-                    await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
-                if (result.Succeeded)
+
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user.Enabled)
                 {
-                    _logger.LogInformation("User logged in.");
-                    return RedirectToLocal(returnUrl);
+                    var setAllowed = await _userManager.SetLockoutEnabledAsync(user, false);
+                    
+                    var result =
+                        await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                    if (result.Succeeded)
+                    {
+                        _logger.LogInformation("User logged in.");
+                        return RedirectToLocal(returnUrl);
+                    }
+                    if (result.RequiresTwoFactor)
+                        return RedirectToAction(nameof(LoginWith2fa), new {returnUrl, model.RememberMe});
+                    if (result.IsLockedOut)
+                    {
+                        _logger.LogWarning("User account locked out.");
+                        return RedirectToAction(nameof(Lockout));
+                    }
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                 }
-                if (result.RequiresTwoFactor)
-                    return RedirectToAction(nameof(LoginWith2fa), new {returnUrl, model.RememberMe});
-                if (result.IsLockedOut)
+
+                else
                 {
+                    var setAllowed = await _userManager.SetLockoutEnabledAsync(user, false);
                     _logger.LogWarning("User account locked out.");
+                    
+                    //ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return RedirectToAction(nameof(Lockout));
                 }
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                
                 return View(model);
             }
 
@@ -203,7 +223,7 @@ namespace MentorWebApp.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser {UserName = model.Email, Email = model.Email};
+                var user = new ApplicationUser {UserName = model.Email, Email = model.Email, Enabled = true, UctNumber = model.UctNumber};
                 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
@@ -417,5 +437,7 @@ namespace MentorWebApp.Controllers
         }
 
         #endregion
+
+        
     }
 }
