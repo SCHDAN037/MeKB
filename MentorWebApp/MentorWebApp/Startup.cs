@@ -85,6 +85,7 @@ namespace MentorWebApp
                     "{controller=Home}/{action=Index}/{id?}");
             });
 
+            // COMMENT THESE LINES OUT IF YOU GET A DATABASE ERROR
             RolesData.SeedRoles(app).Wait();
             ApplicationDbContextSeedData.Seed(app);
             
