@@ -46,6 +46,7 @@ namespace MentorWebApp
                     policy => policy.RequireRole("Mentee"));
                 options.AddPolicy("Mentor",
                     policy => policy.RequireRole("Mentor"));
+                
             });
 
             

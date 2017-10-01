@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using MentorWebApp.Data;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace MentorWebApp.Controllers
 {
@@ -16,17 +18,13 @@ namespace MentorWebApp.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly RoleManager<IdentityRole> _roleManager;
-        
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public BackEndController(ApplicationDbContext context,
-            UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+        public BackEndController(ApplicationDbContext context)
         {
             _context = context;
-            _userManager = userManager;
-            _roleManager = roleManager;
-
+            _userManager = _context.GetService<UserManager<ApplicationUser>>();
+            _roleManager = _context.GetService<RoleManager<IdentityRole>>();
         }
 
         // GET: BackEnd
@@ -36,7 +34,9 @@ namespace MentorWebApp.Controllers
         }
 
 
-        /// User backend
+        /// /// /// ///
+        /// User Backend
+        /// /// /// ///
 
         // GET: UserBackEnd
         public async Task<IActionResult> UserIndex()
@@ -65,8 +65,6 @@ namespace MentorWebApp.Controllers
         }
 
         // POST: UserBackEnd/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UserCreate(
@@ -74,12 +72,17 @@ namespace MentorWebApp.Controllers
                 "UctNumber,Permissions,Enabled,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")]
             ApplicationUser applicationUser)
         {
+            var oldRole = applicationUser.Permissions;
             if (ModelState.IsValid)
             {
                 _context.Add(applicationUser);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(UserIndex));
             }
+
+            var result = await applicationUser.ChangeRoleAsync(applicationUser.Permissions, oldRole,
+                _context.GetService<UserManager<ApplicationUser>>());
+
             return View(applicationUser);
         }
 
@@ -96,44 +99,47 @@ namespace MentorWebApp.Controllers
         }
 
         // POST: UserBackEnd/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UserEdit(string id,
+        public async Task<IActionResult> UserEdit(string id, string oldPermissions,
             [Bind(
-                "UctiId,Permissions,Enabled,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")]
+                "ApplicationUserId,UctNumber,Permissions,Enabled,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")]
             ApplicationUser applicationUser)
         {
-            if (id != applicationUser.Id)
-                return NotFound();
 
-            var ss = applicationUser.SecurityStamp;
+            if (id != applicationUser.Id)
+            {
+                return NotFound();
+            }
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    
-                    var roles = await _userManager.GetRolesAsync(applicationUser);
-
-                    if (!roles.Contains(applicationUser.Permissions))
-                    {
-                        
-                        var res = await _userManager.AddToRoleAsync(applicationUser, applicationUser.Permissions);
-                        
-                    }
-                    
                     _context.Update(applicationUser);
-                    await _context.SaveChangesAsync();
+                    _context.SaveChanges();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!ApplicationUserExists(applicationUser.Id))
+                    {
                         return NotFound();
-                    throw;
+                    }
                 }
-                
+                try
+                {
+                    var res = await applicationUser.ChangeRoleAsync(applicationUser.Permissions, oldPermissions,
+                        _context.GetService<UserManager<ApplicationUser>>());
+                    if (!res)
+                    {
+                        throw new Exception();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.StackTrace);                        
+
+                }
 
                 return RedirectToAction(nameof(UserIndex));
             }
@@ -158,7 +164,7 @@ namespace MentorWebApp.Controllers
         [HttpPost]
         [ActionName("UserDelete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> UserDeleteConfirmed(string id)
         {
             var applicationUser = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == id);
             _context.ApplicationUser.Remove(applicationUser);
@@ -202,8 +208,6 @@ namespace MentorWebApp.Controllers
         }
 
         // POST: Resources/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResourcesCreate(
@@ -231,8 +235,6 @@ namespace MentorWebApp.Controllers
         }
 
         // POST: Resources/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResourcesEdit(string id,
@@ -321,8 +323,6 @@ namespace MentorWebApp.Controllers
         }
 
         // POST: QuestionsBackEnd/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> QuestionsCreate(
@@ -350,8 +350,6 @@ namespace MentorWebApp.Controllers
         }
 
         // POST: QuestionsBackEnd/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> QuestionsEdit(string id,
