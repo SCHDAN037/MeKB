@@ -36,7 +36,8 @@
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input asp-for="Enabled"/> 
+                        Enable user? (uncheck to block user)
+                        <input asp-for="Enabled"/>
                     </label>
                 </div>
             </div>
@@ -103,18 +104,21 @@
                 </div>
             </div>*@
             <div class="form-group">
-                <label asp-for="LockoutEnd" class="control-label"></label>
-                <input type="text" asp-for="LockoutEnd" class="form-control"/>
+                @*<label asp-for="LockoutEnd" class="control-label"></label>*@
+                <input type="hidden" asp-for="LockoutEnd" class="form-control"/>
                 <span asp-validation-for="LockoutEnd" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            
+            <input type="hidden" asp-for="LockoutEnabled" />
+
+            @*<div class="form-group">
                 <div class="checkbox">
                     <label asp-for="LockoutEnabled" class="control-label">
                         Lockout/Block user?
-                        <input type="checkbox" asp-for="LockoutEnabled"/>
+                        <input type="hidden" asp-for="LockoutEnabled"/>
                     </label>
                 </div>
-            </div>
+            </div>*@
             <div class="form-group">
                 @*<label asp-for="AccessFailedCount" class="control-label"></label>*@
                 <input type="hidden" asp-for="AccessFailedCount" class="form-control"/>
