@@ -12,18 +12,18 @@
 <table class="table">
     <thead>
     <tr>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.Anonymous)
-        </th>
+        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.Title)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.Tags)
-        </th>
-        <th>
+        </th>*@
+        @*<th>
             @Html.DisplayNameFor(model => model.MessageContent)
-        </th>
+        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.UctNumber)
         </th>
@@ -37,18 +37,18 @@
     @foreach (var item in Model)
     {
         <tr>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Anonymous)
-            </td>
+            </td>*@
             <td>
-                @Html.DisplayFor(modelItem => item.Title)
+                <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Title)</a> 
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Tags)
-            </td>
-            <td>
+            </td>*@
+            @*<td>
                 @Html.DisplayFor(modelItem => item.MessageContent)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.UctNumber)
             </td>

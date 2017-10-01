@@ -11,9 +11,10 @@ using System;
 namespace MentorWebApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170929150248_letssee")]
+    partial class letssee
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -119,8 +120,6 @@ namespace MentorWebApp.Data.Migrations
                     b.Property<string>("UctNumber");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("QuestionId");
 
                     b.ToTable("Replies");
                 });
@@ -255,13 +254,6 @@ namespace MentorWebApp.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("MentorWebApp.Models.Reply", b =>
-                {
-                    b.HasOne("MentorWebApp.Models.Question")
-                        .WithMany("replies")
-                        .HasForeignKey("QuestionId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
