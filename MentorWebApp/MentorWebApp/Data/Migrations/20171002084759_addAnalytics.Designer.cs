@@ -6,19 +6,40 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
 using System;
 
 namespace MentorWebApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171002084759_addAnalytics")]
+    partial class addAnalytics
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.0.0-rtm-26452")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("MentorWebApp.Models.Analytic", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Count");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
+                    b.Property<int>("ObjectId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Analytic");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Analytic");
+                });
 
             modelBuilder.Entity("MentorWebApp.Models.ApplicationUser", b =>
                 {
@@ -77,32 +98,10 @@ namespace MentorWebApp.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("MentorWebApp.Models.ContentAnalytic", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("Clicks");
-
-                    b.Property<int>("Count");
-
-                    b.Property<int>("Helpful");
-
-                    b.Property<string>("ObjectId");
-
-                    b.Property<int>("UnHelpful");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ContentAnalytics");
-                });
-
             modelBuilder.Entity("MentorWebApp.Models.Question", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("AnalyticId");
 
                     b.Property<bool>("Anonymous");
 
@@ -120,8 +119,6 @@ namespace MentorWebApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AnalyticId");
-
                     b.ToTable("Questions");
                 });
 
@@ -129,8 +126,6 @@ namespace MentorWebApp.Data.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("AnalyticId");
 
                     b.Property<string>("ApplicationUserId");
 
@@ -144,8 +139,6 @@ namespace MentorWebApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AnalyticId");
-
                     b.HasIndex("QuestionId");
 
                     b.ToTable("Replies");
@@ -155,8 +148,6 @@ namespace MentorWebApp.Data.Migrations
                 {
                     b.Property<string>("ResourceId")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("AnalyticId");
 
                     b.Property<string>("ApplicationUserId");
 
@@ -174,37 +165,15 @@ namespace MentorWebApp.Data.Migrations
 
                     b.HasKey("ResourceId");
 
-                    b.HasIndex("AnalyticId");
-
                     b.ToTable("Resources");
-                });
-
-            modelBuilder.Entity("MentorWebApp.Models.SearchAnalytic", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("Count");
-
-                    b.Property<int>("NoOfResults");
-
-                    b.Property<int>("NoResultsCount");
-
-                    b.Property<string>("ObjectId");
-
-                    b.Property<int>("SucceedClicks");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SearchAnalytics");
                 });
 
             modelBuilder.Entity("MentorWebApp.Models.SearchResult", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("AnalyticId");
+                    b.Property<int?>("AnalyticId");
 
                     b.Property<int>("NoOfResults");
 
@@ -325,34 +294,46 @@ namespace MentorWebApp.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("MentorWebApp.Models.Question", b =>
+            modelBuilder.Entity("MentorWebApp.Models.ContentAnalytic", b =>
                 {
-                    b.HasOne("MentorWebApp.Models.ContentAnalytic", "Analytic")
-                        .WithMany()
-                        .HasForeignKey("AnalyticId");
+                    b.HasBaseType("MentorWebApp.Models.Analytic");
+
+                    b.Property<int>("Clicks");
+
+                    b.Property<int>("Helpful");
+
+                    b.Property<int>("UnHelpful");
+
+                    b.ToTable("ContentAnalytic");
+
+                    b.HasDiscriminator().HasValue("ContentAnalytic");
+                });
+
+            modelBuilder.Entity("MentorWebApp.Models.SearchAnalytic", b =>
+                {
+                    b.HasBaseType("MentorWebApp.Models.Analytic");
+
+                    b.Property<int>("NoOfResults");
+
+                    b.Property<int>("NoResultsCount");
+
+                    b.Property<int>("SucceedClicks");
+
+                    b.ToTable("SearchAnalytic");
+
+                    b.HasDiscriminator().HasValue("SearchAnalytic");
                 });
 
             modelBuilder.Entity("MentorWebApp.Models.Reply", b =>
                 {
-                    b.HasOne("MentorWebApp.Models.ContentAnalytic", "Analytic")
-                        .WithMany()
-                        .HasForeignKey("AnalyticId");
-
                     b.HasOne("MentorWebApp.Models.Question")
                         .WithMany("Replies")
                         .HasForeignKey("QuestionId");
                 });
 
-            modelBuilder.Entity("MentorWebApp.Models.Resource", b =>
-                {
-                    b.HasOne("MentorWebApp.Models.ContentAnalytic", "Analytic")
-                        .WithMany()
-                        .HasForeignKey("AnalyticId");
-                });
-
             modelBuilder.Entity("MentorWebApp.Models.SearchResult", b =>
                 {
-                    b.HasOne("MentorWebApp.Models.SearchAnalytic", "Analytic")
+                    b.HasOne("MentorWebApp.Models.Analytic", "Analytic")
                         .WithMany()
                         .HasForeignKey("AnalyticId");
                 });

@@ -11,9 +11,10 @@ using System;
 namespace MentorWebApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171002085036_addAnalyticsToAll")]
+    partial class addAnalyticsToAll
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,7 +80,7 @@ namespace MentorWebApp.Data.Migrations
 
             modelBuilder.Entity("MentorWebApp.Models.ContentAnalytic", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("Clicks");
@@ -88,7 +89,7 @@ namespace MentorWebApp.Data.Migrations
 
                     b.Property<int>("Helpful");
 
-                    b.Property<string>("ObjectId");
+                    b.Property<int>("ObjectId");
 
                     b.Property<int>("UnHelpful");
 
@@ -102,7 +103,7 @@ namespace MentorWebApp.Data.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("AnalyticId");
+                    b.Property<int?>("AnalyticId");
 
                     b.Property<bool>("Anonymous");
 
@@ -130,7 +131,7 @@ namespace MentorWebApp.Data.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("AnalyticId");
+                    b.Property<int?>("AnalyticId");
 
                     b.Property<string>("ApplicationUserId");
 
@@ -156,7 +157,7 @@ namespace MentorWebApp.Data.Migrations
                     b.Property<string>("ResourceId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("AnalyticId");
+                    b.Property<int?>("AnalyticId");
 
                     b.Property<string>("ApplicationUserId");
 
@@ -181,7 +182,7 @@ namespace MentorWebApp.Data.Migrations
 
             modelBuilder.Entity("MentorWebApp.Models.SearchAnalytic", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("Count");
@@ -190,7 +191,7 @@ namespace MentorWebApp.Data.Migrations
 
                     b.Property<int>("NoResultsCount");
 
-                    b.Property<string>("ObjectId");
+                    b.Property<int>("ObjectId");
 
                     b.Property<int>("SucceedClicks");
 
@@ -201,10 +202,10 @@ namespace MentorWebApp.Data.Migrations
 
             modelBuilder.Entity("MentorWebApp.Models.SearchResult", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("AnalyticId");
+                    b.Property<int?>("AnalyticId");
 
                     b.Property<int>("NoOfResults");
 

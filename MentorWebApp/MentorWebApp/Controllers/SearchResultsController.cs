@@ -125,6 +125,16 @@ namespace MentorWebApp.Controllers
                     }
                 }
             }
+            var intable = await _context.SearchResults.FindAsync(resObject.Id);
+            if (intable != null)
+            {
+                _context.SearchResults.Add(resObject);
+            }
+            else
+            {
+                _context.SearchResults.Update(resObject);
+            }
+
             
             return View(resObject);
         }

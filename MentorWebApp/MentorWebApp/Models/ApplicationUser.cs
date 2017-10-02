@@ -12,7 +12,7 @@ namespace MentorWebApp.Models
     {
         //[Key]
         //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string ApplicationUserId { get; set; }
+        //public string ApplicationUserId { get; set; }
 
         //[Required]
         public string UctNumber { get; set; }

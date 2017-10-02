@@ -1,4 +1,5 @@
-﻿@model SearchResult
+﻿@using MentorWebApp.Controllers
+@model SearchResult
 
 @{
     ViewData["Title"] = "Index";
@@ -12,13 +13,12 @@
         <div class="row form-group col-md-6 col-md-offset-3">
 
 
-
             <form method="get" action="@Url.Action("Index", "SearchResults")">
 
                 <div class="input-group">
                     <input type="text" class="search-query form-control" placeholder="Search resources, ask a question" value="@ViewData.Model.searchVal" name="search">
-                    <input type="hidden" name="sortSelect" value="@ViewData.Model.sortVal" />
-                    <input type="hidden" name="typeSelect" value="@ViewData.Model.typeVal" />
+                    <input type="hidden" name="sortSelect" value="@ViewData.Model.sortVal"/>
+                    <input type="hidden" name="typeSelect" value="@ViewData.Model.typeVal"/>
                     <span class="input-group-btn">
                         <button class="btn .btn-primary" type="submit" id="searchButton">
                             <span class="glyphicon glyphicon-search"></span>
@@ -32,7 +32,7 @@
         <div class="row">
             <form method="get" action="@Url.Action("Index", "SearchResults")">
                 <label class="label">Sort: </label>
-                <input type="hidden" id="search" name="search" value="@ViewData.Model.searchVal" />
+                <input type="hidden" id="search" name="search" value="@ViewData.Model.searchVal"/>
                 <select name="sortSelect">
                     <option value="alpha" selected="@(ViewData.Model.sortVal.Equals("alpha"))">A to Z</option>
                     <option value="alphaRev" selected="@(ViewData.Model.sortVal.Equals("alphaRev"))">Z to A</option>
@@ -40,13 +40,13 @@
 
                 <label class="label">Filter: </label>
 
-                <select  name="typeSelect">
+                <select name="typeSelect">
                     <option value="res" selected="@(ViewData.Model.typeVal.Equals("res"))">Resources Only</option>
                     <option value="ques" selected="@(ViewData.Model.typeVal.Equals("ques"))">Questions Only</option>
                     <option value="both" selected="@(ViewData.Model.typeVal.Equals("both"))">Both</option>
                 </select>
 
-                <input type="submit" class="btn-default" />
+                <input type="submit" class="btn-default"/>
             </form>
         </div>
     </div>
@@ -63,18 +63,35 @@
     </thead>
 
     <tbody>
-    @for (var i = 0; i < Model.ResultsList.Count; i++)
-    {
-        <tr>
-            <td>
-                <a href="@Html.ViewData.Model.ResultsList[i][1]" target="_blank">@Html.ViewData.Model.ResultsList[i][0]</a>
+    @{
 
-            </td>
-            <td>
-               
-            </td>
-            
-        </tr>
+        for (var i = 0; i < Model.ResultsList.Count; i++)
+        {
+            <tr>
+                <td>
+                    <a href="@Html.ViewData.Model.ResultsList[i][1]" target="_blank" @*onclick="@{ this.Model.Clicked(Html.ViewData.Model.ResultsList[i][2]);}"*@ >@Html.ViewData.Model.ResultsList[i][0]</a>
+
+                </td>
+                <td>
+
+                </td>
+
+            </tr>
+        }
+        
     }
+
+
     </tbody>
+    
 </table>
+
+@{
+
+    if (Model.NoOfResults == 0)
+    {
+        <p>
+            No Results found. Try <a href="@Url.Action("Index", "Questions")">asking a question instead.</a>
+        </p>
+    }
+}

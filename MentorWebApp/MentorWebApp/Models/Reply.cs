@@ -16,9 +16,11 @@ namespace MentorWebApp.Models
             MessageContent = message;
             UctNumber = uctNumber;
             DatePosted = DateTime.Now;
+            Analytic = new ContentAnalytic(this.QuestionId);
         }
 
         //[ForeignKey("QuestionId")]
         public string QuestionId { get; set; }
+        public ContentAnalytic Analytic { get; set; }
     }
 }

@@ -23,6 +23,7 @@ namespace MentorWebApp.Models
             Title = title;
             MessageContent = message;
             UctNumber = uctNumber;
+            this.Analytic = new ContentAnalytic(this.Id);
         }
 
         [NotMapped]
@@ -33,6 +34,7 @@ namespace MentorWebApp.Models
         //[Required]
         public string Title { get; set; }
         public string Tags { get; set; }
+        public ContentAnalytic Analytic { get; set; }
 
     }
 }

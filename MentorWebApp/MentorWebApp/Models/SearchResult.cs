@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
@@ -6,29 +7,42 @@ namespace MentorWebApp.Models
 {
     public class SearchResult
     {
-        
-        public List<List<string>> ResultsList { get; set; }
-        
-        public List<Resource> ResourcesList { get; set; }
-        public List<Question> QuestionsList { get; set; }
-        
-        public string searchVal { get; set; }
-        
-        public string sortVal { get; set; }
-        
-        public string typeVal { get; set; }
-
         public SearchResult()
         {
-            
+            Analytic = new SearchAnalytic(Id);
         }
+
+        [NotMapped]
+        public List<List<string>> ResultsList { get; set; }
+
+        [NotMapped]
+        public List<Resource> ResourcesList { get; set; }
+
+        [NotMapped]
+        public List<Question> QuestionsList { get; set; }
+
+        [Key]
+        public string Id { get; set; }
+
+        public string searchVal { get; set; }
+
+        public SearchAnalytic Analytic { get; set; }
+
+        public int NoOfResults { get; set; }
+
+        [NotMapped]
+        public string sortVal { get; set; }
+
+        [NotMapped]
+        public string typeVal { get; set; }
 
         public void CreateSearchLists(string type, string sort, string search)
         {
             ResultsList = new List<List<string>>();
-            this.typeVal = type;
-            this.sortVal = sort;
-            this.searchVal = search;
+
+            typeVal = type;
+            sortVal = sort;
+            searchVal = search;
 
             if (type.Equals("both"))
             {
@@ -41,7 +55,7 @@ namespace MentorWebApp.Models
                         item.ResourceId,
                         item.DateAdded.ToLongDateString()
                     };
-                    
+
                     ResultsList.Add(temp);
                 }
                 foreach (var item in QuestionsList)
@@ -52,7 +66,6 @@ namespace MentorWebApp.Models
                         "/Questions/Details/" + item.Id,
                         item.Id,
                         item.DatePosted.ToLongDateString()
-                        
                     };
                     ResultsList.Add(temp);
                 }
@@ -88,37 +101,51 @@ namespace MentorWebApp.Models
             }
 
 
-
-
-
-
+            UpdateAnalytic();
 
             Sort(sort);
-            
+        }
+
+        public void UpdateAnalytic()
+        {
+            Analytic.NoOfResults = ResultsList.Count;
+
+            if (Analytic.NoOfResults == 0) Analytic.NoResultsCount++;
+            Analytic.Count++;
+
+            if (QuestionsList.Count != 0)
+            {
+                foreach (var question in QuestionsList)
+                    question.Analytic.Count++;
+            }
+            if (ResourcesList.Count != 0)
+            {
+                foreach (var resource in ResourcesList)
+                    resource.Analytic.Count++;
+            }
+        }
 
 
-
-
+        public void Clicked(string id)
+        {
+            var tempRes = ResourcesList.SingleOrDefault(s => s.ResourceId == id);
+            var tempQues = QuestionsList.SingleOrDefault(s => s.Id == id);
+            if (tempRes != null)
+                tempRes.Analytic.Clicks++;
+            else if (tempQues != null)
+                tempQues.Analytic.Clicks++;
         }
 
         public void Sort(string sort)
         {
             if (sort.Equals("alpha"))
-            {
                 SortAlpha(false);
-            }
             else if (sort.Equals("alphaRev"))
-            {
                 SortAlpha(true);
-            }
             else if (sort.Equals("date"))
-            {
                 SortDate();
-            }
             else
-            {
                 SortAlpha(false);
-            }
         }
 
         private void SortAlpha(bool? rev)
