@@ -270,8 +270,17 @@ namespace MentorWebApp.Data
 
                 Question[] testQuestions =
                 {
-                    new Question()
+                    new Question("Where are the Libraries?","UCT main library", "blgjoe001"),
+                    new Question("When are the Libraries open?", "", "blgjoe001"),
+                    new Question("What is plagiarism?", "", "blgjoe001"),
+                    new Question("Where are the Scilabs?", "", "blgjoe001"),
+                    new Question("Where is the hotseat?", "", "blgjoe001"),
+                    new Question("How do I query my marks?", "", "blgjoe001"),
                 };
+
+                for (var i = 0; i < testQuestions.Length; i++)
+                    if(!context.Questions.Any(u => u.Title == testQuestions[i].Title))
+                        context.Questions.AddAsync(testQuestions[i]).Wait();
 
                 //Finished
 
