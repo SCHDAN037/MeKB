@@ -41,7 +41,7 @@ namespace MentorWebApp.Controllers
             return question;
         }
 
-        public async Task<Question> DetailsDeleteReply(string id, string reply, [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
+        public async Task<Question> DetailsDeleteReply(string id, [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
         {
            
 
@@ -49,7 +49,7 @@ namespace MentorWebApp.Controllers
             {
                 var rep = from r in _context.Replies
                           select r;
-                var trep = rep.SingleOrDefault(s => (s.QuestionId.Equals(id)));
+                var trep = rep.SingleOrDefault(s => (s.Id.Equals(id)));
                 _context.Replies.Remove(trep);
                 await _context.SaveChangesAsync();
 
@@ -82,7 +82,7 @@ namespace MentorWebApp.Controllers
 
             if (!string.IsNullOrEmpty(delId))
             {
-                var temp = await DetailsDeleteReply(id, reply, question);
+                var temp = await DetailsDeleteReply(delId, question);
                 question = temp;
             } 
 
