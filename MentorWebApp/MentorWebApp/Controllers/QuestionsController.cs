@@ -26,23 +26,41 @@ namespace MentorWebApp.Controllers
 
         public async Task<Question> DetailsAddReply(string id, string reply, [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
         {
-            
+
 
             if (ModelState.IsValid)
             {
-                
-                    Reply r = new Reply(id, reply, "bob");
-                    question.Replies.Add(r);
-                    _context.Update(question);
-                    await _context.SaveChangesAsync();
-                
-                    return question;
+
+                Reply r = new Reply(id, reply, "bob");
+                question.Replies.Add(r);
+                _context.Update(question);
+                await _context.SaveChangesAsync();
+
+                return question;
             }
             return question;
         }
 
-     
-        public async Task<IActionResult> Details(string id, string reply)
+        public async Task<Question> DetailsDeleteReply(string id, string reply, [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
+        {
+           
+
+            if (ModelState.IsValid)
+            {
+                var rep = from r in _context.Replies
+                          select r;
+                var trep = rep.SingleOrDefault(s => (s.QuestionId.Equals(id)));
+                _context.Replies.Remove(trep);
+                await _context.SaveChangesAsync();
+
+                return question;
+            }
+            return question;
+        }
+
+
+
+        public async Task<IActionResult> Details(string id, string reply, string delId)
         {
             if (id == null)
                 return NotFound();
@@ -61,6 +79,12 @@ namespace MentorWebApp.Controllers
                 var temp = await DetailsAddReply(id, reply, question);
                 question = temp;
             }
+
+            if (!string.IsNullOrEmpty(delId))
+            {
+                var temp = await DetailsDeleteReply(id, reply, question);
+                question = temp;
+            } 
 
             var rep = from r in _context.Replies
                       select r;
