@@ -272,12 +272,12 @@ namespace MentorWebApp.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-<<<<<<< HEAD
+
                 var user = new ApplicationUser {UserName = model.Email, Email = model.Email, Enabled = true, UctNumber = model.UctNumber};
                 
-=======
-                var user = new ApplicationUser {UserName = model.Email, Email = model.Email} ;
->>>>>>> parent of 6514808... Merge branch 'master' into pk
+
+               
+
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

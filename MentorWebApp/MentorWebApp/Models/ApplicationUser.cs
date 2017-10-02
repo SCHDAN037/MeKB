@@ -1,10 +1,8 @@
-<<<<<<< HEAD
+
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-=======
 ﻿using System.ComponentModel.DataAnnotations;
->>>>>>> parent of 6514808... Merge branch 'master' into pk
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -42,12 +40,7 @@ namespace MentorWebApp.Models
             var hashed = passwordHasher.HashPassword(this, password);
             this.PasswordHash = hashed;
             this.UserName = username;
-<<<<<<< HEAD
 
-            this.SecurityStamp = Guid.NewGuid().ToString();
-=======
-            
->>>>>>> parent of 6514808... Merge branch 'master' into pk
         }
 
 

@@ -46,26 +46,23 @@ namespace MentorWebApp
                 
             });
 
-            
-<<<<<<< HEAD
+
             services.AddMvc();
             
-=======
+
             
             services.AddMvc();
 
 
             //
->>>>>>> parent of 6514808... Merge branch 'master' into pk
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-<<<<<<< HEAD
-            
-=======
->>>>>>> parent of 6514808... Merge branch 'master' into pk
+
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
