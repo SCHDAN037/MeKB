@@ -17,10 +17,12 @@ namespace MentorWebApp.Models
             Title = title;
             Link = link;
             DateAdded = DateTime.Now;
+            this.ResourceId = Guid.NewGuid().ToString();
             this.Analytic = new ContentAnalytic(this.ResourceId);
         }
-        //[Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string ResourceId { get; set; }
 
         public ContentAnalytic Analytic { get; set; }

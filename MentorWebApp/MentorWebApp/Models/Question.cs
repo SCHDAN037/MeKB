@@ -15,6 +15,7 @@ namespace MentorWebApp.Models
         {
             DatePosted = DateTime.Now;
             Replies = new List<Reply>();
+            this.Analytic = new ContentAnalytic(this.Id);
         }
 
         public Question(string title, string message, string uctNumber)
@@ -23,6 +24,7 @@ namespace MentorWebApp.Models
             Title = title;
             MessageContent = message;
             UctNumber = uctNumber;
+            this.Id = Guid.NewGuid().ToString();
             this.Analytic = new ContentAnalytic(this.Id);
         }
 

@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 
-namespace MentorWebApp.Data.Migrations
+namespace MentorWebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20171002085036_addAnalyticsToAll")]
-    partial class addAnalyticsToAll
+    [Migration("20171002185508_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -80,7 +80,7 @@ namespace MentorWebApp.Data.Migrations
 
             modelBuilder.Entity("MentorWebApp.Models.ContentAnalytic", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("NewIdentity")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("Clicks");
@@ -89,11 +89,11 @@ namespace MentorWebApp.Data.Migrations
 
                     b.Property<int>("Helpful");
 
-                    b.Property<int>("ObjectId");
+                    b.Property<string>("ObjectId");
 
                     b.Property<int>("UnHelpful");
 
-                    b.HasKey("Id");
+                    b.HasKey("NewIdentity");
 
                     b.ToTable("ContentAnalytics");
                 });
@@ -103,7 +103,7 @@ namespace MentorWebApp.Data.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("AnalyticId");
+                    b.Property<string>("AnalyticNewIdentity");
 
                     b.Property<bool>("Anonymous");
 
@@ -121,7 +121,7 @@ namespace MentorWebApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AnalyticId");
+                    b.HasIndex("AnalyticNewIdentity");
 
                     b.ToTable("Questions");
                 });
@@ -131,7 +131,7 @@ namespace MentorWebApp.Data.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("AnalyticId");
+                    b.Property<string>("AnalyticNewIdentity");
 
                     b.Property<string>("ApplicationUserId");
 
@@ -145,7 +145,7 @@ namespace MentorWebApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AnalyticId");
+                    b.HasIndex("AnalyticNewIdentity");
 
                     b.HasIndex("QuestionId");
 
@@ -157,7 +157,7 @@ namespace MentorWebApp.Data.Migrations
                     b.Property<string>("ResourceId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("AnalyticId");
+                    b.Property<string>("AnalyticNewIdentity");
 
                     b.Property<string>("ApplicationUserId");
 
@@ -175,14 +175,14 @@ namespace MentorWebApp.Data.Migrations
 
                     b.HasKey("ResourceId");
 
-                    b.HasIndex("AnalyticId");
+                    b.HasIndex("AnalyticNewIdentity");
 
                     b.ToTable("Resources");
                 });
 
             modelBuilder.Entity("MentorWebApp.Models.SearchAnalytic", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("NewIdentity")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("Count");
@@ -191,21 +191,21 @@ namespace MentorWebApp.Data.Migrations
 
                     b.Property<int>("NoResultsCount");
 
-                    b.Property<int>("ObjectId");
+                    b.Property<string>("ObjectId");
 
                     b.Property<int>("SucceedClicks");
 
-                    b.HasKey("Id");
+                    b.HasKey("NewIdentity");
 
                     b.ToTable("SearchAnalytics");
                 });
 
             modelBuilder.Entity("MentorWebApp.Models.SearchResult", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("AnalyticId");
+                    b.Property<string>("AnalyticNewIdentity");
 
                     b.Property<int>("NoOfResults");
 
@@ -213,7 +213,7 @@ namespace MentorWebApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AnalyticId");
+                    b.HasIndex("AnalyticNewIdentity");
 
                     b.ToTable("SearchResults");
                 });
@@ -330,14 +330,14 @@ namespace MentorWebApp.Data.Migrations
                 {
                     b.HasOne("MentorWebApp.Models.ContentAnalytic", "Analytic")
                         .WithMany()
-                        .HasForeignKey("AnalyticId");
+                        .HasForeignKey("AnalyticNewIdentity");
                 });
 
             modelBuilder.Entity("MentorWebApp.Models.Reply", b =>
                 {
                     b.HasOne("MentorWebApp.Models.ContentAnalytic", "Analytic")
                         .WithMany()
-                        .HasForeignKey("AnalyticId");
+                        .HasForeignKey("AnalyticNewIdentity");
 
                     b.HasOne("MentorWebApp.Models.Question")
                         .WithMany("Replies")
@@ -348,14 +348,14 @@ namespace MentorWebApp.Data.Migrations
                 {
                     b.HasOne("MentorWebApp.Models.ContentAnalytic", "Analytic")
                         .WithMany()
-                        .HasForeignKey("AnalyticId");
+                        .HasForeignKey("AnalyticNewIdentity");
                 });
 
             modelBuilder.Entity("MentorWebApp.Models.SearchResult", b =>
                 {
                     b.HasOne("MentorWebApp.Models.SearchAnalytic", "Analytic")
                         .WithMany()
-                        .HasForeignKey("AnalyticId");
+                        .HasForeignKey("AnalyticNewIdentity");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

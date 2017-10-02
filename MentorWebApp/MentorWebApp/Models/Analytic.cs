@@ -11,10 +11,13 @@ namespace MentorWebApp.Models
 {
     public class Analytic
     {
-        [Key]
-        public string Id { get; set; }
+        //[Key]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //public int Id { get; set; }
         public int Count { get; set; }
-        
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public string NewIdentity { get; set; }
         public string ObjectId { get; set; }
 
         public Analytic()

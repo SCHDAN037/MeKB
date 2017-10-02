@@ -1,23 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
+using System.Collections.Generic;
 
-namespace MentorWebApp.Data.Migrations
+namespace MentorWebApp.Migrations
 {
-    public partial class edit_question : Migration
+    public partial class addedTypeToAnalytic : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                "Title",
-                "Questions",
-                "nvarchar(max)",
+                name: "typeVal",
+                table: "SearchResults",
+                type: "nvarchar(max)",
                 nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                "Title",
-                "Questions");
+                name: "typeVal",
+                table: "SearchResults");
         }
     }
 }

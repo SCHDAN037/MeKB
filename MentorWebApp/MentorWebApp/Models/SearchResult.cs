@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -9,7 +10,11 @@ namespace MentorWebApp.Models
     {
         public SearchResult()
         {
-            Analytic = new SearchAnalytic(Id);
+            
+            this.Id = Guid.NewGuid().ToString();
+            this.Analytic = new SearchAnalytic(Id);
+            this.ResourcesList = new List<Resource>();
+            this.QuestionsList = new List<Question>();
         }
 
         [NotMapped]
@@ -22,6 +27,7 @@ namespace MentorWebApp.Models
         public List<Question> QuestionsList { get; set; }
 
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
 
         public string searchVal { get; set; }
@@ -32,8 +38,7 @@ namespace MentorWebApp.Models
 
         [NotMapped]
         public string sortVal { get; set; }
-
-        [NotMapped]
+        
         public string typeVal { get; set; }
 
         public void CreateSearchLists(string type, string sort, string search)
@@ -100,16 +105,16 @@ namespace MentorWebApp.Models
                 }
             }
 
-
-            UpdateAnalytic();
+            this.NoOfResults = ResultsList.Count;
+            //UpdateAnalytic();
 
             Sort(sort);
         }
 
-        public void UpdateAnalytic()
+       public void UpdateAnalytic()
         {
-            Analytic.NoOfResults = ResultsList.Count;
-
+            //Analytic.NoOfResults = ResultsList.Count;
+            //Analytic.NoOfResults
             if (Analytic.NoOfResults == 0) Analytic.NoResultsCount++;
             Analytic.Count++;
 
@@ -126,14 +131,12 @@ namespace MentorWebApp.Models
         }
 
 
-        public void Clicked(string id)
+        public void Clicked(List<List<string>> list, int i)
         {
-            var tempRes = ResourcesList.SingleOrDefault(s => s.ResourceId == id);
-            var tempQues = QuestionsList.SingleOrDefault(s => s.Id == id);
-            if (tempRes != null)
-                tempRes.Analytic.Clicks++;
-            else if (tempQues != null)
-                tempQues.Analytic.Clicks++;
+            
+            
+            //Update db now
+            
         }
 
         public void Sort(string sort)

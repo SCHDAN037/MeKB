@@ -19,12 +19,12 @@ namespace MentorWebApp.Models
 
         public SearchAnalytic(string id)
         {
+            //this.Id = Guid.NewGuid().ToString();
             this.NoOfResults = 0;
             this.SucceedClicks = 0;
             this.NoResultsCount = 0;
             this.Count = 0;
             this.ObjectId = id;
-
         }
     }
 }

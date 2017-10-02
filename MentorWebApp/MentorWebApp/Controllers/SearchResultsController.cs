@@ -1,8 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using MentorWebApp.Data;
 using MentorWebApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 
 namespace MentorWebApp.Controllers
@@ -10,11 +13,44 @@ namespace MentorWebApp.Controllers
     public class SearchResultsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private SearchResult resObject;
 
 
         public SearchResultsController(ApplicationDbContext context)
         {
             _context = context;
+        }
+
+        public ActionResult RedirectToLink(string title, string link, string id)
+        {
+
+            try
+            {
+                var tempRes = _context.Resources.SingleOrDefault(s => s.ResourceId == id);
+                tempRes.Analytic.Clicks++;
+            }
+            catch (Exception)
+            {
+                try
+                {
+                    var tempQues = _context.Questions.SingleOrDefault(s => s.Id == id);
+                    tempQues.Analytic.Clicks++;
+                }
+                catch
+                {
+                    // not sure... this means there is no results??
+                }
+            }
+            _context.SaveChanges();
+            if (link.Contains("http"))
+            {
+                return Redirect(link);
+            }
+            else
+            {
+                return Redirect("http://" + link);
+            }
+            
         }
 
         public async Task<IActionResult> Index(string search, string sortSelect, string typeSelect)
@@ -26,8 +62,20 @@ namespace MentorWebApp.Controllers
 
             var tempRes = res;
             var tempQues = ques;
-            var resObject = new SearchResult();
 
+            // Check if this search has been done before
+            try
+            {
+                var before =
+                    await _context.SearchResults.SingleAsync(id =>
+                        (id.searchVal == search) && (id.typeVal == typeSelect));
+                this.resObject = before;
+            }
+            catch (Exception)
+            {
+                resObject = new SearchResult();
+            }
+            
             if (!string.IsNullOrEmpty(search))
             {
                 //If search has a query
@@ -90,7 +138,7 @@ namespace MentorWebApp.Controllers
             else
             {
                 //If search is Empty or Null
-
+                search = "";
                 var wait = await tempRes.ToListAsync();
                 resObject.ResourcesList = wait;
                 var anotherWait = await tempQues.ToListAsync();
@@ -125,17 +173,24 @@ namespace MentorWebApp.Controllers
                     }
                 }
             }
-            var intable = await _context.SearchResults.FindAsync(resObject.Id);
-            if (intable != null)
+
+            resObject.Analytic.Count++;
+            resObject.Analytic.NoOfResults = resObject.NoOfResults;
+            if (resObject.Analytic.NoOfResults == 0)
             {
-                _context.SearchResults.Add(resObject);
+                resObject.Analytic.NoResultsCount++;
+            }
+            
+            if (_context.SearchResults.Find(resObject.Id) != null)
+            {
+                var updateRes = _context.SearchResults.Update(resObject);
             }
             else
             {
-                _context.SearchResults.Update(resObject);
+                var addRes = await _context.SearchResults.AddAsync(resObject);
             }
 
-            
+            _context.SaveChanges();
             return View(resObject);
         }
     }

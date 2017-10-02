@@ -8,13 +8,12 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 
-namespace MentorWebApp.Data.Migrations
+namespace MentorWebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170928170042_newPlsWork")]
-    partial class newPlsWork
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,10 +26,6 @@ namespace MentorWebApp.Data.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("AccessFailedCount");
-
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -54,8 +49,7 @@ namespace MentorWebApp.Data.Migrations
 
                     b.Property<string>("PasswordHash");
 
-                    b.Property<string>("Permissions")
-                        .IsRequired();
+                    b.Property<string>("Permissions");
 
                     b.Property<string>("PhoneNumber");
 
@@ -65,15 +59,12 @@ namespace MentorWebApp.Data.Migrations
 
                     b.Property<bool>("TwoFactorEnabled");
 
-                    b.Property<string>("UctNumber")
-                        .IsRequired();
+                    b.Property<string>("UctNumber");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
-
-                    b.HasAlternateKey("ApplicationUserId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -86,10 +77,32 @@ namespace MentorWebApp.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("MentorWebApp.Models.ContentAnalytic", b =>
+                {
+                    b.Property<string>("NewIdentity")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Clicks");
+
+                    b.Property<int>("Count");
+
+                    b.Property<int>("Helpful");
+
+                    b.Property<string>("ObjectId");
+
+                    b.Property<int>("UnHelpful");
+
+                    b.HasKey("NewIdentity");
+
+                    b.ToTable("ContentAnalytics");
+                });
+
             modelBuilder.Entity("MentorWebApp.Models.Question", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AnalyticNewIdentity");
 
                     b.Property<bool>("Anonymous");
 
@@ -101,13 +114,13 @@ namespace MentorWebApp.Data.Migrations
 
                     b.Property<string>("Tags");
 
-                    b.Property<string>("Title")
-                        .IsRequired();
+                    b.Property<string>("Title");
 
-                    b.Property<string>("UctNumber")
-                        .IsRequired();
+                    b.Property<string>("UctNumber");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AnalyticNewIdentity");
 
                     b.ToTable("Questions");
                 });
@@ -117,6 +130,8 @@ namespace MentorWebApp.Data.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("AnalyticNewIdentity");
+
                     b.Property<string>("ApplicationUserId");
 
                     b.Property<DateTime>("DatePosted");
@@ -125,10 +140,13 @@ namespace MentorWebApp.Data.Migrations
 
                     b.Property<string>("QuestionId");
 
-                    b.Property<string>("UctNumber")
-                        .IsRequired();
+                    b.Property<string>("UctNumber");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AnalyticNewIdentity");
+
+                    b.HasIndex("QuestionId");
 
                     b.ToTable("Replies");
                 });
@@ -137,6 +155,8 @@ namespace MentorWebApp.Data.Migrations
                 {
                     b.Property<string>("ResourceId")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AnalyticNewIdentity");
 
                     b.Property<string>("ApplicationUserId");
 
@@ -154,7 +174,49 @@ namespace MentorWebApp.Data.Migrations
 
                     b.HasKey("ResourceId");
 
+                    b.HasIndex("AnalyticNewIdentity");
+
                     b.ToTable("Resources");
+                });
+
+            modelBuilder.Entity("MentorWebApp.Models.SearchAnalytic", b =>
+                {
+                    b.Property<string>("NewIdentity")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Count");
+
+                    b.Property<int>("NoOfResults");
+
+                    b.Property<int>("NoResultsCount");
+
+                    b.Property<string>("ObjectId");
+
+                    b.Property<int>("SucceedClicks");
+
+                    b.HasKey("NewIdentity");
+
+                    b.ToTable("SearchAnalytics");
+                });
+
+            modelBuilder.Entity("MentorWebApp.Models.SearchResult", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AnalyticNewIdentity");
+
+                    b.Property<int>("NoOfResults");
+
+                    b.Property<string>("searchVal");
+
+                    b.Property<string>("typeVal");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnalyticNewIdentity");
+
+                    b.ToTable("SearchResults");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -263,6 +325,38 @@ namespace MentorWebApp.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("MentorWebApp.Models.Question", b =>
+                {
+                    b.HasOne("MentorWebApp.Models.ContentAnalytic", "Analytic")
+                        .WithMany()
+                        .HasForeignKey("AnalyticNewIdentity");
+                });
+
+            modelBuilder.Entity("MentorWebApp.Models.Reply", b =>
+                {
+                    b.HasOne("MentorWebApp.Models.ContentAnalytic", "Analytic")
+                        .WithMany()
+                        .HasForeignKey("AnalyticNewIdentity");
+
+                    b.HasOne("MentorWebApp.Models.Question")
+                        .WithMany("Replies")
+                        .HasForeignKey("QuestionId");
+                });
+
+            modelBuilder.Entity("MentorWebApp.Models.Resource", b =>
+                {
+                    b.HasOne("MentorWebApp.Models.ContentAnalytic", "Analytic")
+                        .WithMany()
+                        .HasForeignKey("AnalyticNewIdentity");
+                });
+
+            modelBuilder.Entity("MentorWebApp.Models.SearchResult", b =>
+                {
+                    b.HasOne("MentorWebApp.Models.SearchAnalytic", "Analytic")
+                        .WithMany()
+                        .HasForeignKey("AnalyticNewIdentity");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

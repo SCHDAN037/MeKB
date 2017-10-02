@@ -69,8 +69,15 @@
         {
             <tr>
                 <td>
-                    <a href="@Html.ViewData.Model.ResultsList[i][1]" target="_blank" @*onclick="@{ this.Model.Clicked(Html.ViewData.Model.ResultsList[i][2]);}"*@ >@Html.ViewData.Model.ResultsList[i][0]</a>
-
+                    
+                    
+                    <form method="post" asp-action="RedirectToLink" asp-controller="SearchResults">
+                        <input type="hidden" name="title" value="@Html.ViewData.Model.ResultsList[i][0]"/>
+                        <input type="hidden" name="link" value="@Html.ViewData.Model.ResultsList[i][1]" />
+                        <input type="hidden" name="id" value="@Html.ViewData.Model.ResultsList[i][2]" />
+                        <input type="submit" class="btn-link" value="@Html.ViewData.Model.ResultsList[i][0]"/>
+                    </form>
+                    
                 </td>
                 <td>
 
@@ -80,7 +87,6 @@
         }
         
     }
-
 
     </tbody>
     
