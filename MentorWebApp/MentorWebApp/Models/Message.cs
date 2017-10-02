@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-
+// Represents a message posted
 namespace MentorWebApp.Models
 {
     public class Message

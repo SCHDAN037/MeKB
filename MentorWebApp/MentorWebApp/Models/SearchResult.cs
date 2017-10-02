@@ -2,6 +2,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
+
+// models the result of a search made on the site
 namespace MentorWebApp.Models
 {
     public class SearchResult

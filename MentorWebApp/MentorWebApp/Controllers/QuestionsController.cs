@@ -23,7 +23,7 @@ namespace MentorWebApp.Controllers
         }
 
         // GET: Questions/Details/5
-
+        // adds a reply to a question and to the database
         public async Task<Question> DetailsAddReply(string id, string reply, [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
         {
 
@@ -41,6 +41,7 @@ namespace MentorWebApp.Controllers
             return question;
         }
 
+        //removes a reply from a question and from the database
         public async Task<Question> DetailsDeleteReply(string id, [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
         {
            
@@ -105,8 +106,7 @@ namespace MentorWebApp.Controllers
         
 
         // POST: Questions/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
@@ -135,8 +135,7 @@ namespace MentorWebApp.Controllers
         }
 
         // POST: Questions/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id,
