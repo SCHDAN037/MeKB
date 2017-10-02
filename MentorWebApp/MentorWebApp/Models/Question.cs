@@ -1,14 +1,10 @@
-
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace MentorWebApp.Models
-
 {
-
-    
     public class Question : Message
     {
         public Question()
@@ -34,5 +30,6 @@ namespace MentorWebApp.Models
         public string Title { get; set; }
         public string Tags { get; set; }
 
+        
     }
 }

@@ -1,12 +1,14 @@
+<<<<<<< HEAD
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+=======
+﻿using System.Linq;
+>>>>>>> parent of 6514808... Merge branch 'master' into pk
 using System.Threading.Tasks;
 using MentorWebApp.Data;
 using MentorWebApp.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting.Internal;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -17,14 +19,20 @@ namespace MentorWebApp.Controllers
     public class BackEndController : Controller
     {
         private readonly ApplicationDbContext _context;
+<<<<<<< HEAD
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
+=======
+>>>>>>> parent of 6514808... Merge branch 'master' into pk
 
         public BackEndController(ApplicationDbContext context)
         {
             _context = context;
+<<<<<<< HEAD
             _userManager = _context.GetService<UserManager<ApplicationUser>>();
             _roleManager = _context.GetService<RoleManager<IdentityRole>>();
+=======
+>>>>>>> parent of 6514808... Merge branch 'master' into pk
         }
 
         // GET: BackEnd
@@ -110,7 +118,10 @@ namespace MentorWebApp.Controllers
             if (id != applicationUser.Id)
             {
                 return NotFound();
+<<<<<<< HEAD
             }
+=======
+>>>>>>> parent of 6514808... Merge branch 'master' into pk
 
             if (ModelState.IsValid)
             {
@@ -140,7 +151,10 @@ namespace MentorWebApp.Controllers
                     Debug.WriteLine(e.StackTrace);                        
 
                 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 6514808... Merge branch 'master' into pk
                 return RedirectToAction(nameof(UserIndex));
             }
             return View(applicationUser);

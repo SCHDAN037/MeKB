@@ -22,7 +22,5 @@ namespace MentorWebApp.Data
         {
             base.OnModelCreating(builder);
         }
-
-        
     }
 }

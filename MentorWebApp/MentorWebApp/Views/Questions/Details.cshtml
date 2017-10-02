@@ -21,7 +21,6 @@
 
     </div>
     <div class="container">
-
         <div class="col-md-6">
             <form asp-action="Details">
 
@@ -36,13 +35,31 @@
 
                 </div>
             </form>
+<<<<<<< HEAD
 
             <div class="col-md-4">
 
+=======
+        </div>
+    </div>
+    <h2>@Html.DisplayFor(model => model.RepList.Count) answers</h2>
+
+   
+    @for (var i = 0; i< Model.RepList.Count; i++)
+    {
+        <div class="jumbotron">
+            <div class="well">
+                <p>@Html.ViewData.Model.RepList[i].MessageContent</p>
+            </div>      
+            <div class="help-block">
+
+                <div class="col-xs-6 col-md-3"> answered by @Html.ViewData.Model.RepList[i].UctNumber</div>
+>>>>>>> parent of 6514808... Merge branch 'master' into pk
             </div>
         </div>
         <h2>@Html.DisplayFor(model => model.RepList.Count) answers</h2>
 
+<<<<<<< HEAD
 
         @for (var i = 0; i < Model.RepList.Count; i++)
         {
@@ -65,4 +82,9 @@
         <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
         <a asp-action="Index">Back to List</a>
     </div>
+=======
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+>>>>>>> parent of 6514808... Merge branch 'master' into pk
 </div>

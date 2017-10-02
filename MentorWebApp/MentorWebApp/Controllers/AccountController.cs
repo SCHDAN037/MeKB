@@ -43,7 +43,56 @@ namespace MentorWebApp.Controllers
         [TempData]
         public string ErrorMessage { get; set; }
 
-        
+        /*
+        private async Task createRolesandUsers()
+        {
+            var x = await _roleManager.RoleExistsAsync("Admin");
+            if (!x)
+            {
+                // first we create Admin role    
+                var role = new IdentityRole
+                {
+                    Name = "Admin"
+                };
+                var create = await _roleManager.CreateAsync(role);
+
+
+                //Here we create a Admin super user who will maintain the website                   
+
+                var user = new ApplicationUser();
+                user.UserName = "admin";
+                user.Email = "admin@default.com";
+
+                var userPWD = "adminADMIN#1";
+
+                var chkUser = await _userManager.CreateAsync(user, userPWD);
+
+                //Add default User to Role Admin    
+                if (chkUser.Succeeded)
+                {
+                    var result1 = _userManager.AddToRoleAsync(user, "Admin");
+                }
+            }
+
+            // creating Creating Manager role     
+            x = await _roleManager.RoleExistsAsync("Mentor");
+            if (!x)
+            {
+                var role = new IdentityRole();
+                role.Name = "Mentor";
+                await _roleManager.CreateAsync(role);
+            }
+
+            // creating Creating Employee role     
+            x = await _roleManager.RoleExistsAsync("Mentee");
+            if (!x)
+            {
+                var role = new IdentityRole();
+                role.Name = "Mentee";
+                await _roleManager.CreateAsync(role);
+            }
+        }
+        */
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
@@ -223,22 +272,23 @@ namespace MentorWebApp.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
+<<<<<<< HEAD
                 var user = new ApplicationUser {UserName = model.Email, Email = model.Email, Enabled = true, UctNumber = model.UctNumber};
                 
+=======
+                var user = new ApplicationUser {UserName = model.Email, Email = model.Email} ;
+>>>>>>> parent of 6514808... Merge branch 'master' into pk
                 var result = await _userManager.CreateAsync(user, model.Password);
-
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    
+
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
                     await _signInManager.SignInAsync(user, false);
                     _logger.LogInformation("User created a new account with password.");
-
-                    var roleset = await _userManager.AddToRoleAsync(user, "Mentee");
                     return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);

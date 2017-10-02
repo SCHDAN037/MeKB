@@ -6,30 +6,24 @@ namespace MentorWebApp.Models
 {
     public class SearchResult
     {
-        
+        [NotMapped]
         public List<List<string>> ResultsList { get; set; }
-        
+        [NotMapped]
+        public List<string> LinkResultsList { get; set; }
+        [NotMapped]
         public List<Resource> ResourcesList { get; set; }
         public List<Question> QuestionsList { get; set; }
-        
+        [NotMapped]
         public string searchVal { get; set; }
-        
+        [NotMapped]
         public string sortVal { get; set; }
-        
+        [NotMapped]
         public string typeVal { get; set; }
 
-        public SearchResult()
-        {
-            
-        }
+        public void CreateSearchLists(string type)
 
-        public void CreateSearchLists(string type, string sort, string search)
         {
             ResultsList = new List<List<string>>();
-            this.typeVal = type;
-            this.sortVal = sort;
-            this.searchVal = search;
-
             if (type.Equals("both"))
             {
                 foreach (var item in ResourcesList)
@@ -38,10 +32,9 @@ namespace MentorWebApp.Models
                     {
                         item.Title,
                         item.Link,
-                        item.ResourceId,
-                        item.DateAdded.ToLongDateString()
+                        item.ResourceId
                     };
-                    
+                    //Add a type so we can see if RES or QUES
                     ResultsList.Add(temp);
                 }
                 foreach (var item in QuestionsList)
@@ -50,9 +43,7 @@ namespace MentorWebApp.Models
                     {
                         item.Title,
                         "/Questions/Details/" + item.Id,
-                        item.Id,
-                        item.DatePosted.ToLongDateString()
-                        
+                        item.Id
                     };
                     ResultsList.Add(temp);
                 }
@@ -65,8 +56,7 @@ namespace MentorWebApp.Models
                     {
                         item.Title,
                         item.Link,
-                        item.ResourceId,
-                        item.DateAdded.ToLongDateString()
+                        item.ResourceId
                     };
                     //Add a type so we can see if RES or QUES
                     ResultsList.Add(temp);
@@ -80,48 +70,17 @@ namespace MentorWebApp.Models
                     {
                         item.Title,
                         "/Questions/Details/" + item.Id,
-                        item.Id,
-                        item.DatePosted.ToLongDateString()
+                        item.Id
                     };
                     ResultsList.Add(temp);
                 }
             }
 
 
-
-
-
-
-
-            Sort(sort);
-            
-
-
-
-
+            //sort results alphabetically
         }
 
-        public void Sort(string sort)
-        {
-            if (sort.Equals("alpha"))
-            {
-                SortAlpha(false);
-            }
-            else if (sort.Equals("alphaRev"))
-            {
-                SortAlpha(true);
-            }
-            else if (sort.Equals("date"))
-            {
-                SortDate();
-            }
-            else
-            {
-                SortAlpha(false);
-            }
-        }
-
-        private void SortAlpha(bool? rev)
+        public void SortAlpha(bool? rev)
         {
             var newResList = ResultsList;
 
@@ -132,7 +91,7 @@ namespace MentorWebApp.Models
             ResultsList = newResList;
         }
 
-        private void SortDate()
+        public void SortDate()
         {
         }
     }
