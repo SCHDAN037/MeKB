@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using MentorWebApp.Data;
 using MentorWebApp.Models;
@@ -26,16 +27,23 @@ namespace MentorWebApp.Controllers
         // adds a reply to a question and to the database
         public async Task<Question> DetailsAddReply(string id, string reply, [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
         {
-
-
+            
             if (ModelState.IsValid)
             {
 
                 Reply r = new Reply(id, reply, "bob");
+                ContentAnalytic analytic = new ContentAnalytic(r.Id);
+                r.Init(analytic);
                 question.Replies.Add(r);
-                _context.Update(question);
-                await _context.SaveChangesAsync();
 
+                _context.Update(question);
+                //_context.Update(r.Analytic);
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception) { }
                 return question;
             }
             return question;
@@ -45,7 +53,6 @@ namespace MentorWebApp.Controllers
         public async Task<Question> DetailsDeleteReply(string id, [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
         {
            
-
             if (ModelState.IsValid)
             {
                 var rep = from r in _context.Replies
@@ -58,9 +65,7 @@ namespace MentorWebApp.Controllers
             }
             return question;
         }
-
-
-
+        
         public async Task<IActionResult> Details(string id, string reply, string delId)
         {
             if (id == null)
@@ -71,21 +76,28 @@ namespace MentorWebApp.Controllers
                 return NotFound();
             //question.CreateReply(reply);
 
-
-
             
-
+            
             if (!string.IsNullOrEmpty(reply))
             {
                 var temp = await DetailsAddReply(id, reply, question);
                 question = temp;
             }
 
-            if (!string.IsNullOrEmpty(delId))
+            else if (!string.IsNullOrEmpty(delId))
             {
                 var temp = await DetailsDeleteReply(delId, question);
                 question = temp;
-            } 
+            }
+
+            else
+            {
+                //Update this questions analytic ONLY IF THEY VISIT THE PAGE WITHOUT ADDING/DELETING A REPLY
+                var analytic = await _context.ContentAnalytics.SingleOrDefaultAsync(m => m.ContentId == question.Id);
+                analytic.Clicks++;
+                _context.Update(analytic);
+                _context.SaveChanges();
+            }
 
             var rep = from r in _context.Replies
                       select r;
@@ -93,6 +105,8 @@ namespace MentorWebApp.Controllers
             var repList = await rep.ToListAsync();
             var sortedList = repList.OrderBy(x => x.DatePosted).ToList();
             question.RepList = sortedList;
+
+            
 
             return View(question);
         }
@@ -102,9 +116,7 @@ namespace MentorWebApp.Controllers
         {
             return View();
         }
-
         
-
         // POST: Questions/Create
 
         [HttpPost]

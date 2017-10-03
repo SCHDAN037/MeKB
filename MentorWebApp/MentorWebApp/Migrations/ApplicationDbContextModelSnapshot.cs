@@ -84,6 +84,8 @@ namespace MentorWebApp.Migrations
 
                     b.Property<int>("Clicks");
 
+                    b.Property<string>("ContentId");
+
                     b.Property<int>("Count");
 
                     b.Property<int>("Helpful");
@@ -188,9 +190,15 @@ namespace MentorWebApp.Migrations
 
                     b.Property<int>("NoResultsCount");
 
+                    b.Property<string>("SearchResultId");
+
                     b.Property<int>("SucceedClicks");
 
                     b.HasKey("NewIdentity");
+
+                    b.HasIndex("SearchResultId")
+                        .IsUnique()
+                        .HasFilter("[SearchResultId] IS NOT NULL");
 
                     b.ToTable("SearchAnalytics");
                 });
@@ -199,8 +207,6 @@ namespace MentorWebApp.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("AnalyticNewIdentity");
 
                     b.Property<int>("NoOfResults");
 
@@ -211,8 +217,6 @@ namespace MentorWebApp.Migrations
                     b.Property<string>("typeVal");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AnalyticNewIdentity");
 
                     b.ToTable("SearchResults");
                 });
@@ -350,11 +354,11 @@ namespace MentorWebApp.Migrations
                         .HasForeignKey("AnalyticNewIdentity");
                 });
 
-            modelBuilder.Entity("MentorWebApp.Models.SearchResult", b =>
+            modelBuilder.Entity("MentorWebApp.Models.SearchAnalytic", b =>
                 {
-                    b.HasOne("MentorWebApp.Models.SearchAnalytic", "Analytic")
-                        .WithMany()
-                        .HasForeignKey("AnalyticNewIdentity");
+                    b.HasOne("MentorWebApp.Models.SearchResult")
+                        .WithOne("Analytic")
+                        .HasForeignKey("MentorWebApp.Models.SearchAnalytic", "SearchResultId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

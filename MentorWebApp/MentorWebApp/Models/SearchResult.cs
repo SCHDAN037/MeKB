@@ -24,57 +24,33 @@ namespace MentorWebApp.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
 
+        //public string SearchAnalyticId { get; set; }
         public string searchVal { get; set; }
+
+        [NotMapped]
+        public string AnalyticNewIdentity { get; set; }
         public SearchAnalytic Analytic { get; set; }
+
         public int NoOfResults { get; set; }
         public string sortVal { get; set; }
         public string typeVal { get; set; }
 
-        [NotMapped] private bool init = false;
-
-
-        //public SearchResult(string id, string search, string type, string sort)
-        //{
-        //    //using one that exists
-        //    this.Id = id;
-        //    //this.Analytic = new SearchAnalytic(Id);
-        //    this.searchVal = search;
-        //    this.typeVal = type;
-        //    this.sortVal = sort;
-        //    this.ResourcesList = new List<Resource>();
-        //    this.QuestionsList = new List<Question>();
-        //}
-
-        //public SearchResult(string search, string type, string sort)
-        //{
-        //    //brand new one
-        //    this.searchVal = search;
-        //    this.typeVal = type;
-        //    this.sortVal = sort;
-        //    //this.Analytic = new SearchAnalytic(this.Id);
-        //    this.ResourcesList = new List<Resource>();
-        //    this.QuestionsList = new List<Question>();
-        //}
-
+        [NotMapped] public bool init = false;
+        
         //basic constructor
-
         public SearchResult()
         {
+            
         }
 
         //Initialize mehod for creating a new result object after constructor
-        public void Init(string search, string type, string sort)
+        public void Init(string search, string type, string sort, SearchAnalytic analytic)
         {
             this.searchVal = search;
             this.sortVal = sort;
             this.typeVal = type;
-            this.Analytic = new SearchAnalytic
-            {
-                NoOfResults = 0,
-                NoResultsCount = 0,
-                SucceedClicks = 0,
-                Count = 0
-            };
+            this.Analytic = analytic;
+            this.AnalyticNewIdentity = analytic.NewIdentity;
             this.ResourcesList = new List<Resource>();
             this.QuestionsList = new List<Question>();
             this.ResultsList = new List<List<string>>();

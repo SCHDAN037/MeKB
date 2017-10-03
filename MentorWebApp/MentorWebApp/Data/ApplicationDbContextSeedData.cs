@@ -263,7 +263,12 @@ namespace MentorWebApp.Data
 
                 for (var i = 0; i < testResources.Length; i++)
                     if (!context.Resources.Any(u => u.Link == testResources[i].Link))
+                    {
+                        ContentAnalytic analytic = new ContentAnalytic(testResources[i].ResourceId);
+                        testResources[i].Init(analytic);
                         context.Resources.AddAsync(testResources[i]).Wait();
+                        context.ContentAnalytics.AddAsync(testResources[i].Analytic);
+                    }
 
 
                 //Questions
@@ -279,8 +284,13 @@ namespace MentorWebApp.Data
                 };
 
                 for (var i = 0; i < testQuestions.Length; i++)
-                    if(!context.Questions.Any(u => u.Title == testQuestions[i].Title))
+                    if (!context.Questions.Any(u => u.Title == testQuestions[i].Title))
+                    {
+                        ContentAnalytic analytic = new ContentAnalytic(testQuestions[i].Id);
+                        testQuestions[i].Init(analytic);
                         context.Questions.AddAsync(testQuestions[i]).Wait();
+                        context.ContentAnalytics.AddAsync(testQuestions[i].Analytic);
+                    }
 
                 //Finished
 

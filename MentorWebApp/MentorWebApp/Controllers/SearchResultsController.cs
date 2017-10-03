@@ -33,21 +33,33 @@ namespace MentorWebApp.Controllers
                 {
                     // We looking for a resource to update its analytic
                     var tempRes = await _context.Resources.SingleOrDefaultAsync(s => s.ResourceId.Equals(id));
-                    tempRes.Analytic.Clicks++;
+                    var tempAnalytic =
+                        await _context.ContentAnalytics.SingleOrDefaultAsync(
+                            s => s.ContentId.Equals(tempRes.ResourceId));
+                    tempAnalytic.Clicks++;
                     _context.Update(tempRes);
+                    _context.Update(tempAnalytic);
                 }
                 else
                 {
                     var tempQues = await _context.Questions.SingleOrDefaultAsync(s => s.Id.Equals(id));
-                    tempQues.Analytic.Clicks++;
+                    var tempAnalytic =
+                        await _context.ContentAnalytics.SingleOrDefaultAsync(
+                            s => s.ContentId.Equals(tempQues.Id));
+                    tempAnalytic.Clicks++;
+
                     _context.Update(tempQues);
+                    _context.Update(tempAnalytic);
                 }
-                            }
+            }
             catch (Exception)
             {
                 // Means the object we looking for doesnt exist
+                throw;
             }
-            
+
+            _context.SaveChanges();
+
             if (link.Contains("http"))
             {
                 return Redirect(link);
@@ -75,7 +87,7 @@ namespace MentorWebApp.Controllers
             if (String.IsNullOrEmpty(search)) search = "";
             
             //Initialize a new search result object
-            _resObject = new SearchResult();
+           
 
             try
             {
@@ -83,16 +95,20 @@ namespace MentorWebApp.Controllers
                 var searchResult =
                     _context.SearchResults.Single(s => s.searchVal.Equals(search) && s.typeVal.Equals(typeSelect));
                 // If it has then use that object instead
+                var searchAnalytic = _context.SearchAnalytics.Single(s => s.SearchResultId.Equals(searchResult.Id));
                 _resObject = searchResult;
+                _resObject.Init(search, typeSelect, sortSelect, searchAnalytic);
             }
             catch (Exception)
             {
                 // If it hasnt been done before we initialize a New object
-                _resObject.Init(search, typeSelect, sortSelect);
+                _resObject = new SearchResult();
+                SearchAnalytic newAnalytic = new SearchAnalytic(_resObject.Id);
+                _resObject.Init(search, typeSelect, sortSelect, newAnalytic);
                 newSearch = true;
             }
             
-            
+
             if (!string.IsNullOrEmpty(search))
             {
                 //If search has a query
@@ -140,6 +156,7 @@ namespace MentorWebApp.Controllers
             {
                 // if its new search then add the record to the db
                 var addRes = _context.SearchResults.Add(_resObject);
+                var addAnalytic = _context.SearchAnalytics.Add(_resObject.Analytic);
                 var save = _context.SaveChanges();
             }
             else
@@ -147,9 +164,10 @@ namespace MentorWebApp.Controllers
                 //If not new then update its entry
                 //var updateResAnal = _context.SearchAnalytics.Update(_resObject.Analytic);
                 var updateRes = _context.SearchResults.Update(_resObject);
-                
+                var updateAnalytic = _context.SearchAnalytics.Update(_resObject.Analytic);
+
             }
-            
+            _context.SaveChanges();
             return View(_resObject);
         }
     }

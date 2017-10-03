@@ -18,7 +18,12 @@ namespace MentorWebApp.Models
             MessageContent = message;
             UctNumber = uctNumber;
             DatePosted = DateTime.Now;
+            this.Id = Guid.NewGuid().ToString();
+        }
 
+        public void Init(ContentAnalytic analytic)
+        {
+            this.Analytic = analytic;
         }
 
         //[ForeignKey("QuestionId")] the Id of the question the reply is for

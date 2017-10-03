@@ -23,7 +23,7 @@ namespace MentorWebApp.Controllers
 
             var tempRes = res;
 
-            //Debug.WriteLine("***********************************" + res.ToListAsync().Result.ToArray());
+            
 
             if (!string.IsNullOrEmpty(search))
             {

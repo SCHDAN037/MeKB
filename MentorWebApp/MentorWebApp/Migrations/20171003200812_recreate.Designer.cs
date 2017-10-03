@@ -11,8 +11,8 @@ using System;
 namespace MentorWebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20171003140125_changedAnalyticModel")]
-    partial class changedAnalyticModel
+    [Migration("20171003200812_recreate")]
+    partial class recreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -84,6 +84,8 @@ namespace MentorWebApp.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("Clicks");
+
+                    b.Property<string>("ContentId");
 
                     b.Property<int>("Count");
 
@@ -189,9 +191,15 @@ namespace MentorWebApp.Migrations
 
                     b.Property<int>("NoResultsCount");
 
+                    b.Property<string>("SearchResultId");
+
                     b.Property<int>("SucceedClicks");
 
                     b.HasKey("NewIdentity");
+
+                    b.HasIndex("SearchResultId")
+                        .IsUnique()
+                        .HasFilter("[SearchResultId] IS NOT NULL");
 
                     b.ToTable("SearchAnalytics");
                 });
@@ -200,8 +208,6 @@ namespace MentorWebApp.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("AnalyticNewIdentity");
 
                     b.Property<int>("NoOfResults");
 
@@ -212,8 +218,6 @@ namespace MentorWebApp.Migrations
                     b.Property<string>("typeVal");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AnalyticNewIdentity");
 
                     b.ToTable("SearchResults");
                 });
@@ -351,11 +355,11 @@ namespace MentorWebApp.Migrations
                         .HasForeignKey("AnalyticNewIdentity");
                 });
 
-            modelBuilder.Entity("MentorWebApp.Models.SearchResult", b =>
+            modelBuilder.Entity("MentorWebApp.Models.SearchAnalytic", b =>
                 {
-                    b.HasOne("MentorWebApp.Models.SearchAnalytic", "Analytic")
-                        .WithMany()
-                        .HasForeignKey("AnalyticNewIdentity");
+                    b.HasOne("MentorWebApp.Models.SearchResult")
+                        .WithOne("Analytic")
+                        .HasForeignKey("MentorWebApp.Models.SearchAnalytic", "SearchResultId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

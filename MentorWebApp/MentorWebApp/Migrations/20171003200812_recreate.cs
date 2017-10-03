@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace MentorWebApp.Migrations
 {
-    public partial class Initial : Migration
+    public partial class recreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -57,9 +57,9 @@ namespace MentorWebApp.Migrations
                 {
                     NewIdentity = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Clicks = table.Column<int>(type: "int", nullable: false),
+                    ContentId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Count = table.Column<int>(type: "int", nullable: false),
                     Helpful = table.Column<int>(type: "int", nullable: false),
-                    ObjectId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UnHelpful = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -68,19 +68,18 @@ namespace MentorWebApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SearchAnalytics",
+                name: "SearchResults",
                 columns: table => new
                 {
-                    NewIdentity = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Count = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     NoOfResults = table.Column<int>(type: "int", nullable: false),
-                    NoResultsCount = table.Column<int>(type: "int", nullable: false),
-                    ObjectId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SucceedClicks = table.Column<int>(type: "int", nullable: false)
+                    searchVal = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    sortVal = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    typeVal = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SearchAnalytics", x => x.NewIdentity);
+                    table.PrimaryKey("PK_SearchResults", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -240,22 +239,24 @@ namespace MentorWebApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SearchResults",
+                name: "SearchAnalytics",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AnalyticNewIdentity = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    NewIdentity = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Count = table.Column<int>(type: "int", nullable: false),
                     NoOfResults = table.Column<int>(type: "int", nullable: false),
-                    searchVal = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    NoResultsCount = table.Column<int>(type: "int", nullable: false),
+                    SearchResultId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    SucceedClicks = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SearchResults", x => x.Id);
+                    table.PrimaryKey("PK_SearchAnalytics", x => x.NewIdentity);
                     table.ForeignKey(
-                        name: "FK_SearchResults_SearchAnalytics_AnalyticNewIdentity",
-                        column: x => x.AnalyticNewIdentity,
-                        principalTable: "SearchAnalytics",
-                        principalColumn: "NewIdentity",
+                        name: "FK_SearchAnalytics_SearchResults_SearchResultId",
+                        column: x => x.SearchResultId,
+                        principalTable: "SearchResults",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -348,9 +349,11 @@ namespace MentorWebApp.Migrations
                 column: "AnalyticNewIdentity");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SearchResults_AnalyticNewIdentity",
-                table: "SearchResults",
-                column: "AnalyticNewIdentity");
+                name: "IX_SearchAnalytics_SearchResultId",
+                table: "SearchAnalytics",
+                column: "SearchResultId",
+                unique: true,
+                filter: "[SearchResultId] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -377,7 +380,7 @@ namespace MentorWebApp.Migrations
                 name: "Resources");
 
             migrationBuilder.DropTable(
-                name: "SearchResults");
+                name: "SearchAnalytics");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -389,7 +392,7 @@ namespace MentorWebApp.Migrations
                 name: "Questions");
 
             migrationBuilder.DropTable(
-                name: "SearchAnalytics");
+                name: "SearchResults");
 
             migrationBuilder.DropTable(
                 name: "ContentAnalytics");

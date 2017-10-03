@@ -6,20 +6,7 @@ namespace MentorWebApp.Models
 {
     public class Resource
     {
-        public Resource()
-        {
-            DateAdded = DateTime.Now;
-            this.Analytic = new ContentAnalytic();
-        }
 
-        public Resource(string title, string link)
-        {
-            Title = title;
-            Link = link;
-            DateAdded = DateTime.Now;
-            this.Analytic = new ContentAnalytic();
-        }
-        
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string ResourceId { get; set; }
@@ -39,5 +26,29 @@ namespace MentorWebApp.Models
         public string UctNumber { get; set; }
         //[ForeignKey("ApplicationUserId")]
         public string ApplicationUserId { get; set; }
+
+
+
+        public Resource()
+        {
+            DateAdded = DateTime.Now;
+            //this.Analytic = new ContentAnalytic();
+        }
+
+        public Resource(string title, string link)
+        {
+            this.ResourceId = Guid.NewGuid().ToString();
+            Title = title;
+            Link = link;
+            DateAdded = DateTime.Now;
+            
+        }
+
+        public void Init(ContentAnalytic analytic)
+        {
+            this.Analytic = analytic;
+        }
+        
+       
     }
 }

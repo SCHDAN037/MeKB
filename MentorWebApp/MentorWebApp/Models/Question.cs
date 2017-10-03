@@ -27,6 +27,12 @@ namespace MentorWebApp.Models
 
         }
 
+        public void Init(ContentAnalytic analytic)
+        {
+            this.Analytic = analytic;
+        }
+
+
         // list of replies to the question
         [NotMapped]
         public List<Reply> RepList { get; set; }

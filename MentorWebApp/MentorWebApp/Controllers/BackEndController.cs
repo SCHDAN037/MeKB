@@ -220,7 +220,10 @@ namespace MentorWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                ContentAnalytic analytic = new ContentAnalytic(resource.ResourceId);
+                resource.Init(analytic);
                 _context.Add(resource);
+                _context.Add(analytic);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(ResourcesIndex));
             }
