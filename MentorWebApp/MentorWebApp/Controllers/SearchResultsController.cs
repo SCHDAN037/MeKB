@@ -21,27 +21,64 @@ namespace MentorWebApp.Controllers
             _context = context;
         }
 
-        public ActionResult RedirectToLink(string title, string link, string id)
+        public async Task<ActionResult> RedirectToLink(string title, string link, string id)
         {
-
             try
             {
-                var tempRes = _context.Resources.SingleOrDefault(s => s.ResourceId == id);
-                tempRes.Analytic.Clicks++;
+                var tempRes = await _context.Resources.SingleOrDefaultAsync(s => s.ResourceId.Equals(id));
+
+                if (String.IsNullOrEmpty(tempRes.Analytic.NewIdentity))
+                {
+                    tempRes.Analytic.NewIdentity = Guid.NewGuid().ToString();
+                    tempRes.Analytic.ObjectId = tempRes.ResourceId;
+                    tempRes.Analytic.Clicks++;
+                    _context.Update(tempRes.Analytic);
+                    _context.Update(tempRes);
+                }
+                else
+                {
+                    tempRes.Analytic.Clicks++;
+                    _context.Update(tempRes.Analytic);
+                    _context.Update(tempRes);
+                }
+                
+                
             }
             catch (Exception)
             {
                 try
                 {
-                    var tempQues = _context.Questions.SingleOrDefault(s => s.Id == id);
-                    tempQues.Analytic.Clicks++;
+                    var tempQ = await _context.Questions.SingleOrDefaultAsync(s => s.Id.Equals(id));
+                    if (String.IsNullOrEmpty(tempQ.Analytic.NewIdentity))
+                    {
+                        tempQ.Analytic.NewIdentity = Guid.NewGuid().ToString();
+                        tempQ.Analytic.ObjectId = tempQ.Id;
+                        tempQ.Analytic.Clicks++;
+                        _context.Update(tempQ.Analytic);
+                        _context.Update(tempQ);
+                    }
+                    else
+                    {
+                        tempQ.Analytic.Clicks++;
+                        _context.Update(tempQ.Analytic);
+                        _context.Update(tempQ);
+                    }
+
                 }
                 catch
                 {
                     // not sure... this means there is no results??
                 }
             }
-            _context.SaveChanges();
+            try
+            {
+                var save = _context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                
+            }
+            
             if (link.Contains("http"))
             {
                 return Redirect(link);
@@ -50,7 +87,6 @@ namespace MentorWebApp.Controllers
             {
                 return Redirect("http://" + link);
             }
-            
         }
 
         public async Task<IActionResult> Index(string search, string sortSelect, string typeSelect)
@@ -62,20 +98,32 @@ namespace MentorWebApp.Controllers
 
             var tempRes = res;
             var tempQues = ques;
-
-            // Check if this search has been done before
+            if (String.IsNullOrEmpty(typeSelect)) typeSelect = "both";
+            if (String.IsNullOrEmpty(sortSelect)) sortSelect = "alpha";
+            if (String.IsNullOrEmpty(search)) search = "";
+            
+            resObject = new SearchResult(search, typeSelect, sortSelect);
+            
             try
             {
+                //var sVal = this.resObject.searchVal;
+                //var tVal = this.resObject.typeVal;
+                
+                // Check if this search has been done before
                 var before =
                     await _context.SearchResults.SingleAsync(id =>
-                        (id.searchVal == search) && (id.typeVal == typeSelect));
+                        (id.searchVal.Equals(search)) && (id.typeVal.Equals(typeSelect)));
+
+                // make it the current search object
                 this.resObject = before;
             }
             catch (Exception)
             {
-                resObject = new SearchResult();
+                // if not new search object
+                resObject.Id = Guid.NewGuid().ToString();
+                resObject.Analytic.ObjectId = resObject.Id;
             }
-            
+
             if (!string.IsNullOrEmpty(search))
             {
                 //If search has a query
@@ -103,94 +151,47 @@ namespace MentorWebApp.Controllers
                 resObject.ResourcesList = wait;
                 var anotherWait = await tempQues.ToListAsync();
                 resObject.QuestionsList = anotherWait;
-
-
-                if (!string.IsNullOrEmpty(typeSelect))
-                {
-                    //if type is NOT null or empty
-                    if (!string.IsNullOrEmpty(sortSelect))
-                    {
-                        //if sort is NOT null or empty
-                        resObject.CreateSearchLists(typeSelect, sortSelect, search);
-                    }
-                    else
-                    {
-                        //if sort is empty
-                        resObject.CreateSearchLists(typeSelect, "alpha", search);
-                    }
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(sortSelect))
-                    {
-                        //if sort is NOT null or empty
-                        resObject.CreateSearchLists("both", sortSelect, search);
-                    }
-                    else
-                    {
-                        //if sort is empty
-                        resObject.CreateSearchLists("both", "alpha", search);
-                    }
-                    
-                }
+                
+                
             }
 
             else
             {
                 //If search is Empty or Null
-                search = "";
+                resObject.searchVal = search;
                 var wait = await tempRes.ToListAsync();
                 resObject.ResourcesList = wait;
                 var anotherWait = await tempQues.ToListAsync();
                 resObject.QuestionsList = anotherWait;
-
-                if (!string.IsNullOrEmpty(sortSelect))
-                {
-                    //If search is NOT empty
-                    if (!string.IsNullOrEmpty(typeSelect))
-                    {
-                        //If type is NOT empty
-                        resObject.CreateSearchLists(typeSelect, sortSelect, "");
-                    }
-                    else
-                    {
-                        //if type is empty
-                        resObject.CreateSearchLists("both", sortSelect, "");
-                    }
-                }
-                else
-                {
-                    //if sort is empty
-                    if (!string.IsNullOrEmpty(typeSelect))
-                    {
-                        //If type is NOT empty
-                        resObject.CreateSearchLists(typeSelect, "alpha", "");
-                    }
-                    else
-                    {
-                        //if type is empty
-                        resObject.CreateSearchLists("both", "alpha", "");
-                    }
-                }
+                
             }
 
-            resObject.Analytic.Count++;
-            resObject.Analytic.NoOfResults = resObject.NoOfResults;
-            if (resObject.Analytic.NoOfResults == 0)
-            {
-                resObject.Analytic.NoResultsCount++;
-            }
-            
+            resObject.CreateSearchLists();
+
             if (_context.SearchResults.Find(resObject.Id) != null)
             {
+                var updateResAnal = _context.SearchAnalytics.Update(resObject.Analytic);
                 var updateRes = _context.SearchResults.Update(resObject);
+                
             }
             else
             {
-                var addRes = await _context.SearchResults.AddAsync(resObject);
-            }
+                //var updateResAnal = _context.SearchAnalytics.Update(resObject.Analytic);
+                var addRes = _context.SearchResults.Add(resObject);
 
-            _context.SaveChanges();
+                
+                try
+                {
+                    var save = _context.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    //whyyyyyyyyyyyyyyyy
+                    var fail = true;
+                }
+
+            }
+            
             return View(resObject);
         }
     }

@@ -8,13 +8,34 @@ namespace MentorWebApp.Models
 {
     public class SearchResult
     {
-        public SearchResult()
+        public SearchResult(string id, string search, string type, string sort)
         {
-            
-            this.Id = Guid.NewGuid().ToString();
+            //using one that exists
+            this.Id = id;
             this.Analytic = new SearchAnalytic(Id);
+            this.searchVal = search;
+            this.typeVal = type;
+            this.sortVal = sort;
             this.ResourcesList = new List<Resource>();
             this.QuestionsList = new List<Question>();
+        }
+
+        public SearchResult(string search, string type, string sort)
+        {
+            //brand new one
+            this.searchVal = search;
+            this.typeVal = type;
+            this.sortVal = sort;
+            this.Analytic = new SearchAnalytic(this.Id);
+            this.ResourcesList = new List<Resource>();
+            this.QuestionsList = new List<Question>();
+        }
+
+        public SearchResult()
+        {
+            //one for EF to work
+            this.Analytic = new SearchAnalytic(this.Id);
+
         }
 
         [NotMapped]
@@ -36,20 +57,18 @@ namespace MentorWebApp.Models
 
         public int NoOfResults { get; set; }
 
-        [NotMapped]
-        public string sortVal { get; set; }
         
+        public string sortVal { get; set; }
+
         public string typeVal { get; set; }
 
-        public void CreateSearchLists(string type, string sort, string search)
+        public void CreateSearchLists()
         {
             ResultsList = new List<List<string>>();
 
-            typeVal = type;
-            sortVal = sort;
-            searchVal = search;
+            
 
-            if (type.Equals("both"))
+            if (typeVal.Equals("both"))
             {
                 foreach (var item in ResourcesList)
                 {
@@ -75,7 +94,7 @@ namespace MentorWebApp.Models
                     ResultsList.Add(temp);
                 }
             }
-            else if (type.Equals("res"))
+            else if (typeVal.Equals("res"))
             {
                 foreach (var item in ResourcesList)
                 {
@@ -106,46 +125,34 @@ namespace MentorWebApp.Models
             }
 
             this.NoOfResults = ResultsList.Count;
-            //UpdateAnalytic();
-
-            Sort(sort);
+            UpdateAnalytic();
+            Sort();
         }
 
-       public void UpdateAnalytic()
+        public void UpdateAnalytic()
         {
-            //Analytic.NoOfResults = ResultsList.Count;
-            //Analytic.NoOfResults
-            if (Analytic.NoOfResults == 0) Analytic.NoResultsCount++;
-            Analytic.Count++;
+            
+            this.Analytic.Count++;
+            this.Analytic.NoOfResults = this.NoOfResults;
+            if (this.Analytic.NoOfResults == 0)
+            {
+                this.Analytic.NoResultsCount++;
+            }
 
-            if (QuestionsList.Count != 0)
-            {
-                foreach (var question in QuestionsList)
-                    question.Analytic.Count++;
-            }
-            if (ResourcesList.Count != 0)
-            {
-                foreach (var resource in ResourcesList)
-                    resource.Analytic.Count++;
-            }
         }
 
 
         public void Clicked(List<List<string>> list, int i)
         {
-            
-            
-            //Update db now
-            
         }
 
-        public void Sort(string sort)
+        public void Sort()
         {
-            if (sort.Equals("alpha"))
+            if (sortVal.Equals("alpha"))
                 SortAlpha(false);
-            else if (sort.Equals("alphaRev"))
+            else if (sortVal.Equals("alphaRev"))
                 SortAlpha(true);
-            else if (sort.Equals("date"))
+            else if (sortVal.Equals("date"))
                 SortDate();
             else
                 SortAlpha(false);

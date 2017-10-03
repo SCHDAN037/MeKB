@@ -22,7 +22,7 @@ namespace MentorWebApp.Models
 
         public Analytic()
         {
-            this.Count = 0;
+            //this.Count = 0;
             
         }
     }

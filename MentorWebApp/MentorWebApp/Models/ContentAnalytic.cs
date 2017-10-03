@@ -21,11 +21,8 @@ namespace MentorWebApp.Models
 
         public ContentAnalytic(string objectId)
         {
-            //this.Id = Guid.NewGuid().ToString();
-            this.Clicks = 0;
-            this.Helpful = 0;
-            this.UnHelpful = 0;
-            this.Count = 0;
+            //this.NewIdentity = Guid.NewGuid().ToString();
+            
             this.ObjectId = objectId;
         }
     }
