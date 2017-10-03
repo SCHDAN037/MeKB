@@ -23,7 +23,6 @@ namespace MentorWebApp.Controllers
 
             var tempRes = res;
 
-            
 
             if (!string.IsNullOrEmpty(search))
             {

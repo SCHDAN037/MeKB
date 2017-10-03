@@ -2,7 +2,6 @@
 using MentorWebApp.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MentorWebApp.Data
@@ -16,7 +15,7 @@ namespace MentorWebApp.Data
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
                 //var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
                 var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                
+
                 ApplicationUser[] defaultUsers =
                 {
                     //Admin
@@ -25,7 +24,8 @@ namespace MentorWebApp.Data
                     //Mentors
                     new ApplicationUser("daniel", "Mentor", "daniel@mekb.com", "daniel@mekb.com", "danielDANIEL#123"),
                     new ApplicationUser("andrew", "Mentor", "andrew@mekb.com", "andrew@mekb.com", "andrewANDREW#123"),
-                    new ApplicationUser("panashe", "Mentor", "panashe@mekb.com", "panashe@mekb.com", "panashePANASHE#123"),
+                    new ApplicationUser("panashe", "Mentor", "panashe@mekb.com", "panashe@mekb.com",
+                        "panashePANASHE#123"),
 
                     //Mentees
                     new ApplicationUser("mentee1", "Mentee", "mentee1@mekb.com", "mentee1@mekb.com", "Mentee1#123"),
@@ -35,11 +35,10 @@ namespace MentorWebApp.Data
                 };
 
                 for (var i = 0; i < defaultUsers.Length; i++)
-                {
                     if (!context.Users.Any(u => u.UserName == defaultUsers[i].UserName))
                     {
                         userManager.CreateAsync(defaultUsers[i]).Wait();
-                        string currrentRole = defaultUsers[i].Permissions;
+                        var currrentRole = defaultUsers[i].Permissions;
                         switch (currrentRole)
                         {
                             case "Admin":
@@ -53,7 +52,6 @@ namespace MentorWebApp.Data
                                 break;
                         }
                     }
-                }
 
                 //Resources
 
@@ -264,7 +262,7 @@ namespace MentorWebApp.Data
                 for (var i = 0; i < testResources.Length; i++)
                     if (!context.Resources.Any(u => u.Link == testResources[i].Link))
                     {
-                        ContentAnalytic analytic = new ContentAnalytic(testResources[i].ResourceId);
+                        var analytic = new ContentAnalytic(testResources[i].ResourceId);
                         testResources[i].Init(analytic);
                         context.Resources.AddAsync(testResources[i]).Wait();
                         context.ContentAnalytics.AddAsync(testResources[i].Analytic);
@@ -275,18 +273,18 @@ namespace MentorWebApp.Data
 
                 Question[] testQuestions =
                 {
-                    new Question("Where are the Libraries?","UCT main library", "blgjoe001"),
+                    new Question("Where are the Libraries?", "UCT main library", "blgjoe001"),
                     new Question("When are the Libraries open?", "", "blgjoe001"),
                     new Question("What is plagiarism?", "", "blgjoe001"),
                     new Question("Where are the Scilabs?", "", "blgjoe001"),
                     new Question("Where is the hotseat?", "", "blgjoe001"),
-                    new Question("How do I query my marks?", "", "blgjoe001"),
+                    new Question("How do I query my marks?", "", "blgjoe001")
                 };
 
                 for (var i = 0; i < testQuestions.Length; i++)
                     if (!context.Questions.Any(u => u.Title == testQuestions[i].Title))
                     {
-                        ContentAnalytic analytic = new ContentAnalytic(testQuestions[i].Id);
+                        var analytic = new ContentAnalytic(testQuestions[i].Id);
                         testQuestions[i].Init(analytic);
                         context.Questions.AddAsync(testQuestions[i]).Wait();
                         context.ContentAnalytics.AddAsync(testQuestions[i].Analytic);

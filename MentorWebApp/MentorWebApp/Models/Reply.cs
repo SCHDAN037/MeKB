@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
 // models a reply to a question
 namespace MentorWebApp.Models
@@ -9,7 +8,6 @@ namespace MentorWebApp.Models
         public Reply()
         {
             DatePosted = DateTime.Now;
-
         }
 
         public Reply(string qid, string message, string uctNumber)
@@ -18,16 +16,17 @@ namespace MentorWebApp.Models
             MessageContent = message;
             UctNumber = uctNumber;
             DatePosted = DateTime.Now;
-            this.Id = Guid.NewGuid().ToString();
-        }
-
-        public void Init(ContentAnalytic analytic)
-        {
-            this.Analytic = analytic;
+            Id = Guid.NewGuid().ToString();
         }
 
         //[ForeignKey("QuestionId")] the Id of the question the reply is for
         public string QuestionId { get; set; }
+
         public ContentAnalytic Analytic { get; set; }
+
+        public void Init(ContentAnalytic analytic)
+        {
+            Analytic = analytic;
+        }
     }
 }

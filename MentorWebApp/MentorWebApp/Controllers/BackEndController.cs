@@ -1,4 +1,3 @@
-
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
@@ -6,10 +5,10 @@ using System.Threading.Tasks;
 using MentorWebApp.Data;
 using MentorWebApp.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.AspNetCore.Identity;
 
 namespace MentorWebApp.Controllers
 {
@@ -18,7 +17,7 @@ namespace MentorWebApp.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        private readonly RoleManager<Microsoft.AspNetCore.Identity.IdentityRole> _roleManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
 
 
@@ -28,7 +27,6 @@ namespace MentorWebApp.Controllers
 
             _userManager = _context.GetService<UserManager<ApplicationUser>>();
             _roleManager = _context.GetService<RoleManager<IdentityRole>>();
-
         }
 
         // GET: BackEnd
@@ -110,12 +108,8 @@ namespace MentorWebApp.Controllers
                 "ApplicationUserId,UctNumber,Permissions,Enabled,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")]
             ApplicationUser applicationUser)
         {
-
             if (id != applicationUser.Id)
-            {
                 return NotFound();
-
-            }
 
 
             if (ModelState.IsValid)
@@ -128,23 +122,18 @@ namespace MentorWebApp.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!ApplicationUserExists(applicationUser.Id))
-                    {
                         return NotFound();
-                    }
                 }
                 try
                 {
                     var res = await applicationUser.ChangeRoleAsync(applicationUser.Permissions, oldPermissions,
                         _context.GetService<UserManager<ApplicationUser>>());
                     if (!res)
-                    {
                         throw new Exception();
-                    }
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.StackTrace);                        
-
+                    Debug.WriteLine(e.StackTrace);
                 }
 
                 return RedirectToAction(nameof(UserIndex));
@@ -184,8 +173,6 @@ namespace MentorWebApp.Controllers
         }
 
 
-
-
         // GET: Resources
         public async Task<IActionResult> ResourcesIndex()
         {
@@ -220,7 +207,7 @@ namespace MentorWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                ContentAnalytic analytic = new ContentAnalytic(resource.ResourceId);
+                var analytic = new ContentAnalytic(resource.ResourceId);
                 resource.Init(analytic);
                 _context.Add(resource);
                 _context.Add(analytic);

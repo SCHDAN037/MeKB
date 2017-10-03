@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using MentorWebApp.Data;
 using MentorWebApp.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace MentorWebApp.Controllers
 {
@@ -29,16 +26,12 @@ namespace MentorWebApp.Controllers
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var reply = await _context.Replies
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (reply == null)
-            {
                 return NotFound();
-            }
 
             return View(reply);
         }
@@ -46,7 +39,7 @@ namespace MentorWebApp.Controllers
         // GET: Replies/Create
         public IActionResult Create(string qid)
         {
-            Reply r = new Reply();
+            var r = new Reply();
             r.QuestionId = qid;
             return View(r);
         }
@@ -71,15 +64,11 @@ namespace MentorWebApp.Controllers
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var reply = await _context.Replies.SingleOrDefaultAsync(m => m.Id == id);
             if (reply == null)
-            {
                 return NotFound();
-            }
             return View(reply);
         }
 
@@ -88,12 +77,11 @@ namespace MentorWebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("QuestionId,MessageContent,Id,UserId,DatePosted")] Reply reply)
+        public async Task<IActionResult> Edit(string id,
+            [Bind("QuestionId,MessageContent,Id,UserId,DatePosted")] Reply reply)
         {
             if (id != reply.Id)
-            {
                 return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
@@ -105,13 +93,8 @@ namespace MentorWebApp.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!ReplyExists(reply.Id))
-                    {
                         return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -122,29 +105,26 @@ namespace MentorWebApp.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var reply = await _context.Replies
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (reply == null)
-            {
                 return NotFound();
-            }
 
             return View(reply);
         }
 
         // POST: Replies/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
+        [ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var reply = await _context.Replies.SingleOrDefaultAsync(m => m.Id == id);
             _context.Replies.Remove(reply);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index","Questions");
+            return RedirectToAction("Index", "Questions");
         }
 
         private bool ReplyExists(string id)

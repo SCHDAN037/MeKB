@@ -25,14 +25,13 @@ namespace MentorWebApp.Controllers
 
         // GET: Questions/Details/5
         // adds a reply to a question and to the database
-        public async Task<Question> DetailsAddReply(string id, string reply, [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
+        public async Task<Question> DetailsAddReply(string id, string reply,
+            [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
         {
-            
             if (ModelState.IsValid)
             {
-
-                Reply r = new Reply(id, reply, "bob");
-                ContentAnalytic analytic = new ContentAnalytic(r.Id);
+                var r = new Reply(id, reply, "bob");
+                var analytic = new ContentAnalytic(r.Id);
                 r.Init(analytic);
                 question.Replies.Add(r);
 
@@ -43,21 +42,23 @@ namespace MentorWebApp.Controllers
                 {
                     await _context.SaveChangesAsync();
                 }
-                catch (Exception) { }
+                catch (Exception)
+                {
+                }
                 return question;
             }
             return question;
         }
 
         //removes a reply from a question and from the database
-        public async Task<Question> DetailsDeleteReply(string id, [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
+        public async Task<Question> DetailsDeleteReply(string id,
+            [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
         {
-           
             if (ModelState.IsValid)
             {
                 var rep = from r in _context.Replies
-                          select r;
-                var trep = rep.SingleOrDefault(s => (s.Id.Equals(id)));
+                    select r;
+                var trep = rep.SingleOrDefault(s => s.Id.Equals(id));
                 _context.Replies.Remove(trep);
                 await _context.SaveChangesAsync();
 
@@ -65,7 +66,7 @@ namespace MentorWebApp.Controllers
             }
             return question;
         }
-        
+
         public async Task<IActionResult> Details(string id, string reply, string delId)
         {
             if (id == null)
@@ -76,8 +77,7 @@ namespace MentorWebApp.Controllers
                 return NotFound();
             //question.CreateReply(reply);
 
-            
-            
+
             if (!string.IsNullOrEmpty(reply))
             {
                 var temp = await DetailsAddReply(id, reply, question);
@@ -100,13 +100,12 @@ namespace MentorWebApp.Controllers
             }
 
             var rep = from r in _context.Replies
-                      select r;
+                select r;
             rep = rep.Where(s => s.QuestionId.Equals(id));
             var repList = await rep.ToListAsync();
             var sortedList = repList.OrderBy(x => x.DatePosted).ToList();
             question.RepList = sortedList;
 
-            
 
             return View(question);
         }
@@ -116,7 +115,7 @@ namespace MentorWebApp.Controllers
         {
             return View();
         }
-        
+
         // POST: Questions/Create
 
         [HttpPost]
@@ -124,7 +123,6 @@ namespace MentorWebApp.Controllers
         public async Task<IActionResult> Create(
             [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted,Title,Tags")] Question question)
         {
-            
             if (ModelState.IsValid)
             {
                 _context.Add(question);
@@ -195,13 +193,11 @@ namespace MentorWebApp.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var rep = from r in _context.Replies
-                      select r;
+                select r;
             rep = rep.Where(s => s.QuestionId.Equals(id));
             var tempRep = await rep.ToListAsync();
-            foreach(var reply in tempRep)
-            {
+            foreach (var reply in tempRep)
                 _context.Replies.Remove(reply);
-            }
             await _context.SaveChangesAsync();
 
             var question = await _context.Questions.SingleOrDefaultAsync(m => m.Id == id);

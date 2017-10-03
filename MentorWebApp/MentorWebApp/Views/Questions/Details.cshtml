@@ -18,13 +18,13 @@
 
             <div class="col-xs-6 col-md-3"> asked by @Html.DisplayFor(model => model.UctNumber)</div>
         </div>
-        
+
     </div>
     <div class="container">
 
         <div class="col-md-6">
             <form asp-action="Details">
-                
+
                 <div class="input-group">
                     <textarea class="form-control" placeholder="Add your answer..." name="reply"></textarea>
                     @*<input type="text" class="form-control" placeholder="Add your answer..." name="reply">*@
@@ -37,31 +37,31 @@
                 </div>
             </form>
 
-            </div>
+        </div>
     </div>
 
     <h2>@Html.DisplayFor(model => model.RepList.Count) answers</h2>
 
-   
-    @for (var i = 0; i< Model.RepList.Count; i++)
+
+    @for (var i = 0; i < Model.RepList.Count; i++)
     {
         <div class="jumbotron">
             <div class="well">
                 <p>@Html.ViewData.Model.RepList[i].MessageContent</p>
 
-            </div>      
+            </div>
             <div class="help-block">
 
                 <div class="col-xs-6 col-md-3"> answered by @Html.ViewData.Model.RepList[i].UctNumber</div>
             </div>
             @Html.ViewData.Model.RepList[i].DatePosted
-            @*<a asp-controller="Questions" asp-action="DetailsDeleteReply" asp-route-id="@Model.RepList[i].Id">Delete</a>*@ 
-            
+            @*<a asp-controller="Questions" asp-action="DetailsDeleteReply" asp-route-id="@Model.RepList[i].Id">Delete</a>*@
+
             <form asp-action="Details">
 
                 <div class="input-group">
-                    <input type="hidden" name="id" value="@Html.ViewData.Model.RepList[i].QuestionId" />
-                    <input type="hidden" name="delId" value="@Html.ViewData.Model.RepList[i].Id" />
+                    <input type="hidden" name="id" value="@Html.ViewData.Model.RepList[i].QuestionId"/>
+                    <input type="hidden" name="delId" value="@Html.ViewData.Model.RepList[i].Id"/>
                     @*<textarea class="form-control" placeholder="Add your answer..." name="reply"></textarea>*@
                     @*<input type="text" class="form-control" placeholder="Add your answer..." name="reply">*@
                     <span class="input-group-btn">
@@ -72,10 +72,9 @@
 
                 </div>
             </form>
-        </div>    
-
+        </div>
     }
-        
+
     @*<dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Anonymous)
@@ -108,4 +107,3 @@
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
-

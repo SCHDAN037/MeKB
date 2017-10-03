@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 // A question posted by a user on the site, extends message
 namespace MentorWebApp.Models
@@ -13,7 +12,6 @@ namespace MentorWebApp.Models
         {
             DatePosted = DateTime.Now;
             Replies = new List<Reply>();
-
         }
 
         // constructor that takes 3 parameters, title and question body and student number
@@ -23,13 +21,7 @@ namespace MentorWebApp.Models
             Title = title;
             MessageContent = message;
             UctNumber = uctNumber;
-            this.Id = Guid.NewGuid().ToString();
-
-        }
-
-        public void Init(ContentAnalytic analytic)
-        {
-            this.Analytic = analytic;
+            Id = Guid.NewGuid().ToString();
         }
 
 
@@ -41,11 +33,16 @@ namespace MentorWebApp.Models
 
         // represents whether a question is posted anonymously
         public bool Anonymous { get; set; }
+
         //[Required] the Title of the question
         public string Title { get; set; }
+
         public string Tags { get; set; }
         public ContentAnalytic Analytic { get; set; }
 
-        
+        public void Init(ContentAnalytic analytic)
+        {
+            Analytic = analytic;
+        }
     }
 }

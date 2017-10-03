@@ -1,10 +1,4 @@
-
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 
 namespace MentorWebApp.Models
@@ -12,6 +6,21 @@ namespace MentorWebApp.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
+        public ApplicationUser()
+        {
+        }
+
+        public ApplicationUser(string userID, string permissions, string email, string username, string password)
+        {
+            UctNumber = userID;
+            Enabled = true;
+            Permissions = permissions;
+            Email = email;
+            var passwordHasher = new PasswordHasher<ApplicationUser>();
+            var hashed = passwordHasher.HashPassword(this, password);
+            PasswordHash = hashed;
+            UserName = username;
+        }
         //[Key]
         //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         //public string ApplicationUserId { get; set; }
@@ -25,28 +34,8 @@ namespace MentorWebApp.Models
         public bool Enabled { get; set; }
 
 
-        public ApplicationUser()
-        {
-            
-        }
-
-        public ApplicationUser(string userID, string permissions, string email, string username, string password)
-        {
-            this.UctNumber = userID;
-            this.Enabled = true;
-            this.Permissions = permissions;
-            this.Email = email;
-            var passwordHasher = new PasswordHasher<ApplicationUser>();
-            var hashed = passwordHasher.HashPassword(this, password);
-            this.PasswordHash = hashed;
-            this.UserName = username;
-
-        }
-
-
         public async Task<bool> ChangeRoleAsync(string role, string old, UserManager<ApplicationUser> userManager)
         {
-
             //var result = await userManager.RemoveFromRolesAsync(this, new List<string>()
             //{
             //    { "Admin"},
@@ -79,7 +68,6 @@ namespace MentorWebApp.Models
             //        {
             //            var res = userManager.RemoveFromRoleAsync(this, currentRole);
             //            res.Wait();
-
 
 
             //        }

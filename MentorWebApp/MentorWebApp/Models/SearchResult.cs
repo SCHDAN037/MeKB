@@ -9,6 +9,9 @@ namespace MentorWebApp.Models
     public class SearchResult
 
     {
+        [NotMapped] public bool init;
+
+        //basic constructor
         //All variables being used in this object
 
         [NotMapped]
@@ -29,38 +32,31 @@ namespace MentorWebApp.Models
 
         [NotMapped]
         public string AnalyticNewIdentity { get; set; }
+
         public SearchAnalytic Analytic { get; set; }
 
         public int NoOfResults { get; set; }
         public string sortVal { get; set; }
         public string typeVal { get; set; }
 
-        [NotMapped] public bool init = false;
-        
-        //basic constructor
-        public SearchResult()
-        {
-            
-        }
-
         //Initialize mehod for creating a new result object after constructor
         public void Init(string search, string type, string sort, SearchAnalytic analytic)
         {
-            this.searchVal = search;
-            this.sortVal = sort;
-            this.typeVal = type;
-            this.Analytic = analytic;
-            this.AnalyticNewIdentity = analytic.NewIdentity;
-            this.ResourcesList = new List<Resource>();
-            this.QuestionsList = new List<Question>();
-            this.ResultsList = new List<List<string>>();
-            this.init = true;
+            searchVal = search;
+            sortVal = sort;
+            typeVal = type;
+            Analytic = analytic;
+            AnalyticNewIdentity = analytic.NewIdentity;
+            ResourcesList = new List<Resource>();
+            QuestionsList = new List<Question>();
+            ResultsList = new List<List<string>>();
+            init = true;
         }
 
         public void CreateSearchLists()
         {
             //Make sure this object has all the values it needs initialized
-            if(!init) throw new Exception();
+            if (!init) throw new Exception();
 
             if (typeVal.Equals("both"))
             {
@@ -99,7 +95,7 @@ namespace MentorWebApp.Models
                         item.ResourceId,
                         item.DateAdded.ToLongDateString()
                     };
-                    
+
                     ResultsList.Add(temp);
                 }
             }
@@ -118,7 +114,7 @@ namespace MentorWebApp.Models
                 }
             }
 
-            this.NoOfResults = ResultsList.Count;
+            NoOfResults = ResultsList.Count;
 
             //Now update the analytics
             UpdateAnalytic();
@@ -130,17 +126,14 @@ namespace MentorWebApp.Models
         public void UpdateAnalytic()
         {
             //The search has been made another time
-            this.Analytic.Count++;
+            Analytic.Count++;
             //This is the number of results
-            this.Analytic.NoOfResults = this.NoOfResults;
+            Analytic.NoOfResults = NoOfResults;
             //If there are no results then count that
-            if (this.Analytic.NoOfResults == 0)
-            {
-                this.Analytic.NoResultsCount++;
-            }
+            if (Analytic.NoOfResults == 0)
+                Analytic.NoResultsCount++;
         }
 
-        
 
         //sort method thats called, sorts based on sortVal
         public void Sort()
