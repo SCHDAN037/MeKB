@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-
 namespace MentorWebApp
 {
     public class Startup
@@ -36,8 +35,6 @@ namespace MentorWebApp
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
-
-
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("MustBeAdmin",
@@ -49,15 +46,23 @@ namespace MentorWebApp
                 
             });
 
-            
+
             services.AddMvc();
             
+
+            
+            services.AddMvc();
+
+
+            //
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            
+
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -73,7 +78,9 @@ namespace MentorWebApp
             app.UseStaticFiles();
 
             app.UseAuthentication();
-            
+
+            //app.UseMiddleware<UserManager<ApplicationUser>>();
+            //app.UseMiddleware<RoleManager<IdentityRole>>();
 
             app.UseMvc(routes =>
             {
@@ -83,8 +90,8 @@ namespace MentorWebApp
             });
 
             // COMMENT THESE LINES OUT IF YOU GET A DATABASE ERROR
-            RolesData.SeedRoles(app).Wait();
-            ApplicationDbContextSeedData.Seed(app);
+            //RolesData.SeedRoles(app).Wait();
+            //ApplicationDbContextSeedData.Seed(app);
             
         }
     }

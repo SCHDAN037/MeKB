@@ -23,26 +23,45 @@ namespace MentorWebApp.Controllers
         }
 
         // GET: Questions/Details/5
-
+        // adds a reply to a question and to the database
         public async Task<Question> DetailsAddReply(string id, string reply, [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
         {
-            
+
 
             if (ModelState.IsValid)
             {
-                
-                    Reply r = new Reply(id, reply, "bob");
-                    question.Replies.Add(r);
-                    _context.Update(question);
-                    await _context.SaveChangesAsync();
-                
-                    return question;
+
+                Reply r = new Reply(id, reply, "bob");
+                question.Replies.Add(r);
+                _context.Update(question);
+                await _context.SaveChangesAsync();
+
+                return question;
             }
             return question;
         }
 
-     
-        public async Task<IActionResult> Details(string id, string reply)
+        //removes a reply from a question and from the database
+        public async Task<Question> DetailsDeleteReply(string id, [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
+        {
+           
+
+            if (ModelState.IsValid)
+            {
+                var rep = from r in _context.Replies
+                          select r;
+                var trep = rep.SingleOrDefault(s => (s.Id.Equals(id)));
+                _context.Replies.Remove(trep);
+                await _context.SaveChangesAsync();
+
+                return question;
+            }
+            return question;
+        }
+
+
+
+        public async Task<IActionResult> Details(string id, string reply, string delId)
         {
             if (id == null)
                 return NotFound();
@@ -61,6 +80,12 @@ namespace MentorWebApp.Controllers
                 var temp = await DetailsAddReply(id, reply, question);
                 question = temp;
             }
+
+            if (!string.IsNullOrEmpty(delId))
+            {
+                var temp = await DetailsDeleteReply(delId, question);
+                question = temp;
+            } 
 
             var rep = from r in _context.Replies
                       select r;
@@ -81,8 +106,7 @@ namespace MentorWebApp.Controllers
         
 
         // POST: Questions/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
@@ -111,8 +135,7 @@ namespace MentorWebApp.Controllers
         }
 
         // POST: Questions/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id,
@@ -159,6 +182,16 @@ namespace MentorWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
+            var rep = from r in _context.Replies
+                      select r;
+            rep = rep.Where(s => s.QuestionId.Equals(id));
+            var tempRep = await rep.ToListAsync();
+            foreach(var reply in tempRep)
+            {
+                _context.Replies.Remove(reply);
+            }
+            await _context.SaveChangesAsync();
+
             var question = await _context.Questions.SingleOrDefaultAsync(m => m.Id == id);
             _context.Questions.Remove(question);
             await _context.SaveChangesAsync();

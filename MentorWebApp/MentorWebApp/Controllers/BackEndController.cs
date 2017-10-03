@@ -1,3 +1,4 @@
+
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
@@ -5,11 +6,10 @@ using System.Threading.Tasks;
 using MentorWebApp.Data;
 using MentorWebApp.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting.Internal;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.AspNetCore.Identity;
 
 namespace MentorWebApp.Controllers
 {
@@ -17,14 +17,18 @@ namespace MentorWebApp.Controllers
     public class BackEndController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly RoleManager<IdentityRole> _roleManager;
+
+        private readonly RoleManager<Microsoft.AspNetCore.Identity.IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
+
 
         public BackEndController(ApplicationDbContext context)
         {
             _context = context;
+
             _userManager = _context.GetService<UserManager<ApplicationUser>>();
             _roleManager = _context.GetService<RoleManager<IdentityRole>>();
+
         }
 
         // GET: BackEnd
@@ -110,7 +114,9 @@ namespace MentorWebApp.Controllers
             if (id != applicationUser.Id)
             {
                 return NotFound();
+
             }
+
 
             if (ModelState.IsValid)
             {
@@ -178,8 +184,7 @@ namespace MentorWebApp.Controllers
         }
 
 
-        /////////////
-        /// Resources
+
 
         // GET: Resources
         public async Task<IActionResult> ResourcesIndex()

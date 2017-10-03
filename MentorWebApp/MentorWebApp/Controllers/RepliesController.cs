@@ -144,7 +144,7 @@ namespace MentorWebApp.Controllers
             var reply = await _context.Replies.SingleOrDefaultAsync(m => m.Id == id);
             _context.Replies.Remove(reply);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index","Questions");
         }
 
         private bool ReplyExists(string id)
