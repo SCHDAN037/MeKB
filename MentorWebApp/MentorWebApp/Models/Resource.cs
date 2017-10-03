@@ -9,9 +9,7 @@ namespace MentorWebApp.Models
         public Resource()
         {
             DateAdded = DateTime.Now;
-            //this.ResourceId = Guid.NewGuid().ToString();
-            this.Analytic = new ContentAnalytic(this.ResourceId);
-
+            this.Analytic = new ContentAnalytic();
         }
 
         public Resource(string title, string link)
@@ -19,10 +17,9 @@ namespace MentorWebApp.Models
             Title = title;
             Link = link;
             DateAdded = DateTime.Now;
-            
-            this.Analytic = new ContentAnalytic(this.ResourceId);
+            this.Analytic = new ContentAnalytic();
         }
-
+        
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string ResourceId { get; set; }

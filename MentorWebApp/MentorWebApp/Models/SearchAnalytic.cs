@@ -17,19 +17,24 @@ namespace MentorWebApp.Models
         //SuccedClicks is number of times a user clicked a result in that search
         //NoResultsCount is number of times that search returned no Results
 
-        public SearchAnalytic(string id)
-        {
-            this.NewIdentity = Guid.NewGuid().ToString();
-            this.NoOfResults = 0;
-            this.SucceedClicks = 0;
-            this.NoResultsCount = 0;
-            this.Count = 0;
-            this.ObjectId = id;
-        }
+        //public SearchAnalytic(string id)
+        //{
+        //    this.NewIdentity = Guid.NewGuid().ToString();
+        //    this.NoOfResults = 0;
+        //    this.SucceedClicks = 0;
+        //    this.NoResultsCount = 0;
+        //    this.Count = 0;
+        //    this.ObjectId = id;
+        //}
+
         public SearchAnalytic()
         {
             //this.NewIdentity = Guid.NewGuid().ToString();
             
+
+            //Do i need the Object ID????
+            //Do i need the Object ID????
+            //Do i need the Object ID????
 
         }
 

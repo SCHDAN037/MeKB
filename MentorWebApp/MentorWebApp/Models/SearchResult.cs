@@ -7,36 +7,9 @@ using System.Linq;
 namespace MentorWebApp.Models
 {
     public class SearchResult
+
     {
-        public SearchResult(string id, string search, string type, string sort)
-        {
-            //using one that exists
-            this.Id = id;
-            this.Analytic = new SearchAnalytic(Id);
-            this.searchVal = search;
-            this.typeVal = type;
-            this.sortVal = sort;
-            this.ResourcesList = new List<Resource>();
-            this.QuestionsList = new List<Question>();
-        }
-
-        public SearchResult(string search, string type, string sort)
-        {
-            //brand new one
-            this.searchVal = search;
-            this.typeVal = type;
-            this.sortVal = sort;
-            this.Analytic = new SearchAnalytic(this.Id);
-            this.ResourcesList = new List<Resource>();
-            this.QuestionsList = new List<Question>();
-        }
-
-        public SearchResult()
-        {
-            //one for EF to work
-            this.Analytic = new SearchAnalytic(this.Id);
-
-        }
+        //All variables being used in this object
 
         [NotMapped]
         public List<List<string>> ResultsList { get; set; }
@@ -52,21 +25,66 @@ namespace MentorWebApp.Models
         public string Id { get; set; }
 
         public string searchVal { get; set; }
-
         public SearchAnalytic Analytic { get; set; }
-
         public int NoOfResults { get; set; }
-
-        
         public string sortVal { get; set; }
-
         public string typeVal { get; set; }
+
+        [NotMapped] private bool init = false;
+
+
+        //public SearchResult(string id, string search, string type, string sort)
+        //{
+        //    //using one that exists
+        //    this.Id = id;
+        //    //this.Analytic = new SearchAnalytic(Id);
+        //    this.searchVal = search;
+        //    this.typeVal = type;
+        //    this.sortVal = sort;
+        //    this.ResourcesList = new List<Resource>();
+        //    this.QuestionsList = new List<Question>();
+        //}
+
+        //public SearchResult(string search, string type, string sort)
+        //{
+        //    //brand new one
+        //    this.searchVal = search;
+        //    this.typeVal = type;
+        //    this.sortVal = sort;
+        //    //this.Analytic = new SearchAnalytic(this.Id);
+        //    this.ResourcesList = new List<Resource>();
+        //    this.QuestionsList = new List<Question>();
+        //}
+
+        //basic constructor
+
+        public SearchResult()
+        {
+        }
+
+        //Initialize mehod for creating a new result object after constructor
+        public void Init(string search, string type, string sort)
+        {
+            this.searchVal = search;
+            this.sortVal = sort;
+            this.typeVal = type;
+            this.Analytic = new SearchAnalytic
+            {
+                NoOfResults = 0,
+                NoResultsCount = 0,
+                SucceedClicks = 0,
+                Count = 0
+            };
+            this.ResourcesList = new List<Resource>();
+            this.QuestionsList = new List<Question>();
+            this.ResultsList = new List<List<string>>();
+            this.init = true;
+        }
 
         public void CreateSearchLists()
         {
-            ResultsList = new List<List<string>>();
-
-            
+            //Make sure this object has all the values it needs initialized
+            if(!init) throw new Exception();
 
             if (typeVal.Equals("both"))
             {
@@ -105,7 +123,7 @@ namespace MentorWebApp.Models
                         item.ResourceId,
                         item.DateAdded.ToLongDateString()
                     };
-                    //Add a type so we can see if RES or QUES
+                    
                     ResultsList.Add(temp);
                 }
             }
@@ -125,27 +143,30 @@ namespace MentorWebApp.Models
             }
 
             this.NoOfResults = ResultsList.Count;
+
+            //Now update the analytics
             UpdateAnalytic();
             Sort();
         }
 
+
+        //Method for updating the analytic object
         public void UpdateAnalytic()
         {
-            
+            //The search has been made another time
             this.Analytic.Count++;
+            //This is the number of results
             this.Analytic.NoOfResults = this.NoOfResults;
+            //If there are no results then count that
             if (this.Analytic.NoOfResults == 0)
             {
                 this.Analytic.NoResultsCount++;
             }
-
         }
 
+        
 
-        public void Clicked(List<List<string>> list, int i)
-        {
-        }
-
+        //sort method thats called, sorts based on sortVal
         public void Sort()
         {
             if (sortVal.Equals("alpha"))

@@ -18,7 +18,7 @@ namespace MentorWebApp.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string NewIdentity { get; set; }
-        public string ObjectId { get; set; }
+        //public string ObjectId { get; set; }
 
         public Analytic()
         {

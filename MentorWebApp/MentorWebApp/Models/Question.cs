@@ -13,7 +13,7 @@ namespace MentorWebApp.Models
         {
             DatePosted = DateTime.Now;
             Replies = new List<Reply>();
-            this.Analytic = new ContentAnalytic(this.Id);
+
         }
 
         // constructor that takes 3 parameters, title and question body and student number
@@ -24,7 +24,7 @@ namespace MentorWebApp.Models
             MessageContent = message;
             UctNumber = uctNumber;
             this.Id = Guid.NewGuid().ToString();
-            this.Analytic = new ContentAnalytic(this.Id);
+
         }
 
         // list of replies to the question

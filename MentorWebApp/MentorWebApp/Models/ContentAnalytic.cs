@@ -19,11 +19,20 @@ namespace MentorWebApp.Models
         //Unhelpful is the opposite
         //Clicks is the number of times that resource was clicked
 
-        public ContentAnalytic(string objectId)
-        {
-            //this.NewIdentity = Guid.NewGuid().ToString();
+        //public ContentAnalytic(string objectId)
+        //{
             
-            this.ObjectId = objectId;
+        //    //this.ObjectId = objectId;
+        //}
+
+        public ContentAnalytic()
+        {
+            this.Clicks = 0;
+            this.Helpful = 0;
+            this.UnHelpful = 0;
+            this.Count = 0;
         }
+
+
     }
 }

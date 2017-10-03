@@ -9,7 +9,7 @@ namespace MentorWebApp.Models
         public Reply()
         {
             DatePosted = DateTime.Now;
-            Analytic = new ContentAnalytic(this.Id);
+
         }
 
         public Reply(string qid, string message, string uctNumber)
@@ -18,7 +18,7 @@ namespace MentorWebApp.Models
             MessageContent = message;
             UctNumber = uctNumber;
             DatePosted = DateTime.Now;
-            Analytic = new ContentAnalytic(this.Id);
+
         }
 
         //[ForeignKey("QuestionId")] the Id of the question the reply is for
