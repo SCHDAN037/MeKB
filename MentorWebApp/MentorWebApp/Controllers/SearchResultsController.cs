@@ -35,9 +35,11 @@ namespace MentorWebApp.Controllers
                     tempAnalytic.Clicks++;
                     _context.Update(tempRes);
                     _context.Update(tempAnalytic);
+                    if (!link.Contains("http")) link = "http://" + link;
                 }
                 else
                 {
+                    //update question analytics
                     var tempQues = await _context.Questions.SingleOrDefaultAsync(s => s.Id.Equals(id));
                     var tempAnalytic =
                         await _context.ContentAnalytics.SingleOrDefaultAsync(
@@ -46,6 +48,8 @@ namespace MentorWebApp.Controllers
 
                     _context.Update(tempQues);
                     _context.Update(tempAnalytic);
+
+                    return RedirectToAction("Details", "Questions", tempQues);
                 }
             }
             catch (Exception)
@@ -55,10 +59,9 @@ namespace MentorWebApp.Controllers
             }
 
             _context.SaveChanges();
-
-            if (link.Contains("http"))
-                return Redirect(link);
-            return Redirect("http://" + link);
+            
+            return Redirect(link);
+            
         }
 
         public async Task<IActionResult> Index(string search, string sortSelect, string typeSelect)
