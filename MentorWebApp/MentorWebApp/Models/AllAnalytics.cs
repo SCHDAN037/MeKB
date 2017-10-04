@@ -125,9 +125,7 @@ namespace MentorWebApp.Models
             }
 
             //Top 5 successful searches
-
-
-
+            
         }
 
         public void GenerateContentAnalytics()

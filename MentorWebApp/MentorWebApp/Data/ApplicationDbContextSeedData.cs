@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using MentorWebApp.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -61,7 +60,9 @@ namespace MentorWebApp.Data
                     new ApplicationUser("mentee18", "Mentee", "mentee18@mekb.com", "mentee18@mekb.com", "Mentee#123"),
                     new ApplicationUser("mentee19", "Mentee", "mentee19@mekb.com", "mentee19@mekb.com", "Mentee#123"),
                     new ApplicationUser("mentee20", "Mentee", "mentee20@mekb.com", "mentee20@mekb.com", "Mentee#123")
-                };
+                
+
+            };
 
                 for (var i = 0; i < defaultUsers.Length; i++)
                     if (!context.Users.Any(u => u.UserName == defaultUsers[i].UserName))
@@ -80,21 +81,7 @@ namespace MentorWebApp.Data
                                 userManager.AddToRoleAsync(defaultUsers[i], "Mentee").Wait();
                                 break;
                         }
-
-                        //just adding basic analytics
-                        //var analytic = defaultUsers[i].GetAnalytic();
-                        //analytic.Count = i + i/2;
-                        //analytic.NumberOfQuestions = (i + i) / 4;
-                        //analytic.LastLoginDate = DateTime.Today.AddDays((i - 5)/2);
-                        //analytic.NumberOfReplies = 5;
-                        //for (int j = 0; j < UPPER; j++)
-                        //{
-                            
-                        //}
-                        //analytic.WeekLoginCheckStringStore = String.Concat(Enumerable.Repeat(((i%2) + " "), 7));
-                        
                     }
-                
 
                 //Resources
 
@@ -307,6 +294,8 @@ namespace MentorWebApp.Data
                     {
                         var analytic = new ContentAnalytic(testResources[i].ResourceId);
                         testResources[i].Init(analytic);
+                        context.Resources.AddAsync(testResources[i]).Wait();
+                        context.ContentAnalytics.AddAsync(testResources[i].Analytic);
                         context.Resources.Add(testResources[i]);
                         context.ContentAnalytics.Add(testResources[i].Analytic);
                     }
@@ -326,12 +315,16 @@ namespace MentorWebApp.Data
                     new Question("How do I draw money?", "dsdffffdsdf", "blgjoe001"),
                     new Question("Where is Leslie Social?", "fdsdfdss", "blgjoe001"),
                     new Question("How do I change my tut period?", "sdfdsfs", "blgjoe001")
+
                 };
+
                 for (var i = 0; i < testQuestions.Length; i++)
                     if (!context.Questions.Any(u => u.Title == testQuestions[i].Title))
                     {
                         var analytic = new ContentAnalytic(testQuestions[i].Id);
                         testQuestions[i].Init(analytic);
+                        context.Questions.AddAsync(testQuestions[i]).Wait();
+                        context.ContentAnalytics.AddAsync(testQuestions[i].Analytic);
                         context.Questions.Add(testQuestions[i]);
                         context.ContentAnalytics.Add(testQuestions[i].Analytic);
                     }
