@@ -12,12 +12,11 @@ namespace MentorWebApp.Models
 
         public Reply(string qid, string message, string uctNumber)
         {
-            Id = Guid.NewGuid().ToString();
             QuestionId = qid;
             MessageContent = message;
             UctNumber = uctNumber;
             DatePosted = DateTime.Now;
-            
+            Id = Guid.NewGuid().ToString();
         }
 
         //[ForeignKey("QuestionId")] the Id of the question the reply is for
