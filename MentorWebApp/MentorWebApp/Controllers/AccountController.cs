@@ -123,6 +123,8 @@ namespace MentorWebApp.Controllers
                     if (result.Succeeded)
                     {
                         _logger.LogInformation("User logged in.");
+                        user.Analytic.UserLogin();
+                        await _userManager.UpdateAsync(user);
                         return RedirectToLocal(returnUrl);
                     }
                     if (result.RequiresTwoFactor)
@@ -270,16 +272,10 @@ namespace MentorWebApp.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser
-                {
-                    UserName = model.Email,
-                    Email = model.Email,
-                    Enabled = true,
-                    UctNumber = model.UctNumber
-                };
+                var user = new ApplicationUser(model.UctNumber, "Mentee", model.Email, model.Email, model.Password);
+                
 
-
-                var result = await _userManager.CreateAsync(user, model.Password);
+                var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
@@ -289,6 +285,8 @@ namespace MentorWebApp.Controllers
                     await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
                     await _signInManager.SignInAsync(user, false);
+                    user.Analytic.UserLogin();
+                    await _userManager.UpdateAsync(user);
                     _logger.LogInformation("User created a new account with password.");
                     return RedirectToLocal(returnUrl);
                 }

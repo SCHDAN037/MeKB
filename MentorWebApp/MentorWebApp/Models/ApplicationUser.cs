@@ -6,13 +6,23 @@ namespace MentorWebApp.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
+        
+        
+        public string UctNumber { get; set; }
+
+        public string Permissions { get; set; }
+
+        public bool Enabled { get; set; }
+
+        public UserAnalytic Analytic { get; set; }
+
         public ApplicationUser()
         {
         }
 
-        public ApplicationUser(string userID, string permissions, string email, string username, string password)
+        public ApplicationUser(string uctNumber, string permissions, string email, string username, string password)
         {
-            UctNumber = userID;
+            UctNumber = uctNumber;
             Enabled = true;
             Permissions = permissions;
             Email = email;
@@ -20,29 +30,12 @@ namespace MentorWebApp.Models
             var hashed = passwordHasher.HashPassword(this, password);
             PasswordHash = hashed;
             UserName = username;
+            Analytic = new UserAnalytic(this.Id);
         }
-        //[Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        //public string ApplicationUserId { get; set; }
-
-        //[Required]
-        public string UctNumber { get; set; }
-
-        //[Required]
-        public string Permissions { get; set; }
-
-        public bool Enabled { get; set; }
-
 
         public async Task<bool> ChangeRoleAsync(string role, string old, UserManager<ApplicationUser> userManager)
         {
-            //var result = await userManager.RemoveFromRolesAsync(this, new List<string>()
-            //{
-            //    { "Admin"},
-            //    { "Mentor" },
-            //    { "Mentee" }
-            //});
-
+            
             var result = await userManager.RemoveFromRoleAsync(this, old);
             if (!result.Succeeded) return false;
 
@@ -51,36 +44,7 @@ namespace MentorWebApp.Models
 
             var update = await userManager.UpdateAsync(this);
             return update.Succeeded;
-
-
-            //var currentRoles = userManager.GetRolesAsync(this);
-            //currentRoles.Wait();
-            //if (currentRoles.Result.Contains(role)) return false;
-            //var result = userManager.AddToRoleAsync(this, role);
-            //result.Wait();
-            //if (result.IsCompletedSuccessfully)
-            //{
-            //    currentRoles = userManager.GetRolesAsync(this);
-            //    currentRoles.Wait();
-            //    foreach (var currentRole in currentRoles.Result)
-            //    {
-            //        if (!currentRole.Equals(role))
-            //        {
-            //            var res = userManager.RemoveFromRoleAsync(this, currentRole);
-            //            res.Wait();
-
-
-            //        }
-            //    }
-            //}
-
-            //var update = userManager.UpdateAsync(this);
-            //update.Wait();
-            //var upres = update.Result;
-            //currentRoles = userManager.GetRolesAsync(this);
-            //currentRoles.Wait();
-            //var debug = currentRoles.Result;
-            //return true;
+            
         }
     }
 }

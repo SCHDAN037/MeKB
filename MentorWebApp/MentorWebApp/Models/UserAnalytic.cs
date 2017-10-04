@@ -17,7 +17,10 @@ namespace MentorWebApp.Models
             NewIdentity = Guid.NewGuid().ToString();
             WeekLoginCheck = new List<bool>(7);
             ResetWeekStats();
+            NumberOfQuestions = 0;
+            NumberOfReplies = 0;
         }
+
         //Count is the number of times this person has logged on
 
         //Last time they logged on
