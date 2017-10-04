@@ -18,7 +18,7 @@ namespace MentorWebApp.Models
         // constructor that takes 3 parameters, title and question body and student number
         public Question(string title, string message, string uctNumber)
         {
-            this.Id = Guid.NewGuid().ToString();
+            Id = Guid.NewGuid().ToString();
             DatePosted = DateTime.Now;
             Title = title;
             MessageContent = message;
@@ -46,7 +46,5 @@ namespace MentorWebApp.Models
         {
             Analytic = analytic;
         }
-
-        
     }
 }

@@ -117,25 +117,18 @@ namespace MentorWebApp.Models
 
         public void UnpackWeekList()
         {
-            
-            string[] week = WeekLoginCheckStringStore.Split(" ");
+            var week = WeekLoginCheckStringStore.Split(" ");
 
-            for (int i = 0; i < 7; i++)
-            {
+            for (var i = 0; i < 7; i++)
                 WeekLoginCheck[i] = week[i].Equals("1");
-            }
-            
         }
 
         public void PackWeekList()
         {
+            var week = "";
 
-            string week = "";
-
-            for (int i = 0; i < 7; i++)
-            {
+            for (var i = 0; i < 7; i++)
                 week += WeekLoginCheck[i] ? "1 " : "0 ";
-            }
             WeekLoginCheckStringStore = week;
         }
 
