@@ -1,4 +1,7 @@
-﻿@model IEnumerable<Question>
+﻿@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@model IEnumerable<Question>
 
 @{
     ViewData["Title"] = "Index";
@@ -6,9 +9,15 @@
 
 <h2>Index</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+    @{
+        if (SignInManager.IsSignedIn(User))
+        {
+
+            <a asp-action="Create">Create New</a>
+        }
+    }
+   
+
 <table class="table">
     <thead>
     <tr>
@@ -55,11 +64,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.DatePosted)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
+          
         </tr>
     }
     </tbody>

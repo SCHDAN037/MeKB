@@ -49,9 +49,9 @@
                 <input asp-for="ApplicationUserId" class="form-control"/>
                 <span asp-validation-for="ApplicationUserId" class="text-danger"></span>
             </div>
-            
-                -->
-
+            <input type="hidden" value="model.ApplicationId">
+            <input type="hidden" value="model.UctNumber">
+             
             @*<div class="form-group">
                 <label asp-for="DatePosted" class="control-label"></label>
                 <input type="hidden" asp-for="DatePosted" class="form-control"/>
