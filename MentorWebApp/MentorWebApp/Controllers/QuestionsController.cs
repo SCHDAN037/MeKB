@@ -73,17 +73,13 @@ namespace MentorWebApp.Controllers
             if (ModelState.IsValid)
             {
                 var rep = from r in _context.Replies
-                          select r;
+                    select r;
                 var trep = rep.SingleOrDefault(s => s.Id.Equals(id));
                 var analytic = _context.ContentAnalytics.SingleOrDefault(s => s.ContentId == trep.Id);
                 if (helpful == 1)
-                {
                     analytic.Helpful++;
-                }
                 else if (helpful == -1)
-                {
                     analytic.UnHelpful++;
-                }
 
                 _context.Update(analytic);
                 await _context.SaveChangesAsync();
@@ -91,6 +87,7 @@ namespace MentorWebApp.Controllers
             }
             return question;
         }
+
         public async Task<IActionResult> Details(string id, string reply, string delId, string voteId, int helpful)
         {
             if (id == null)
@@ -114,11 +111,10 @@ namespace MentorWebApp.Controllers
                 question = temp;
             }
 
-            else if(helpful == 1 || helpful == -1)
+            else if (helpful == 1 || helpful == -1)
             {
                 var temp = await DetailsVote(voteId, helpful, question);
                 question = temp;
-
             }
 
             else
@@ -134,7 +130,7 @@ namespace MentorWebApp.Controllers
                 select r;
             rep = rep.Where(s => s.QuestionId.Equals(id));
             var repList = await rep.ToListAsync();
-            foreach (Reply replyEach in repList)
+            foreach (var replyEach in repList)
             {
                 var anal = _context.ContentAnalytics.SingleOrDefault(s => s.ContentId == replyEach.Id);
                 replyEach.Analytic = anal;

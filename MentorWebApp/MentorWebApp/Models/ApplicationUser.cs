@@ -6,16 +6,6 @@ namespace MentorWebApp.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
-        
-        
-        public string UctNumber { get; set; }
-
-        public string Permissions { get; set; }
-
-        public bool Enabled { get; set; }
-
-        public UserAnalytic Analytic { get; set; }
-
         public ApplicationUser()
         {
         }
@@ -30,12 +20,20 @@ namespace MentorWebApp.Models
             var hashed = passwordHasher.HashPassword(this, password);
             PasswordHash = hashed;
             UserName = username;
-            Analytic = new UserAnalytic(this.Id);
+            Analytic = new UserAnalytic(Id);
         }
+
+
+        public string UctNumber { get; set; }
+
+        public string Permissions { get; set; }
+
+        public bool Enabled { get; set; }
+
+        public UserAnalytic Analytic { get; set; }
 
         public async Task<bool> ChangeRoleAsync(string role, string old, UserManager<ApplicationUser> userManager)
         {
-            
             var result = await userManager.RemoveFromRoleAsync(this, old);
             if (!result.Succeeded) return false;
 
@@ -44,7 +42,6 @@ namespace MentorWebApp.Models
 
             var update = await userManager.UpdateAsync(this);
             return update.Succeeded;
-            
         }
 
 
@@ -54,11 +51,8 @@ namespace MentorWebApp.Models
             {
                 return Analytic;
             }
-            else
-            {
-                Analytic = new UserAnalytic(this.Id);
-                return Analytic;
-            }
+            Analytic = new UserAnalytic(Id);
+            return Analytic;
         }
     }
 }

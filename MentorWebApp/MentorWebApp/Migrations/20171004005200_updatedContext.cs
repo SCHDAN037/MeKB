@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
-using System.Collections.Generic;
 
 namespace MentorWebApp.Migrations
 {
@@ -9,27 +7,27 @@ namespace MentorWebApp.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_AspNetUsers_UserAnalytic_AnalyticNewIdentity",
-                table: "AspNetUsers");
+                "FK_AspNetUsers_UserAnalytic_AnalyticNewIdentity",
+                "AspNetUsers");
 
             migrationBuilder.DropPrimaryKey(
-                name: "PK_UserAnalytic",
-                table: "UserAnalytic");
+                "PK_UserAnalytic",
+                "UserAnalytic");
 
             migrationBuilder.RenameTable(
-                name: "UserAnalytic",
+                "UserAnalytic",
                 newName: "UserAnalytics");
 
             migrationBuilder.AddPrimaryKey(
-                name: "PK_UserAnalytics",
-                table: "UserAnalytics",
-                column: "NewIdentity");
+                "PK_UserAnalytics",
+                "UserAnalytics",
+                "NewIdentity");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_AspNetUsers_UserAnalytics_AnalyticNewIdentity",
-                table: "AspNetUsers",
-                column: "AnalyticNewIdentity",
-                principalTable: "UserAnalytics",
+                "FK_AspNetUsers_UserAnalytics_AnalyticNewIdentity",
+                "AspNetUsers",
+                "AnalyticNewIdentity",
+                "UserAnalytics",
                 principalColumn: "NewIdentity",
                 onDelete: ReferentialAction.Restrict);
         }
@@ -37,27 +35,27 @@ namespace MentorWebApp.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_AspNetUsers_UserAnalytics_AnalyticNewIdentity",
-                table: "AspNetUsers");
+                "FK_AspNetUsers_UserAnalytics_AnalyticNewIdentity",
+                "AspNetUsers");
 
             migrationBuilder.DropPrimaryKey(
-                name: "PK_UserAnalytics",
-                table: "UserAnalytics");
+                "PK_UserAnalytics",
+                "UserAnalytics");
 
             migrationBuilder.RenameTable(
-                name: "UserAnalytics",
+                "UserAnalytics",
                 newName: "UserAnalytic");
 
             migrationBuilder.AddPrimaryKey(
-                name: "PK_UserAnalytic",
-                table: "UserAnalytic",
-                column: "NewIdentity");
+                "PK_UserAnalytic",
+                "UserAnalytic",
+                "NewIdentity");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_AspNetUsers_UserAnalytic_AnalyticNewIdentity",
-                table: "AspNetUsers",
-                column: "AnalyticNewIdentity",
-                principalTable: "UserAnalytic",
+                "FK_AspNetUsers_UserAnalytic_AnalyticNewIdentity",
+                "AspNetUsers",
+                "AnalyticNewIdentity",
+                "UserAnalytic",
                 principalColumn: "NewIdentity",
                 onDelete: ReferentialAction.Restrict);
         }

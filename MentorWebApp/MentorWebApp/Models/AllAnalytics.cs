@@ -1,17 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Threading.Tasks;
 using MentorWebApp.Data;
-using Microsoft.AspNetCore.Hosting.Builder;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MentorWebApp.Models
 {
     public class AllAnalytics
     {
-        
+        private readonly ApplicationDbContext _context;
+
+        public AllAnalytics(ApplicationDbContext context)
+        {
+            _context = context;
+
+            Top5Users = new List<ApplicationUser>();
+
+            Top5ViewedSearches = new List<SearchResult>();
+            Top5SuccessfulSearches = new List<SearchResult>();
+            Worst5SuccessfulSearches = new List<SearchResult>();
+
+            Top5Resources = new List<Resource>();
+            Worst5Resources = new List<Resource>();
+
+            Top5Questions = new List<Question>();
+            Worst5Questions = new List<Question>();
+
+            LoginsPerDay = new List<int>
+            {
+                //starts on sunday
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            };
+        }
+
         //By Descending Login Count
         [NotMapped]
         public List<ApplicationUser> Top5Users { get; set; }
@@ -48,42 +74,16 @@ namespace MentorWebApp.Models
         [NotMapped]
         public List<int> LoginsPerDay { get; set; }
 
-        private readonly ApplicationDbContext _context;
-
-        public AllAnalytics(ApplicationDbContext context)
-        {
-            _context = context;
-            
-            Top5Users = new List<ApplicationUser>();
-
-            Top5ViewedSearches = new List<SearchResult>();
-            Top5SuccessfulSearches = new List<SearchResult>();
-            Worst5SuccessfulSearches = new List<SearchResult>();
-
-            Top5Resources = new List<Resource>();
-            Worst5Resources = new List<Resource>();
-
-            Top5Questions = new List<Question>();
-            Worst5Questions = new List<Question>();
-
-            LoginsPerDay = new List<int>
-            {
-                //starts on sunday
-                0,0,0,0,0,0,0
-            };
-        }
-
         public void GenerateAllAnalytics()
         {
             // all the analytics at this time
-            
+
             GenerateUserAnalytics();
             GenerateSearchAnalytics();
             GenerateContentAnalytics();
             //GenerateLoginAnalytics();
         }
 
-        
 
         public void GenerateUserAnalytics()
         {
@@ -92,7 +92,7 @@ namespace MentorWebApp.Models
 
             //Top 5 users
             var orderByCount = userAnalytics.OrderByDescending(s => s.Count).ToList();
-            for (int i = 0; (i < orderByCount.Count) && (i < 5); i++)
+            for (var i = 0; i < orderByCount.Count && i < 5; i++)
             {
                 var thisUser = _context.ApplicationUser.SingleOrDefault(s => s.Id == orderByCount[i].UserId);
                 Top5Users.Add(thisUser);
@@ -102,12 +102,9 @@ namespace MentorWebApp.Models
             foreach (var userAnalytic in userAnalytics.ToList())
             {
                 var thisUserWeek = userAnalytic.GetWeekCheck();
-                for (int i = 0; i < 7; i++)
-                {
+                for (var i = 0; i < 7; i++)
                     if (thisUserWeek[i]) LoginsPerDay[i]++;
-                }
             }
-            
         }
 
         public void GenerateSearchAnalytics()
@@ -118,14 +115,13 @@ namespace MentorWebApp.Models
             //Top 5 searches by views
             var orderByCount = searchAnalytics.OrderByDescending(s => s.Count).ToList();
 
-            for (int i = 0; (i < orderByCount.Count) && (i < 5); i++)
+            for (var i = 0; i < orderByCount.Count && i < 5; i++)
             {
                 var thisSearch = _context.SearchResults.SingleOrDefault(s => s.Id == orderByCount[i].SearchResultId);
                 Top5ViewedSearches.Add(thisSearch);
             }
 
             //Top 5 successful searches
-            
         }
 
         public void GenerateContentAnalytics()

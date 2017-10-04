@@ -14,7 +14,7 @@
         <h2>@Html.DisplayFor(model => model.Title)</h2>
         <div class="well">
             <p>@Html.DisplayFor(model => model.MessageContent)</p>
-            
+
         </div>
         <div class="help-block">
 
@@ -45,71 +45,71 @@
     <h2>@Html.DisplayFor(model => model.RepList.Count) answers</h2>
 
 
-        @for (var i = 0; i < Model.RepList.Count; i++)
-        {
-            <div class="jumbotron">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-1">
-                            <form asp-action="Details">
-                                <input type="hidden" name="id" value="@Html.ViewData.Model.RepList[i].QuestionId" />
-                                <input type="hidden" name="voteId" value="@Html.ViewData.Model.RepList[i].Id" />
-                                <input type="hidden" name="helpful" value="1" />
-                                <span class="input-group-btn">
-                                    <button class="btn .btn-primary" title="Helpful" type="submit" id="searchButton">
-                                        <span class="glyphicon glyphicon-thumbs-up" style="color:green"></span>
-                                    </button>
-                                </span>
-
-                            </form>
-
-                            @Html.ViewData.Model.RepList[i].Analytic.Helpful
-                            <form asp-action="Details">
-                                <input type="hidden" name="id" value="@Html.ViewData.Model.RepList[i].QuestionId" />
-                                <input type="hidden" name="voteId" value="@Html.ViewData.Model.RepList[i].Id" />
-                                <input type="hidden" name="helpful" value="-1" />
-                                <span class="input-group-btn">
-                                    <button class="btn .btn-primary" title="Unhelpful" type="submit" id="searchButton">
-                                        <span class="glyphicon glyphicon-thumbs-up" style="color:red"></span>
-                                    </button>
-                                </span>
-
-                            </form>
-                            @Html.ViewData.Model.RepList[i].Analytic.UnHelpful
-
-
-                        </div>
-                        <div class="well col-md-11">
-                            <p>@Html.ViewData.Model.RepList[i].MessageContent</p>
-
-                        </div>
-                    </div>
-
-                    <div class="help-block">
-
-                        <div class="col-xs-6 col-md-3"> answered by @Html.ViewData.Model.RepList[i].UctNumber</div>
-                    </div>
-                    @Html.ViewData.Model.RepList[i].DatePosted
-                    @*<a asp-controller="Questions" asp-action="DetailsDeleteReply" asp-route-id="@Model.RepList[i].Id">Delete</a>*@
-
-                    <form asp-action="Details">
-
-                        <div class="input-group">
-                            <input type="hidden" name="id" value="@Html.ViewData.Model.RepList[i].QuestionId" />
-                            <input type="hidden" name="delId" value="@Html.ViewData.Model.RepList[i].Id" />
+    @for (var i = 0; i < Model.RepList.Count; i++)
+    {
+        <div class="jumbotron">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-1">
+                        <form asp-action="Details">
+                            <input type="hidden" name="id" value="@Html.ViewData.Model.RepList[i].QuestionId"/>
+                            <input type="hidden" name="voteId" value="@Html.ViewData.Model.RepList[i].Id"/>
+                            <input type="hidden" name="helpful" value="1"/>
                             <span class="input-group-btn">
-                                <button class="btn btn-primary btn-lg" type="submit">
-                                    Delete
+                                <button class="btn .btn-primary" title="Helpful" type="submit" id="searchButton">
+                                    <span class="glyphicon glyphicon-thumbs-up" style="color: green"></span>
                                 </button>
                             </span>
 
-                        </div>
-                    </form>
-                </div>
-            </div>
-        }
+                        </form>
 
-        @*<dl class="dl-horizontal">
+                        @Html.ViewData.Model.RepList[i].Analytic.Helpful
+                        <form asp-action="Details">
+                            <input type="hidden" name="id" value="@Html.ViewData.Model.RepList[i].QuestionId"/>
+                            <input type="hidden" name="voteId" value="@Html.ViewData.Model.RepList[i].Id"/>
+                            <input type="hidden" name="helpful" value="-1"/>
+                            <span class="input-group-btn">
+                                <button class="btn .btn-primary" title="Unhelpful" type="submit" id="searchButton">
+                                    <span class="glyphicon glyphicon-thumbs-up" style="color: red"></span>
+                                </button>
+                            </span>
+
+                        </form>
+                        @Html.ViewData.Model.RepList[i].Analytic.UnHelpful
+
+
+                    </div>
+                    <div class="well col-md-11">
+                        <p>@Html.ViewData.Model.RepList[i].MessageContent</p>
+
+                    </div>
+                </div>
+
+                <div class="help-block">
+
+                    <div class="col-xs-6 col-md-3"> answered by @Html.ViewData.Model.RepList[i].UctNumber</div>
+                </div>
+                @Html.ViewData.Model.RepList[i].DatePosted
+                @*<a asp-controller="Questions" asp-action="DetailsDeleteReply" asp-route-id="@Model.RepList[i].Id">Delete</a>*@
+
+                <form asp-action="Details">
+
+                    <div class="input-group">
+                        <input type="hidden" name="id" value="@Html.ViewData.Model.RepList[i].QuestionId"/>
+                        <input type="hidden" name="delId" value="@Html.ViewData.Model.RepList[i].Id"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary btn-lg" type="submit">
+                                Delete
+                            </button>
+                        </span>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+
+    @*<dl class="dl-horizontal">
                 <dt>
                     @Html.DisplayNameFor(model => model.Anonymous)
                 </dt>
@@ -135,11 +135,9 @@
                     @Html.DisplayFor(model => model.DatePosted)
                 </dd>
             </dl>*@
-    </div>
+</div>
 
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
-
-

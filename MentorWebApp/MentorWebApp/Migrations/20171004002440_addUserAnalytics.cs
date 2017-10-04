@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MentorWebApp.Migrations
 {
@@ -9,38 +8,35 @@ namespace MentorWebApp.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "AnalyticNewIdentity",
-                table: "AspNetUsers",
-                type: "nvarchar(450)",
+                "AnalyticNewIdentity",
+                "AspNetUsers",
+                "nvarchar(450)",
                 nullable: true);
 
             migrationBuilder.CreateTable(
-                name: "UserAnalytic",
-                columns: table => new
+                "UserAnalytic",
+                table => new
                 {
-                    NewIdentity = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Count = table.Column<int>(type: "int", nullable: false),
-                    LastLoginDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    NumberOfQuestions = table.Column<int>(type: "int", nullable: false),
-                    NumberOfReplies = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    WeekLoginCheckStringStore = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    NewIdentity = table.Column<string>("nvarchar(450)", nullable: false),
+                    Count = table.Column<int>("int", nullable: false),
+                    LastLoginDate = table.Column<DateTime>("datetime2", nullable: false),
+                    NumberOfQuestions = table.Column<int>("int", nullable: false),
+                    NumberOfReplies = table.Column<int>("int", nullable: false),
+                    UserId = table.Column<string>("nvarchar(max)", nullable: true),
+                    WeekLoginCheckStringStore = table.Column<string>("nvarchar(max)", nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserAnalytic", x => x.NewIdentity);
-                });
+                constraints: table => { table.PrimaryKey("PK_UserAnalytic", x => x.NewIdentity); });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_AnalyticNewIdentity",
-                table: "AspNetUsers",
-                column: "AnalyticNewIdentity");
+                "IX_AspNetUsers_AnalyticNewIdentity",
+                "AspNetUsers",
+                "AnalyticNewIdentity");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_AspNetUsers_UserAnalytic_AnalyticNewIdentity",
-                table: "AspNetUsers",
-                column: "AnalyticNewIdentity",
-                principalTable: "UserAnalytic",
+                "FK_AspNetUsers_UserAnalytic_AnalyticNewIdentity",
+                "AspNetUsers",
+                "AnalyticNewIdentity",
+                "UserAnalytic",
                 principalColumn: "NewIdentity",
                 onDelete: ReferentialAction.Restrict);
         }
@@ -48,19 +44,19 @@ namespace MentorWebApp.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_AspNetUsers_UserAnalytic_AnalyticNewIdentity",
-                table: "AspNetUsers");
+                "FK_AspNetUsers_UserAnalytic_AnalyticNewIdentity",
+                "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "UserAnalytic");
+                "UserAnalytic");
 
             migrationBuilder.DropIndex(
-                name: "IX_AspNetUsers_AnalyticNewIdentity",
-                table: "AspNetUsers");
+                "IX_AspNetUsers_AnalyticNewIdentity",
+                "AspNetUsers");
 
             migrationBuilder.DropColumn(
-                name: "AnalyticNewIdentity",
-                table: "AspNetUsers");
+                "AnalyticNewIdentity",
+                "AspNetUsers");
         }
     }
 }

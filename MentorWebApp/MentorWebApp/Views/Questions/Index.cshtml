@@ -9,14 +9,13 @@
 
 <h2>Index</h2>
 
-    @{
-        if (SignInManager.IsSignedIn(User))
-        {
-
-            <a asp-action="Create">Create New</a>
-        }
+@{
+    if (SignInManager.IsSignedIn(User))
+    {
+        <a asp-action="Create">Create New</a>
     }
-   
+}
+
 
 <table class="table">
     <thead>
@@ -64,7 +63,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.DatePosted)
             </td>
-          
+
         </tr>
     }
     </tbody>

@@ -17,8 +17,8 @@
                 <div class="input-group">
 
                     <input type="text" id="search" class="search-query form-control" placeholder="Search resources, ask a question" name="search">
-                    <input type="hidden" name="sortSelect" value="alpha" />
-                    <input type="hidden" name="typeSelect" value="both" />
+                    <input type="hidden" name="sortSelect" value="alpha"/>
+                    <input type="hidden" name="typeSelect" value="both"/>
                     <span class="input-group-btn">
                         <button class="btn .btn-primary" type="submit" id="searchButton">
                             <span class="glyphicon glyphicon-search"></span>
@@ -108,22 +108,23 @@
     <div class="row col-md-8 col-md-offset-2">
         <table class="table">
             <thead>
-                <tr>
-                    <th>Popular Resources</th>
+            <tr>
+                <th>Popular Resources</th>
 
-                </tr>
+            </tr>
             </thead>
             <tbody>
 
-                @{for (var i = 0; i < 5; i++)
-                    {
-                        <tr>
-                            <td>
-                                @i
-                            </td>
-                        </tr>
-                    }
+            @{
+                for (var i = 0; i < 5; i++)
+                {
+                    <tr>
+                        <td>
+                            @i
+                        </td>
+                    </tr>
                 }
+            }
             </tbody>
         </table>
     </div>
@@ -132,21 +133,22 @@
     <div class="row col-md-8 col-md-offset-2">
         <table class="table">
             <thead>
-                <tr>
-                    <th>Popular Questions</th>
-                </tr>
+            <tr>
+                <th>Popular Questions</th>
+            </tr>
             </thead>
             <tbody>
 
-                @{for (var i = 0; i < 5; i++)
-                    {
-                        <tr>
-                            <td>
-                                @i
-                            </td>
-                        </tr>
-                    }
+            @{
+                for (var i = 0; i < 5; i++)
+                {
+                    <tr>
+                        <td>
+                            @i
+                        </td>
+                    </tr>
                 }
+            }
             </tbody>
         </table>
     </div>

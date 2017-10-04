@@ -60,9 +60,7 @@ namespace MentorWebApp.Data
                     new ApplicationUser("mentee18", "Mentee", "mentee18@mekb.com", "mentee18@mekb.com", "Mentee#123"),
                     new ApplicationUser("mentee19", "Mentee", "mentee19@mekb.com", "mentee19@mekb.com", "Mentee#123"),
                     new ApplicationUser("mentee20", "Mentee", "mentee20@mekb.com", "mentee20@mekb.com", "Mentee#123")
-                
-
-            };
+                };
 
                 for (var i = 0; i < defaultUsers.Length; i++)
                     if (!context.Users.Any(u => u.UserName == defaultUsers[i].UserName))
@@ -315,7 +313,6 @@ namespace MentorWebApp.Data
                     new Question("How do I draw money?", "dsdffffdsdf", "blgjoe001"),
                     new Question("Where is Leslie Social?", "fdsdfdss", "blgjoe001"),
                     new Question("How do I change my tut period?", "sdfdsfs", "blgjoe001")
-
                 };
 
                 for (var i = 0; i < testQuestions.Length; i++)
