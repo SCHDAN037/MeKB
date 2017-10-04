@@ -188,5 +188,11 @@ namespace MentorWebApp.Models
             //Make sure Start of the week is Sunday
             if (!WeekStartDate.DayOfWeek.Equals(DayOfWeek.Sunday)) throw new Exception();
         }
+
+        public List<bool> GetWeekCheck()
+        {
+            UnpackWeekList();
+            return WeekLoginCheck;
+        }
     }
 }

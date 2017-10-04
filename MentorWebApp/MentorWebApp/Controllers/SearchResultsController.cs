@@ -19,49 +19,48 @@ namespace MentorWebApp.Controllers
             _context = context;
         }
 
-        public async Task<ActionResult> RedirectToLink(string title, string link, string id)
+        public async Task<ActionResult> RedirectToLink(string title, string link, string id, string searchId)
         {
             var isResource = !link.Contains("Questions/Details");
 
-            try
+
+            if (isResource)
             {
-                if (isResource)
-                {
-                    // We looking for a resource to update its analytic
-                    var tempRes = await _context.Resources.SingleOrDefaultAsync(s => s.ResourceId.Equals(id));
-                    var tempAnalytic =
-                        await _context.ContentAnalytics.SingleOrDefaultAsync(
-                            s => s.ContentId.Equals(tempRes.ResourceId));
-                    tempAnalytic.Clicks++;
-                    _context.Update(tempRes);
-                    _context.Update(tempAnalytic);
-                    if (!link.Contains("http")) link = "http://" + link;
-                }
-                else
-                {
-                    //update question analytics
-                    var tempQues = await _context.Questions.SingleOrDefaultAsync(s => s.Id.Equals(id));
-                    var tempAnalytic =
-                        await _context.ContentAnalytics.SingleOrDefaultAsync(
-                            s => s.ContentId.Equals(tempQues.Id));
-                    tempAnalytic.Clicks++;
-
-                    _context.Update(tempQues);
-                    _context.Update(tempAnalytic);
-
-                    return RedirectToAction("Details", "Questions", tempQues);
-                }
+                // We looking for a resource to update its analytic
+                var tempRes = await _context.Resources.SingleOrDefaultAsync(s => s.ResourceId.Equals(id));
+                var tempAnalytic =
+                    await _context.ContentAnalytics.SingleOrDefaultAsync(
+                        s => s.ContentId.Equals(tempRes.ResourceId));
+                tempAnalytic.Clicks++;
+                _context.Update(tempRes);
+                _context.Update(tempAnalytic);
+                if (!link.Contains("http")) link = "http://" + link;
             }
-            catch (Exception)
+            else
             {
-                // Means the object we looking for doesnt exist
-                throw;
+                //update question analytics
+                var tempQues = await _context.Questions.SingleOrDefaultAsync(s => s.Id.Equals(id));
+                var tempAnalytic =
+                    await _context.ContentAnalytics.SingleOrDefaultAsync(
+                        s => s.ContentId.Equals(tempQues.Id));
+                tempAnalytic.Clicks++;
+
+                _context.Update(tempQues);
+                _context.Update(tempAnalytic);
+
+                return RedirectToAction("Details", "Questions", tempQues);
             }
 
+            //update the succeed count for this search
+            var searchResult = await _context.SearchResults.SingleOrDefaultAsync(s => s.Id == searchId);
+            var searchAnalytic = await _context.SearchAnalytics.SingleOrDefaultAsync(s => s.SearchResultId == searchResult.Id);
+            searchAnalytic.SucceedClicks++;
+            _context.Update(searchResult);
+            _context.Update(searchAnalytic);
+            
             _context.SaveChanges();
-            
+
             return Redirect(link);
-            
         }
 
         public async Task<IActionResult> Index(string search, string sortSelect, string typeSelect)
@@ -75,14 +74,13 @@ namespace MentorWebApp.Controllers
             var tempRes = res;
             var tempQues = ques;
             var newSearch = false;
+
             //Make sure our search parameters are not null
             if (string.IsNullOrEmpty(typeSelect)) typeSelect = "res";
             if (string.IsNullOrEmpty(sortSelect)) sortSelect = "alpha";
             if (string.IsNullOrEmpty(search)) search = "";
 
             //Initialize a new search result object
-
-
             try
             {
                 // Check if this search has been done before
