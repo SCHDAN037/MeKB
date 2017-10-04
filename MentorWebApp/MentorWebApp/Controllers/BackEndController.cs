@@ -325,8 +325,13 @@ namespace MentorWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                var analytic = new ContentAnalytic(question.Id);
+                question.Init(analytic);
                 _context.Add(question);
+                _context.Add(analytic);
                 await _context.SaveChangesAsync();
+
+                
                 return RedirectToAction(nameof(QuestionsIndex));
             }
             return View(question);

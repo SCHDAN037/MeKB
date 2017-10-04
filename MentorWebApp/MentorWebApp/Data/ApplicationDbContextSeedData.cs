@@ -266,6 +266,8 @@ namespace MentorWebApp.Data
                         testResources[i].Init(analytic);
                         context.Resources.AddAsync(testResources[i]).Wait();
                         context.ContentAnalytics.AddAsync(testResources[i].Analytic);
+                        context.Resources.Add(testResources[i]);
+                        context.ContentAnalytics.Add(testResources[i].Analytic);
                     }
 
 
@@ -288,6 +290,37 @@ namespace MentorWebApp.Data
                         testQuestions[i].Init(analytic);
                         context.Questions.AddAsync(testQuestions[i]).Wait();
                         context.ContentAnalytics.AddAsync(testQuestions[i].Analytic);
+                        context.Questions.Add(testQuestions[i]);
+                        context.ContentAnalytics.Add(testQuestions[i].Analytic);
+                    }
+
+                Reply[] testReplies =
+                {
+                    new Reply(testQuestions[0].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[0].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[3].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[2].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[3].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[9].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[5].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[5].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[2].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[3].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[0].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[7].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[3].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[2].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[3].Id, "reply...", "brlste069")
+                };
+
+
+                for (var i = 0; i < testReplies.Length; i++)
+                    if (!context.Replies.Any(u => u.Id == testReplies[i].Id))
+                    {
+                        var analytic = new ContentAnalytic(testReplies[i].Id);
+                        testReplies[i].Init(analytic);
+                        context.Replies.Add(testReplies[i]);
+                        context.ContentAnalytics.Add(testReplies[i].Analytic);
                     }
 
                 //Finished

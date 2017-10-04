@@ -12,6 +12,7 @@ namespace MentorWebApp.Models
         {
             DatePosted = DateTime.Now;
             Replies = new List<Reply>();
+            Id = Guid.NewGuid().ToString();
         }
 
         // constructor that takes 3 parameters, title and question body and student number
