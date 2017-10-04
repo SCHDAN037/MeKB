@@ -64,7 +64,7 @@ namespace MentorWebApp.Data
                 };
 
                 for (var i = 0; i < defaultUsers.Length; i++)
-                    if (!context.Users.Any(u => u.UserName.Equals(defaultUsers[i].UserName)))
+                    if (!context.Users.Any(u => u.UserName == defaultUsers[i].UserName))
                     {
                         userManager.CreateAsync(defaultUsers[i]).Wait();
                         var currrentRole = defaultUsers[i].Permissions;
@@ -303,12 +303,12 @@ namespace MentorWebApp.Data
                 };
 
                 for (var i = 0; i < testResources.Length; i++)
-                    if (!context.Resources.Any(u => u.Link.Equals(testResources[i].Link)))
+                    if (!context.Resources.Any(u => u.Link == testResources[i].Link))
                     {
                         var analytic = new ContentAnalytic(testResources[i].ResourceId);
                         testResources[i].Init(analytic);
-                        context.Resources.AddAsync(testResources[i]).Wait();
-                        context.ContentAnalytics.AddAsync(testResources[i].Analytic);
+                        context.Resources.Add(testResources[i]);
+                        context.ContentAnalytics.Add(testResources[i].Analytic);
                     }
 
 
@@ -328,12 +328,12 @@ namespace MentorWebApp.Data
                     new Question("How do I change my tut period?", "sdfdsfs", "blgjoe001")
                 };
                 for (var i = 0; i < testQuestions.Length; i++)
-                    if (!context.Questions.Any(u => u.Title.Equals(testQuestions[i].Title)))
+                    if (!context.Questions.Any(u => u.Title == testQuestions[i].Title))
                     {
                         var analytic = new ContentAnalytic(testQuestions[i].Id);
                         testQuestions[i].Init(analytic);
-                        context.Questions.AddAsync(testQuestions[i]).Wait();
-                        context.ContentAnalytics.AddAsync(testQuestions[i].Analytic);
+                        context.Questions.Add(testQuestions[i]);
+                        context.ContentAnalytics.Add(testQuestions[i].Analytic);
                     }
 
                 Reply[] testReplies =
@@ -357,12 +357,12 @@ namespace MentorWebApp.Data
 
 
                 for (var i = 0; i < testReplies.Length; i++)
-                    if (!context.Replies.Any(u => u.Id.Equals(testReplies[i].Id)))
+                    if (!context.Replies.Any(u => u.Id == testReplies[i].Id))
                     {
                         var analytic = new ContentAnalytic(testReplies[i].Id);
                         testReplies[i].Init(analytic);
-                        context.Replies.AddAsync(testReplies[i]).Wait();
-                        context.ContentAnalytics.AddAsync(testReplies[i].Analytic);
+                        context.Replies.Add(testReplies[i]);
+                        context.ContentAnalytics.Add(testReplies[i].Analytic);
                     }
 
                 //Finished

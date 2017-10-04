@@ -131,7 +131,9 @@ namespace MentorWebApp.Controllers
                 _context.Add(analytic);
                 await _context.SaveChangesAsync();
                 _context.Add(question);
+                _context.Add(analytic);
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             return View(question);
@@ -154,7 +156,7 @@ namespace MentorWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id,
-            [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
+            [Bind("Anonymous,Title,MessageContent,Id,UctNumber,DatePosted")] Question question)
         {
             if (id != question.Id)
                 return NotFound();
