@@ -73,7 +73,7 @@ namespace MentorWebApp.Controllers
             var tempQues = ques;
             var newSearch = false;
             //Make sure our search parameters are not null
-            if (string.IsNullOrEmpty(typeSelect)) typeSelect = "both";
+            if (string.IsNullOrEmpty(typeSelect)) typeSelect = "res";
             if (string.IsNullOrEmpty(sortSelect)) sortSelect = "alpha";
             if (string.IsNullOrEmpty(search)) search = "";
 
