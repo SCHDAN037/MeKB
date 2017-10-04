@@ -15,7 +15,16 @@ namespace MentorWebApp.Models
         {
             UserId = userId;
             NewIdentity = Guid.NewGuid().ToString();
-            WeekLoginCheck = new List<bool>();
+            WeekLoginCheck = new List<bool>()
+            {
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+            };
             ResetWeekStats();
             NumberOfQuestions = 0;
             NumberOfReplies = 0;
@@ -73,6 +82,7 @@ namespace MentorWebApp.Models
             //Here we assume that their week check array is the current week they on now.
             //Add one to their login count
             Count++;
+            
             UnpackWeekList();
             //Set the flag to true for today in the week check
             switch (today)
@@ -118,7 +128,16 @@ namespace MentorWebApp.Models
         public void UnpackWeekList()
         {
             var week = WeekLoginCheckStringStore.Split(" ");
-
+            WeekLoginCheck = new List<bool>()
+            {
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+            };
             for (var i = 0; i < 7; i++)
                 WeekLoginCheck[i] = week[i].Equals("1");
         }

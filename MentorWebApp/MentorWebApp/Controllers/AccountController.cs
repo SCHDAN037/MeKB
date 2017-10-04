@@ -116,7 +116,7 @@ namespace MentorWebApp.Controllers
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
 
                 var user = await _userManager.FindByEmailAsync(model.Email);
-                if (user.Enabled)
+                if (user != null && user.Enabled )
                 {
                     var setAllowed = await _userManager.SetLockoutEnabledAsync(user, false);
 

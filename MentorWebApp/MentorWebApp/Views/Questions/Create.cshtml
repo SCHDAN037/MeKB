@@ -1,69 +1,46 @@
 ﻿@model Question
-
 @{
     ViewData["Title"] = "Create";
 }
-
 <h2>Create</h2>
-
 <h4>Question</h4>
-<hr/>
+<hr />
 <div class="row">
-<div class="col-md-4">
-<form asp-action="Create">
-<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-<div class="form-group">
-    <div class="checkbox">
-        <label>
-            <input asp-for="Anonymous"/> @Html.DisplayNameFor(model => model.Anonymous)
-        </label>
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Anonymous" /> @Html.DisplayNameFor(model => model.Anonymous)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tags" class="control-label"></label>
+                <input asp-for="Tags" class="form-control" />
+                <span asp-validation-for="Tags" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MessageContent" class="control-label"></label>
+                <input asp-for="MessageContent" class="form-control" />
+                <span asp-validation-for="MessageContent" class="text-danger"></span>
+            </div>
+            
+            <input type="hidden" name="UctNumber" value="model.UctNumber">
+            <input type="hidden" name="ApplicationId" value="model.ApplicationId">
+            
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
     </div>
 </div>
-<div class="form-group">
-    <label asp-for="Title" class="control-label"></label>
-    <input asp-for="Title" class="form-control"/>
-    <span asp-validation-for="Title" class="text-danger"></span>
-</div>
-<div class="form-group">
-    <label asp-for="Tags" class="control-label"></label>
-    <input asp-for="Tags" class="form-control"/>
-    <span asp-validation-for="Tags" class="text-danger"></span>
-</div>
-<div class="form-group">
-    <label asp-for="MessageContent" class="control-label"></label>
-    <input asp-for="MessageContent" class="form-control"/>
-    <span asp-validation-for="MessageContent" class="text-danger"></span>
-</div>
-
-<input type="hidden" name="UctNumber" value="@Model.UctNumber"/>
-<input type="hidden" name="UctNumber" value="@Model.ApplicationUserId"/>
-@*<div class="form-group">
-                <label asp-for="UctNumber" class="control-label"></label>
-                <input asp-for="UctNumber" class="form-control"/>
-                <span asp-validation-for="UctNumber" class="text-danger"></span>
-            </div>*@
-
-<!--
-<div class="form-group">
-    <label asp-for="ApplicationUserId" class="control-label"></label>
-    <input asp-for="ApplicationUserId" class="form-control"/>
-    <span asp-validation-for="ApplicationUserId" class="text-danger"></span>
-</div>
-<input type="hidden" value="model.ApplicationId">
-<input type="hidden" value="model.UctNumber">
-
-@*<div class="form-group">
-                <label asp-for="DatePosted" class="control-label"></label>
-                <input type="hidden" asp-for="DatePosted" class="form-control"/>
-                <span asp-validation-for="DatePosted" class="text-danger"></span>
-            </div>*@
-<div class="form-group">
-    <input type="submit" value="Create" class="btn btn-default"/>
-</div>
-</form>
-</div>
-</div>
-
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
