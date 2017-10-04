@@ -52,7 +52,7 @@ namespace MentorWebApp.Controllers
 
         //removes a reply from a question and from the database
         public async Task<Question> DetailsDeleteReply(string id,
-            [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
+            [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted,ApplicationId")] Question question)
         {
             if (ModelState.IsValid)
             {
