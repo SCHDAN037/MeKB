@@ -42,47 +42,61 @@
 
     <h2>@Html.DisplayFor(model => model.RepList.Count) answers</h2>
 
-    <div class="upvote">
-        <a class="upvote" title="This is good stuff. Vote it up! (Click again to undo)"></a>
-        <span class="count" title="Total number of votes"></span>
-        <a class="downvote" title="This is not useful. Vote it down. (Click again to undo)"></a>
-    </div>
 
         @for (var i = 0; i < Model.RepList.Count; i++)
         {
             <div class="jumbotron">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <form>
 
-                <div id="upvote" title="Helpful " class="glyphicon glyphicon-thumbs-up " style="color:#18761e">
+                                <span class="input-group-btn">
+                                    <button class="btn .btn-primary" title="Helpful" type="submit" id="searchButton">
+                                        <span class="glyphicon glyphicon-thumbs-up" style="color:green"></span>
+                                    </button>
+                                </span>
 
-                    @Html.ViewData.Model.Analytic.Count;
-                </div>
-                <div id="downvote" title="Unhelpful" class="glyphicon glyphicon-thumbs-down" style="color:orangered">
+                            </form>
 
-                </div>
-                <div class="well">
-                    <p>@Html.ViewData.Model.RepList[i].MessageContent</p>
+                            @*@Html.ViewData.Model.Analytic.Count*@
+                            <form>
 
-                </div>
-                <div class="help-block">
+                                <span class="input-group-btn">
+                                    <button class="btn .btn-primary" title="Unhelpful" type="submit" id="searchButton">
+                                        <span class="glyphicon glyphicon-thumbs-up" style="color:red"></span>
+                                    </button>
+                                </span>
 
-                    <div class="col-xs-6 col-md-3"> answered by @Html.ViewData.Model.RepList[i].UctNumber</div>
-                </div>
-                @Html.ViewData.Model.RepList[i].DatePosted
-                @*<a asp-controller="Questions" asp-action="DetailsDeleteReply" asp-route-id="@Model.RepList[i].Id">Delete</a>*@
+                            </form>
+                        </div>
+                        <div class="well col-md-11">
+                            <p>@Html.ViewData.Model.RepList[i].MessageContent</p>
 
-                <form asp-action="Details">
-
-                    <div class="input-group">
-                        <input type="hidden" name="id" value="@Html.ViewData.Model.RepList[i].QuestionId" />
-                        <input type="hidden" name="delId" value="@Html.ViewData.Model.RepList[i].Id" />
-                        <span class="input-group-btn">
-                            <button class="btn btn-primary btn-lg" type="submit">
-                                Delete
-                            </button>
-                        </span>
-
+                        </div>
                     </div>
-                </form>
+
+                    <div class="help-block">
+
+                        <div class="col-xs-6 col-md-3"> answered by @Html.ViewData.Model.RepList[i].UctNumber</div>
+                    </div>
+                    @Html.ViewData.Model.RepList[i].DatePosted
+                    @*<a asp-controller="Questions" asp-action="DetailsDeleteReply" asp-route-id="@Model.RepList[i].Id">Delete</a>*@
+
+                    <form asp-action="Details">
+
+                        <div class="input-group">
+                            <input type="hidden" name="id" value="@Html.ViewData.Model.RepList[i].QuestionId" />
+                            <input type="hidden" name="delId" value="@Html.ViewData.Model.RepList[i].Id" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary btn-lg" type="submit">
+                                    Delete
+                                </button>
+                            </span>
+
+                        </div>
+                    </form>
+                </div>
             </div>
         }
 
