@@ -39,9 +39,9 @@ namespace MentorWebApp
                 options.AddPolicy("MustBeAdmin",
                     policy => policy.RequireRole("Admin"));
                 options.AddPolicy("Mentee",
-                    policy => policy.RequireRole("Mentee"));
+                    policy => policy.RequireRole("Mentee","Mentor","Admin"));
                 options.AddPolicy("Mentor",
-                    policy => policy.RequireRole("Mentor"));
+                    policy => policy.RequireRole("Mentor","Admin"));
             });
 
 
@@ -84,8 +84,8 @@ namespace MentorWebApp
             });
 
             // COMMENT THESE LINES OUT IF YOU GET A DATABASE ERROR
-          // RolesData.SeedRoles(app).Wait();
-          // ApplicationDbContextSeedData.Seed(app);
+          //RolesData.SeedRoles(app).Wait();
+          //ApplicationDbContextSeedData.Seed(app);
         }
     }
 }

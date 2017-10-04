@@ -130,9 +130,7 @@ namespace MentorWebApp.Controllers
                 _context.Add(question);
                 _context.Add(analytic);
                 await _context.SaveChangesAsync();
-                _context.Add(question);
-                _context.Add(analytic);
-                await _context.SaveChangesAsync();
+                
 
                 return RedirectToAction(nameof(Index));
             }

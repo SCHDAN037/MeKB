@@ -41,13 +41,14 @@
             </div>*@
             
             
-            <div class="form-group">
+            @*<div class="form-group">
                 <label asp-for="ApplicationUserId" class="control-label"></label>
                 <input asp-for="ApplicationUserId" class="form-control"/>
                 <span asp-validation-for="ApplicationUserId" class="text-danger"></span>
-            </div>
-            <input type="hidden" value="model.ApplicationId">
-            <input type="hidden" value="model.UctNumber">
+            </div>*@
+
+            <input type="hidden" name="ApplicationId" value="model.ApplicationId">
+            <input type="hidden" name="UctNumber" value="model.UctNumber">
              
             @*<div class="form-group">
                 <label asp-for="DatePosted" class="control-label"></label>
