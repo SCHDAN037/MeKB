@@ -7,12 +7,12 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>Questions</h2>
 
 @{
     if (SignInManager.IsSignedIn(User))
     {
-        <a asp-action="Create">Create New</a>
+        <a asp-action="Create">Ask A Question</a>
     }
 }
 
