@@ -49,8 +49,10 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-1">
-                            <form>
-
+                            <form asp-action="Details">
+                                <input type="hidden" name="id" value="@Html.ViewData.Model.RepList[i].QuestionId" />
+                                <input type="hidden" name="voteId" value="@Html.ViewData.Model.RepList[i].Id" />
+                                <input type="hidden" name="helpful" value="1" />
                                 <span class="input-group-btn">
                                     <button class="btn .btn-primary" title="Helpful" type="submit" id="searchButton">
                                         <span class="glyphicon glyphicon-thumbs-up" style="color:green"></span>
@@ -59,9 +61,11 @@
 
                             </form>
 
-                            @*@Html.ViewData.Model.Analytic.Count*@
-                            <form>
-
+                            @Html.ViewData.Model.RepList[i].Analytic.Helpful
+                            <form asp-action="Details">
+                                <input type="hidden" name="id" value="@Html.ViewData.Model.RepList[i].QuestionId" />
+                                <input type="hidden" name="voteId" value="@Html.ViewData.Model.RepList[i].Id" />
+                                <input type="hidden" name="helpful" value="-1" />
                                 <span class="input-group-btn">
                                     <button class="btn .btn-primary" title="Unhelpful" type="submit" id="searchButton">
                                         <span class="glyphicon glyphicon-thumbs-up" style="color:red"></span>
@@ -69,6 +73,9 @@
                                 </span>
 
                             </form>
+                            @Html.ViewData.Model.RepList[i].Analytic.UnHelpful
+
+
                         </div>
                         <div class="well col-md-11">
                             <p>@Html.ViewData.Model.RepList[i].MessageContent</p>

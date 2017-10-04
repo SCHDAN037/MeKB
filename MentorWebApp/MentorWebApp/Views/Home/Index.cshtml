@@ -4,39 +4,37 @@
 
 
 <div class="container">
-<div class="row">
-    <div class="col-md-6 col-md-offset-3 text-center">
-        <h1>Mentorship Knowledgebase</h1>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 text-center">
+            <h1>Mentorship Knowledgebase</h1>
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-md-6 col-md-offset-3">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
 
-        <form method="get" action="@Url.Action("Index", "SearchResults")">
+            <form method="get" action="@Url.Action("Index", "SearchResults")">
 
-            <div class="input-group">
+                <div class="input-group">
 
-                <input type="text" id="search" class="search-query form-control" placeholder="Search resources, ask a question" name="search">
-                <input type="hidden" name="sortSelect" value="alpha"/>
-                <input type="hidden" name="typeSelect" value="both"/>
-                <span class="input-group-btn">
-                    <button class="btn .btn-primary" type="submit" id="searchButton">
-                        <span class="glyphicon glyphicon-search"></span>
-                    </button>
-                </span>
+                    <input type="text" id="search" class="search-query form-control" placeholder="Search resources, ask a question" name="search">
+                    <input type="hidden" name="sortSelect" value="alpha" />
+                    <input type="hidden" name="typeSelect" value="both" />
+                    <span class="input-group-btn">
+                        <button class="btn .btn-primary" type="submit" id="searchButton">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
 
-            </div>
-        </form>
+                </div>
+            </form>
 
+        </div>
     </div>
-</div>
-<div class="row col-md-offset-2">
-    <h3></h3>
-    <div class="col-xs-6 col-md-3">
-        <form method="get" action="@Url.Action("Index", "SearchResults")">
-            <input type="hidden" name="search" value="Study skills"/>
-            <input type="hidden" name="sortSelect" value="alpha"/>
-            <input type="hidden" name="typeSelect" value="both"/>
+    <div class="row col-md-offset-2">
+        <h3></h3>
+
+        <div class="col-xs-6 col-md-3">
+
             <div class="thumbnail">
                 <a href="https://localhost:44324/SearchResults?search=Study+Skills&sortSelect=alpha&typeSelect=res">
                     <img src="http://theatelieracademy.com/wp-content/uploads/2016/09/coming-soon-400x400.jpg" width="500" height="500">
@@ -46,172 +44,111 @@
                     </div>
                 </a>
             </div>
-        </form>
-        <div class="thumbnail" role="button">
-            <a href="https://localhost:44324/SearchResults?search=Plagiarism&sortSelect=alpha&typeSelect=res">
-                <img src="http://theatelieracademy.com/wp-content/uploads/2016/09/coming-soon-400x400.jpg" width="500" height="500" border: 1px solid #ddd>
-                <div class="caption">
-                    <h4>Plagiarism</h4>
-
-                </div>
-            </a>
-        </div>
-    </div>
-    <div class="col-xs-6 col-md-3">
-        <div class="thumbnail" role="button">
-            <a href="https://localhost:44324/SearchResults?search=Time+management&sortSelect=alpha&typeSelect=res">
-                <img src="http://theatelieracademy.com/wp-content/uploads/2016/09/coming-soon-400x400.jpg" width="500" height="500" border: 1px solid #ddd>
-                <div class="caption">
-                    <h4>Time management</h4>
-
-                </div>
-            </a>
-        </div>
-        <div class="thumbnail" role="button">
-            <a href="https://localhost:44324/SearchResults?search=research&sortSelect=alpha&typeSelect=res">
-                <img src="http://theatelieracademy.com/wp-content/uploads/2016/09/coming-soon-400x400.jpg" width="500" height="500" border: 1px solid #ddd>
-                <div class="caption">
-                    <h4>Research</h4>
-
-                </div>
-            </a>
-        </div>
-    </div>
-    <div class="col-xs-6 col-md-3">
-        <div class="thumbnail" role="button">
-            <a href="https://localhost:44324/SearchResults?search=Referencing&sortSelect=alpha&typeSelect=res">
-                <img src="http://theatelieracademy.com/wp-content/uploads/2016/09/coming-soon-400x400.jpg" width="500" height="500" border: 1px solid #ddd>
-                <div class="caption">
-                    <h4>Referencing</h4>
-
-                </div>
-            </a>
-        </div>
-        <div class="thumbnail" role="button">
-            <a href="https://localhost:44324/SearchResults?search=Essay+Writing&sortSelect=alpha&typeSelect=res">
-                <img src="http://theatelieracademy.com/wp-content/uploads/2016/09/coming-soon-400x400.jpg" width="500" height="500" border: 1px solid #ddd>
-                <div class="caption">
-                    <h4>Essay Writing</h4>
-
-                </div>
-            </a>
-        </div>
-
-    </div>
-    <div class="col-md-3">
-        <a class="twitter-timeline" href="https://twitter.com/UCT_news?ref_src=twsrc%5Etfw">Tweets by UCT_news</a>
-        <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-    </div>
-
-</div>
 
 
-@*<div class="row col-md-offset-2">
-        <h3></h3>
-        <div class="col-xs-6 col-md-3">
             <div class="thumbnail" role="button">
-                <img src="http://theatelieracademy.com/wp-content/uploads/2016/09/coming-soon-400x400.jpg" width="500" height="500" border: 1px solid #ddd>
-                <div class="caption">
-                    <h4>Plagiarism</h4>
-
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-6 col-md-3">
-            <div class="thumbnail" role="button">
-                <img src="http://theatelieracademy.com/wp-content/uploads/2016/09/coming-soon-400x400.jpg" width="500" height="500" border: 1px solid #ddd>
-                <div class="caption">
-                    <h4>Stuff</h4>
-
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-6 col-md-3">
-            <div class="thumbnail" role="button">
-                <img src="http://theatelieracademy.com/wp-content/uploads/2016/09/coming-soon-400x400.jpg" width="500" height="500" border: 1px solid #ddd>
-                <div class="caption">
-                    <h4>Other stuff</h4>
-
-                </div>
-            </div>
-        </div>
-<<<<<<< HEAD
-    </div>*@
-<!-- <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-        <h3>Popular Resources</h3>
-        <div class="jumbotron">
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <a href="https://www.ox.ac.uk/students/academic/guidance/skills?wssl=1 " target="_blank">
-                        Study skills and training | University Of Oxford
-                    </a>
-                </li>
-                <li class="list-group-item">
-                    <a href="https://www.samford.edu/departments/academic-success-center/how-to-study " target="_blank">
-                        How to Get the Most Out of Studying
-                        : A Video Series | Samford University
-                    </a>
-                </li>
-                <li class="list-group-item">
-                    <a href=" https://www.reading.ac.uk/library/study-advice/lib-sa-videos.aspx" target="_blank">
-                        STUDY ADVICE VIDEO TUTORIALS
-
-                        | University of Reading
-                    </a>
-                </li>
-                <li class="list-group-item">
-                    <a href="https://students.dartmouth.edu/academic-skills/ " target="_blank">Academic Skills Center | Dartmouth</a>
-                </li>
-                <li class="list-group-item">
-                    <a href="http://lsc.cornell.edu/study-skills/study-skills-videos/ " target="_blank">
-                        Study Skills Videos
-                        | Cornell University
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-    </div>
-</div> -->
-@*<div class="row">
-            <div class="col-md-6 col-md-offset-3">
-                <h3>Latest</h3>
-                <div class="jumbotron">
-                    <div class="panel panel-default">
-
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <a href="https://www.ox.ac.uk/students/academic/guidance/skills?wssl=1 " target="_blank">
-                                    Study skills and training | University Of Oxford
-                                </a>
-                            </li>
-                            <li class="list-group-item">
-                                <a href="https://www.samford.edu/departments/academic-success-center/how-to-study " target="_blank">
-                                    How to Get the Most Out of Studying
-                                    : A Video Series | Samford University
-                                </a>
-                            </li>
-                            <li class="list-group-item">
-                                <a href=" https://www.reading.ac.uk/library/study-advice/lib-sa-videos.aspx" target="_blank">
-                                    STUDY ADVICE VIDEO TUTORIALS
-
-                                    | University of Reading
-                                </a>
-                            </li>
-                            <li class="list-group-item"><a href="https://students.dartmouth.edu/academic-skills/ " target="_blank">Academic Skills Center | Dartmouth</a></li>
-                            <li class="list-group-item">
-                                <a href="http://lsc.cornell.edu/study-skills/study-skills-videos/ " target="_blank">
-                                    Study Skills Videos
-                                    | Cornell University
-                                </a>
-                            </li>
-                        </ul>
+                <a href="https://localhost:44324/SearchResults?search=Plagiarism&sortSelect=alpha&typeSelect=res">
+                    <img src="http://theatelieracademy.com/wp-content/uploads/2016/09/coming-soon-400x400.jpg" width="500" height="500" border: 1px solid #ddd>
+                    <div class="caption">
+                        <h4>Plagiarism</h4>
 
                     </div>
-
-                </div>
-
+                </a>
             </div>
-        </div>*@
+        </div>
+        <div class="col-xs-6 col-md-3">
+            <div class="thumbnail" role="button">
+                <a href="https://localhost:44324/SearchResults?search=Time+management&sortSelect=alpha&typeSelect=res">
+                    <img src="http://theatelieracademy.com/wp-content/uploads/2016/09/coming-soon-400x400.jpg" width="500" height="500" border: 1px solid #ddd>
+                    <div class="caption">
+                        <h4>Time management</h4>
+
+                    </div>
+                </a>
+            </div>
+            <div class="thumbnail" role="button">
+                <a href="https://localhost:44324/SearchResults?search=research&sortSelect=alpha&typeSelect=res">
+                    <img src="http://theatelieracademy.com/wp-content/uploads/2016/09/coming-soon-400x400.jpg" width="500" height="500" border: 1px solid #ddd>
+                    <div class="caption">
+                        <h4>Research</h4>
+
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-xs-6 col-md-3">
+            <div class="thumbnail" role="button">
+                <a href="https://localhost:44324/SearchResults?search=Referencing&sortSelect=alpha&typeSelect=res">
+                    <img src="http://theatelieracademy.com/wp-content/uploads/2016/09/coming-soon-400x400.jpg" width="500" height="500" border: 1px solid #ddd>
+                    <div class="caption">
+                        <h4>Referencing</h4>
+
+                    </div>
+                </a>
+            </div>
+            <div class="thumbnail" role="button">
+                <a href="https://localhost:44324/SearchResults?search=Essay+Writing&sortSelect=alpha&typeSelect=res">
+                    <img src="http://theatelieracademy.com/wp-content/uploads/2016/09/coming-soon-400x400.jpg" width="500" height="500" border: 1px solid #ddd>
+                    <div class="caption">
+                        <h4>Essay Writing</h4>
+
+                    </div>
+                </a>
+            </div>
+
+        </div>
+
+        <div class="col-md-3 ">
+            <a class="twitter-timeline" href="https://twitter.com/UCT_news?ref_src=twsrc%5Etfw" data-height="600">Tweets by UCT_news</a>
+            <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
+
+    </div>
+
+    <div class="row col-md-8 col-md-offset-2">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Popular Resources</th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                @{for (var i = 0; i < 5; i++)
+                    {
+                        <tr>
+                            <td>
+                                @i
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="row col-md-8 col-md-offset-2">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Popular Questions</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @{for (var i = 0; i < 5; i++)
+                    {
+                        <tr>
+                            <td>
+                                @i
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
 </div>
