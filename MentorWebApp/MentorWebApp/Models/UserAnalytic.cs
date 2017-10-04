@@ -15,7 +15,7 @@ namespace MentorWebApp.Models
         {
             UserId = userId;
             NewIdentity = Guid.NewGuid().ToString();
-            WeekLoginCheck = new List<bool>(7);
+            WeekLoginCheck = new List<bool>();
             ResetWeekStats();
             NumberOfQuestions = 0;
             NumberOfReplies = 0;
@@ -38,8 +38,10 @@ namespace MentorWebApp.Models
 
 
         //Sunday = 0, Monday = 1, etc...
+        [NotMapped]
         public List<bool> WeekLoginCheck { get; set; }
 
+        public string WeekLoginCheckStringStore { get; set; }
 
         /*
          * 
@@ -71,7 +73,7 @@ namespace MentorWebApp.Models
             //Here we assume that their week check array is the current week they on now.
             //Add one to their login count
             Count++;
-
+            UnpackWeekList();
             //Set the flag to true for today in the week check
             switch (today)
             {
@@ -99,7 +101,7 @@ namespace MentorWebApp.Models
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-
+            PackWeekList();
             //Finally update their last logged in date
             LastLoginDate = DateTime.Today;
         }
@@ -107,8 +109,34 @@ namespace MentorWebApp.Models
         private void ResetWeekStats()
         {
             //reset their week checks
-            for (var i = 0; i < WeekLoginCheck.Count; i++)
-                WeekLoginCheck[i] = false;
+            WeekLoginCheck.Clear();
+            for (var i = 0; i < 7; i++)
+                WeekLoginCheck.Add(false);
+            WeekLoginCheckStringStore = "0 0 0 0 0 0 0";
+        }
+
+        public void UnpackWeekList()
+        {
+            
+            string[] week = WeekLoginCheckStringStore.Split(" ");
+
+            for (int i = 0; i < 7; i++)
+            {
+                WeekLoginCheck[i] = week[i].Equals("1");
+            }
+            
+        }
+
+        public void PackWeekList()
+        {
+
+            string week = "";
+
+            for (int i = 0; i < 7; i++)
+            {
+                week += WeekLoginCheck[i] ? "1 " : "0 ";
+            }
+            WeekLoginCheckStringStore = week;
         }
 
         private bool OutOfDate()

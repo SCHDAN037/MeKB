@@ -19,6 +19,7 @@ namespace MentorWebApp.Data
         public DbSet<SearchResult> SearchResults { get; set; }
         public DbSet<SearchAnalytic> SearchAnalytics { get; set; }
         public DbSet<ContentAnalytic> ContentAnalytics { get; set; }
+        public DbSet<UserAnalytic> UserAnalytics { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
 

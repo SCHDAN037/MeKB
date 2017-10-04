@@ -46,5 +46,19 @@ namespace MentorWebApp.Models
             return update.Succeeded;
             
         }
+
+
+        public UserAnalytic GetAnalytic()
+        {
+            if (Analytic != null)
+            {
+                return Analytic;
+            }
+            else
+            {
+                Analytic = new UserAnalytic(this.Id);
+                return Analytic;
+            }
+        }
     }
 }

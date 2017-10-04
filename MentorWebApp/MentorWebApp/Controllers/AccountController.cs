@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using MentorWebApp.Data;
 using MentorWebApp.Models;
 using MentorWebApp.Models.AccountViewModels;
 using MentorWebApp.Services;
@@ -21,8 +22,9 @@ namespace MentorWebApp.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ApplicationDbContext _context;
 
-        public AccountController(
+        public AccountController(ApplicationDbContext context,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             RoleManager<IdentityRole> roleManager,
@@ -31,7 +33,7 @@ namespace MentorWebApp.Controllers
         {
             _userManager = userManager;
             _signInManager = signInManager;
-
+            _context = context;
             _roleManager = roleManager;
             _emailSender = emailSender;
             _logger = logger;
@@ -123,8 +125,13 @@ namespace MentorWebApp.Controllers
                     if (result.Succeeded)
                     {
                         _logger.LogInformation("User logged in.");
-                        user.Analytic.UserLogin();
+                        UserAnalytic analytic = user.GetAnalytic();
+                        analytic.UserLogin();
+                       
                         await _userManager.UpdateAsync(user);
+                        _context.UserAnalytics.Update(analytic);
+                        ///////////////////
+
                         return RedirectToLocal(returnUrl);
                     }
                     if (result.RequiresTwoFactor)
