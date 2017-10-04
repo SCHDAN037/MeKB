@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 
-namespace MentorWebApp.Data.Migrations
+namespace MentorWebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170924131935_edit_question2")]
-    partial class edit_question2
+    [Migration("20171003200812_recreate")]
+    partial class recreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,17 +50,17 @@ namespace MentorWebApp.Data.Migrations
 
                     b.Property<string>("PasswordHash");
 
+                    b.Property<string>("Permissions");
+
                     b.Property<string>("PhoneNumber");
 
                     b.Property<bool>("PhoneNumberConfirmed");
-
-                    b.Property<string>("Role");
 
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
 
-                    b.Property<string>("UctiId");
+                    b.Property<string>("UctNumber");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
@@ -78,12 +78,36 @@ namespace MentorWebApp.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("MentorWebApp.Models.ContentAnalytic", b =>
+                {
+                    b.Property<string>("NewIdentity")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Clicks");
+
+                    b.Property<string>("ContentId");
+
+                    b.Property<int>("Count");
+
+                    b.Property<int>("Helpful");
+
+                    b.Property<int>("UnHelpful");
+
+                    b.HasKey("NewIdentity");
+
+                    b.ToTable("ContentAnalytics");
+                });
+
             modelBuilder.Entity("MentorWebApp.Models.Question", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("AnalyticNewIdentity");
+
                     b.Property<bool>("Anonymous");
+
+                    b.Property<string>("ApplicationUserId");
 
                     b.Property<DateTime>("DatePosted");
 
@@ -93,9 +117,11 @@ namespace MentorWebApp.Data.Migrations
 
                     b.Property<string>("Title");
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("UctNumber");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AnalyticNewIdentity");
 
                     b.ToTable("Questions");
                 });
@@ -105,23 +131,35 @@ namespace MentorWebApp.Data.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("AnalyticNewIdentity");
+
+                    b.Property<string>("ApplicationUserId");
+
                     b.Property<DateTime>("DatePosted");
 
                     b.Property<string>("MessageContent");
 
                     b.Property<string>("QuestionId");
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("UctNumber");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AnalyticNewIdentity");
+
+                    b.HasIndex("QuestionId");
 
                     b.ToTable("Replies");
                 });
 
             modelBuilder.Entity("MentorWebApp.Models.Resource", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("ResourceId")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AnalyticNewIdentity");
+
+                    b.Property<string>("ApplicationUserId");
 
                     b.Property<DateTime>("DateAdded");
 
@@ -133,11 +171,55 @@ namespace MentorWebApp.Data.Migrations
 
                     b.Property<string>("Type");
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("UctNumber");
+
+                    b.HasKey("ResourceId");
+
+                    b.HasIndex("AnalyticNewIdentity");
+
+                    b.ToTable("Resources");
+                });
+
+            modelBuilder.Entity("MentorWebApp.Models.SearchAnalytic", b =>
+                {
+                    b.Property<string>("NewIdentity")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Count");
+
+                    b.Property<int>("NoOfResults");
+
+                    b.Property<int>("NoResultsCount");
+
+                    b.Property<string>("SearchResultId");
+
+                    b.Property<int>("SucceedClicks");
+
+                    b.HasKey("NewIdentity");
+
+                    b.HasIndex("SearchResultId")
+                        .IsUnique()
+                        .HasFilter("[SearchResultId] IS NOT NULL");
+
+                    b.ToTable("SearchAnalytics");
+                });
+
+            modelBuilder.Entity("MentorWebApp.Models.SearchResult", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("NoOfResults");
+
+                    b.Property<string>("searchVal");
+
+                    b.Property<string>("sortVal");
+
+                    b.Property<string>("typeVal");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Resources");
+                    b.ToTable("SearchResults");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -246,6 +328,38 @@ namespace MentorWebApp.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("MentorWebApp.Models.Question", b =>
+                {
+                    b.HasOne("MentorWebApp.Models.ContentAnalytic", "Analytic")
+                        .WithMany()
+                        .HasForeignKey("AnalyticNewIdentity");
+                });
+
+            modelBuilder.Entity("MentorWebApp.Models.Reply", b =>
+                {
+                    b.HasOne("MentorWebApp.Models.ContentAnalytic", "Analytic")
+                        .WithMany()
+                        .HasForeignKey("AnalyticNewIdentity");
+
+                    b.HasOne("MentorWebApp.Models.Question")
+                        .WithMany("Replies")
+                        .HasForeignKey("QuestionId");
+                });
+
+            modelBuilder.Entity("MentorWebApp.Models.Resource", b =>
+                {
+                    b.HasOne("MentorWebApp.Models.ContentAnalytic", "Analytic")
+                        .WithMany()
+                        .HasForeignKey("AnalyticNewIdentity");
+                });
+
+            modelBuilder.Entity("MentorWebApp.Models.SearchAnalytic", b =>
+                {
+                    b.HasOne("MentorWebApp.Models.SearchResult")
+                        .WithOne("Analytic")
+                        .HasForeignKey("MentorWebApp.Models.SearchAnalytic", "SearchResultId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

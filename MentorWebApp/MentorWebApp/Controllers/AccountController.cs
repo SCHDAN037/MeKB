@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using MentorWebApp.Data;
 using MentorWebApp.Models;
 using MentorWebApp.Models.AccountViewModels;
 using MentorWebApp.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace MentorWebApp.Controllers
 {
@@ -18,13 +17,14 @@ namespace MentorWebApp.Controllers
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
+        private readonly ApplicationDbContext _context;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public AccountController(
+        public AccountController(ApplicationDbContext context,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             RoleManager<IdentityRole> roleManager,
@@ -33,7 +33,7 @@ namespace MentorWebApp.Controllers
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            
+            _context = context;
             _roleManager = roleManager;
             _emailSender = emailSender;
             _logger = logger;
@@ -43,7 +43,56 @@ namespace MentorWebApp.Controllers
         [TempData]
         public string ErrorMessage { get; set; }
 
-        
+        /*
+        private async Task createRolesandUsers()
+        {
+            var x = await _roleManager.RoleExistsAsync("Admin");
+            if (!x)
+            {
+                // first we create Admin role    
+                var role = new IdentityRole
+                {
+                    Name = "Admin"
+                };
+                var create = await _roleManager.CreateAsync(role);
+
+
+                //Here we create a Admin super user who will maintain the website                   
+
+                var user = new ApplicationUser();
+                user.UserName = "admin";
+                user.Email = "admin@default.com";
+
+                var userPWD = "adminADMIN#1";
+
+                var chkUser = await _userManager.CreateAsync(user, userPWD);
+
+                //Add default User to Role Admin    
+                if (chkUser.Succeeded)
+                {
+                    var result1 = _userManager.AddToRoleAsync(user, "Admin");
+                }
+            }
+
+            // creating Creating Manager role     
+            x = await _roleManager.RoleExistsAsync("Mentor");
+            if (!x)
+            {
+                var role = new IdentityRole();
+                role.Name = "Mentor";
+                await _roleManager.CreateAsync(role);
+            }
+
+            // creating Creating Employee role     
+            x = await _roleManager.RoleExistsAsync("Mentee");
+            if (!x)
+            {
+                var role = new IdentityRole();
+                role.Name = "Mentee";
+                await _roleManager.CreateAsync(role);
+            }
+        }
+        */
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
@@ -70,12 +119,19 @@ namespace MentorWebApp.Controllers
                 if (user.Enabled)
                 {
                     var setAllowed = await _userManager.SetLockoutEnabledAsync(user, false);
-                    
+
                     var result =
                         await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
                     if (result.Succeeded)
                     {
                         _logger.LogInformation("User logged in.");
+                        var analytic = user.GetAnalytic();
+                        analytic.UserLogin();
+
+                        await _userManager.UpdateAsync(user);
+                        _context.UserAnalytics.Update(analytic);
+                        ///////////////////
+
                         return RedirectToLocal(returnUrl);
                     }
                     if (result.RequiresTwoFactor)
@@ -92,11 +148,11 @@ namespace MentorWebApp.Controllers
                 {
                     var setAllowed = await _userManager.SetLockoutEnabledAsync(user, false);
                     _logger.LogWarning("User account locked out.");
-                    
+
                     //ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return RedirectToAction(nameof(Lockout));
                 }
-                
+
                 return View(model);
             }
 
@@ -223,22 +279,22 @@ namespace MentorWebApp.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser {UserName = model.Email, Email = model.Email, Enabled = true, UctNumber = model.UctNumber};
-                
-                var result = await _userManager.CreateAsync(user, model.Password);
+                var user = new ApplicationUser(model.UctNumber, "Mentee", model.Email, model.Email, model.Password);
 
+
+                var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    
+
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
                     await _signInManager.SignInAsync(user, false);
+                    user.Analytic.UserLogin();
+                    await _userManager.UpdateAsync(user);
                     _logger.LogInformation("User created a new account with password.");
-
-                    var roleset = await _userManager.AddToRoleAsync(user, "Mentee");
                     return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);
@@ -437,7 +493,5 @@ namespace MentorWebApp.Controllers
         }
 
         #endregion
-
-        
     }
 }

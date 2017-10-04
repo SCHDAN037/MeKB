@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using MentorWebApp.Data;
 using MentorWebApp.Models;
@@ -23,26 +24,71 @@ namespace MentorWebApp.Controllers
         }
 
         // GET: Questions/Details/5
-
-        public async Task<Question> DetailsAddReply(string id, string reply, [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
+        // adds a reply to a question and to the database
+        public async Task<Question> DetailsAddReply(string id, string reply,
+            [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
         {
-            
-
             if (ModelState.IsValid)
             {
-                
-                    Reply r = new Reply(id, reply, "bob");
-                    question.Replies.Add(r);
-                    _context.Update(question);
+                var r = new Reply(id, reply, "bob");
+                var analytic = new ContentAnalytic(r.Id);
+                r.Init(analytic);
+                question.Replies.Add(r);
+
+                _context.Update(question);
+                //_context.Update(r.Analytic);
+
+                try
+                {
                     await _context.SaveChangesAsync();
-                
-                    return question;
+                }
+                catch (Exception)
+                {
+                }
+                return question;
             }
             return question;
         }
 
-     
-        public async Task<IActionResult> Details(string id, string reply)
+        //removes a reply from a question and from the database
+        public async Task<Question> DetailsDeleteReply(string id,
+            [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted,ApplicationId")] Question question)
+        {
+            if (ModelState.IsValid)
+            {
+                var rep = from r in _context.Replies
+                    select r;
+                var trep = rep.SingleOrDefault(s => s.Id.Equals(id));
+                _context.Replies.Remove(trep);
+                await _context.SaveChangesAsync();
+
+                return question;
+            }
+            return question;
+        }
+
+        public async Task<Question> DetailsVote(string id, int helpful,
+            [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
+        {
+            if (ModelState.IsValid)
+            {
+                var rep = from r in _context.Replies
+                    select r;
+                var trep = rep.SingleOrDefault(s => s.Id.Equals(id));
+                var analytic = _context.ContentAnalytics.SingleOrDefault(s => s.ContentId == trep.Id);
+                if (helpful == 1)
+                    analytic.Helpful++;
+                else if (helpful == -1)
+                    analytic.UnHelpful++;
+
+                _context.Update(analytic);
+                await _context.SaveChangesAsync();
+                return question;
+            }
+            return question;
+        }
+
+        public async Task<IActionResult> Details(string id, string reply, string delId, string voteId, int helpful)
         {
             if (id == null)
                 return NotFound();
@@ -53,21 +99,46 @@ namespace MentorWebApp.Controllers
             //question.CreateReply(reply);
 
 
-
-            
-
             if (!string.IsNullOrEmpty(reply))
             {
                 var temp = await DetailsAddReply(id, reply, question);
                 question = temp;
             }
 
+            else if (!string.IsNullOrEmpty(delId))
+            {
+                var temp = await DetailsDeleteReply(delId, question);
+                question = temp;
+            }
+
+            else if (helpful == 1 || helpful == -1)
+            {
+                var temp = await DetailsVote(voteId, helpful, question);
+                question = temp;
+            }
+
+            else
+            {
+                //Update this questions analytic ONLY IF THEY VISIT THE PAGE WITHOUT ADDING/DELETING A REPLY
+                var analytic = await _context.ContentAnalytics.SingleOrDefaultAsync(m => m.ContentId == question.Id);
+                analytic.Clicks++;
+                _context.Update(analytic);
+                _context.SaveChanges();
+            }
+
             var rep = from r in _context.Replies
-                      select r;
+                select r;
             rep = rep.Where(s => s.QuestionId.Equals(id));
             var repList = await rep.ToListAsync();
+            foreach (var replyEach in repList)
+            {
+                var anal = _context.ContentAnalytics.SingleOrDefault(s => s.ContentId == replyEach.Id);
+                replyEach.Analytic = anal;
+            }
+
             var sortedList = repList.OrderBy(x => x.DatePosted).ToList();
             question.RepList = sortedList;
+
 
             return View(question);
         }
@@ -78,21 +149,24 @@ namespace MentorWebApp.Controllers
             return View();
         }
 
-        
-
         // POST: Questions/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
             [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted,Title,Tags")] Question question)
         {
-            
             if (ModelState.IsValid)
             {
+                var analytic = new ContentAnalytic(question.Id);
+                question.Init(analytic);
                 _context.Add(question);
+                _context.Add(analytic);
                 await _context.SaveChangesAsync();
+                _context.Add(question);
+                _context.Add(analytic);
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             return View(question);
@@ -111,12 +185,11 @@ namespace MentorWebApp.Controllers
         }
 
         // POST: Questions/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id,
-            [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
+            [Bind("Anonymous,Title,MessageContent,Id,UctNumber,DatePosted")] Question question)
         {
             if (id != question.Id)
                 return NotFound();
@@ -159,6 +232,14 @@ namespace MentorWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
+            var rep = from r in _context.Replies
+                select r;
+            rep = rep.Where(s => s.QuestionId.Equals(id));
+            var tempRep = await rep.ToListAsync();
+            foreach (var reply in tempRep)
+                _context.Replies.Remove(reply);
+            await _context.SaveChangesAsync();
+
             var question = await _context.Questions.SingleOrDefaultAsync(m => m.Id == id);
             _context.Questions.Remove(question);
             await _context.SaveChangesAsync();

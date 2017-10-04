@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using MentorWebApp.Models;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +9,6 @@ namespace MentorWebApp.Data
     {
         public static async Task SeedRoles(IApplicationBuilder app)
         {
-
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();

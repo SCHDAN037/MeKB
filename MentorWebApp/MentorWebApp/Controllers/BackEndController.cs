@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using MentorWebApp.Data;
 using MentorWebApp.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,12 +16,15 @@ namespace MentorWebApp.Controllers
     public class BackEndController : Controller
     {
         private readonly ApplicationDbContext _context;
+
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
+
 
         public BackEndController(ApplicationDbContext context)
         {
             _context = context;
+
             _userManager = _context.GetService<UserManager<ApplicationUser>>();
             _roleManager = _context.GetService<RoleManager<IdentityRole>>();
         }
@@ -106,11 +108,9 @@ namespace MentorWebApp.Controllers
                 "ApplicationUserId,UctNumber,Permissions,Enabled,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")]
             ApplicationUser applicationUser)
         {
-
             if (id != applicationUser.Id)
-            {
                 return NotFound();
-            }
+
 
             if (ModelState.IsValid)
             {
@@ -122,23 +122,18 @@ namespace MentorWebApp.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!ApplicationUserExists(applicationUser.Id))
-                    {
                         return NotFound();
-                    }
                 }
                 try
                 {
                     var res = await applicationUser.ChangeRoleAsync(applicationUser.Permissions, oldPermissions,
                         _context.GetService<UserManager<ApplicationUser>>());
                     if (!res)
-                    {
                         throw new Exception();
-                    }
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.StackTrace);                        
-
+                    Debug.WriteLine(e.StackTrace);
                 }
 
                 return RedirectToAction(nameof(UserIndex));
@@ -178,9 +173,6 @@ namespace MentorWebApp.Controllers
         }
 
 
-        /////////////
-        /// Resources
-
         // GET: Resources
         public async Task<IActionResult> ResourcesIndex()
         {
@@ -215,7 +207,10 @@ namespace MentorWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                var analytic = new ContentAnalytic(resource.ResourceId);
+                resource.Init(analytic);
                 _context.Add(resource);
+                _context.Add(analytic);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(ResourcesIndex));
             }
@@ -330,8 +325,13 @@ namespace MentorWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                var analytic = new ContentAnalytic(question.Id);
+                question.Init(analytic);
                 _context.Add(question);
+                _context.Add(analytic);
                 await _context.SaveChangesAsync();
+
+
                 return RedirectToAction(nameof(QuestionsIndex));
             }
             return View(question);

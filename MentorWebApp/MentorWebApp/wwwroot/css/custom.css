@@ -1,5 +1,5 @@
-﻿tr:nth-child(even) {
-    background-color: #eaeaea;
-}
+﻿tr:nth-child(even) { background-color: #eaeaea; }
 
-tr { height:40px;}
+tr { height: 40px; }
+
+#replyBox { resize: none; }
