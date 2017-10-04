@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using MentorWebApp.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -20,22 +21,50 @@ namespace MentorWebApp.Data
                 {
                     //Admin
                     new ApplicationUser("admin", "Admin", "admin@mekb.com", "admin@mekb.com", "adminADMIN#123"),
+                    new ApplicationUser("admin2", "Admin2", "admin2@mekb.com", "admin2@mekb.com", "adminADMIN#123"),
 
                     //Mentors
                     new ApplicationUser("daniel", "Mentor", "daniel@mekb.com", "daniel@mekb.com", "danielDANIEL#123"),
                     new ApplicationUser("andrew", "Mentor", "andrew@mekb.com", "andrew@mekb.com", "andrewANDREW#123"),
                     new ApplicationUser("panashe", "Mentor", "panashe@mekb.com", "panashe@mekb.com",
                         "panashePANASHE#123"),
+                    new ApplicationUser("mentor1", "Mentor", "mentor1@mekb.com", "mentor1@mekb.com", "Mentor#123"),
+                    new ApplicationUser("mentor2", "Mentor", "mentor2@mekb.com", "mentor2@mekb.com", "Mentor#123"),
+                    new ApplicationUser("mentor3", "Mentor", "mentor3@mekb.com", "mentor3@mekb.com", "Mentor#123"),
+                    new ApplicationUser("mentor4", "Mentor", "mentor4@mekb.com", "mentor4@mekb.com", "Mentor#123"),
+                    new ApplicationUser("mentor5", "Mentor", "mentor5@mekb.com", "mentor5@mekb.com", "Mentor#123"),
+                    new ApplicationUser("mentor6", "Mentor", "mentor6@mekb.com", "mentor6@mekb.com", "Mentor#123"),
+                    new ApplicationUser("mentor7", "Mentor", "mentor7@mekb.com", "mentor7@mekb.com", "Mentor#123"),
+                    new ApplicationUser("mentor8", "Mentor", "mentor8@mekb.com", "mentor8@mekb.com", "Mentor#123"),
+                    new ApplicationUser("mentor9", "Mentor", "mentor9@mekb.com", "mentor9@mekb.com", "Mentor#123"),
+                    new ApplicationUser("mentor10", "Mentor", "mentor10@mekb.com", "mentor10@mekb.com", "Mentor#123"),
+
 
                     //Mentees
-                    new ApplicationUser("mentee1", "Mentee", "mentee1@mekb.com", "mentee1@mekb.com", "Mentee1#123"),
-                    new ApplicationUser("mentee2", "Mentee", "mentee2@mekb.com", "mentee2@mekb.com", "Mentee2#123"),
-                    new ApplicationUser("mentee3", "Mentee", "mentee3@mekb.com", "mentee3@mekb.com", "Mentee3#123"),
-                    new ApplicationUser("mentee4", "Mentee", "mentee4@mekb.com", "mentee4@mekb.com", "Mentee4#123")
+                    new ApplicationUser("mentee1", "Mentee", "mentee1@mekb.com", "mentee1@mekb.com", "Mentee#123"),
+                    new ApplicationUser("mentee2", "Mentee", "mentee2@mekb.com", "mentee2@mekb.com", "Mentee#123"),
+                    new ApplicationUser("mentee3", "Mentee", "mentee3@mekb.com", "mentee3@mekb.com", "Mentee#123"),
+                    new ApplicationUser("mentee4", "Mentee", "mentee4@mekb.com", "mentee4@mekb.com", "Mentee#123"),
+                    new ApplicationUser("mentee5", "Mentee", "mentee5@mekb.com", "mentee5@mekb.com", "Mentee#123"),
+                    new ApplicationUser("mentee6", "Mentee", "mentee6@mekb.com", "mentee6@mekb.com", "Mentee#123"),
+                    new ApplicationUser("mentee7", "Mentee", "mentee7@mekb.com", "mentee7@mekb.com", "Mentee#123"),
+                    new ApplicationUser("mentee8", "Mentee", "mentee8@mekb.com", "mentee8@mekb.com", "Mentee#123"),
+                    new ApplicationUser("mentee9", "Mentee", "mentee9@mekb.com", "mentee9@mekb.com", "Mentee#123"),
+                    new ApplicationUser("mentee10", "Mentee", "mentee10@mekb.com", "mentee10@mekb.com", "Mentee#123"),
+                    new ApplicationUser("mentee11", "Mentee", "mentee11@mekb.com", "mentee11@mekb.com", "Mentee#123"),
+                    new ApplicationUser("mentee12", "Mentee", "mentee12@mekb.com", "mentee12@mekb.com", "Mentee#123"),
+                    new ApplicationUser("mentee13", "Mentee", "mentee13@mekb.com", "mentee13@mekb.com", "Mentee#123"),
+                    new ApplicationUser("mentee14", "Mentee", "mentee14@mekb.com", "mentee14@mekb.com", "Mentee#123"),
+                    new ApplicationUser("mentee15", "Mentee", "mentee15@mekb.com", "mentee15@mekb.com", "Mentee#123"),
+                    new ApplicationUser("mentee16", "Mentee", "mentee16@mekb.com", "mentee16@mekb.com", "Mentee#123"),
+                    new ApplicationUser("mentee17", "Mentee", "mentee17@mekb.com", "mentee17@mekb.com", "Mentee#123"),
+                    new ApplicationUser("mentee18", "Mentee", "mentee18@mekb.com", "mentee18@mekb.com", "Mentee#123"),
+                    new ApplicationUser("mentee19", "Mentee", "mentee19@mekb.com", "mentee19@mekb.com", "Mentee#123"),
+                    new ApplicationUser("mentee20", "Mentee", "mentee20@mekb.com", "mentee20@mekb.com", "Mentee#123")
                 };
 
                 for (var i = 0; i < defaultUsers.Length; i++)
-                    if (!context.Users.Any(u => u.UserName == defaultUsers[i].UserName))
+                    if (!context.Users.Any(u => u.UserName.Equals(defaultUsers[i].UserName)))
                     {
                         userManager.CreateAsync(defaultUsers[i]).Wait();
                         var currrentRole = defaultUsers[i].Permissions;
@@ -51,7 +80,21 @@ namespace MentorWebApp.Data
                                 userManager.AddToRoleAsync(defaultUsers[i], "Mentee").Wait();
                                 break;
                         }
+
+                        //just adding basic analytics
+                        //var analytic = defaultUsers[i].GetAnalytic();
+                        //analytic.Count = i + i/2;
+                        //analytic.NumberOfQuestions = (i + i) / 4;
+                        //analytic.LastLoginDate = DateTime.Today.AddDays((i - 5)/2);
+                        //analytic.NumberOfReplies = 5;
+                        //for (int j = 0; j < UPPER; j++)
+                        //{
+                            
+                        //}
+                        //analytic.WeekLoginCheckStringStore = String.Concat(Enumerable.Repeat(((i%2) + " "), 7));
+                        
                     }
+                
 
                 //Resources
 
@@ -260,7 +303,7 @@ namespace MentorWebApp.Data
                 };
 
                 for (var i = 0; i < testResources.Length; i++)
-                    if (!context.Resources.Any(u => u.Link == testResources[i].Link))
+                    if (!context.Resources.Any(u => u.Link.Equals(testResources[i].Link)))
                     {
                         var analytic = new ContentAnalytic(testResources[i].ResourceId);
                         testResources[i].Init(analytic);
@@ -274,20 +317,52 @@ namespace MentorWebApp.Data
                 Question[] testQuestions =
                 {
                     new Question("Where are the Libraries?", "UCT main library", "blgjoe001"),
-                    new Question("When are the Libraries open?", "", "blgjoe001"),
-                    new Question("What is plagiarism?", "", "blgjoe001"),
-                    new Question("Where are the Scilabs?", "", "blgjoe001"),
-                    new Question("Where is the hotseat?", "", "blgjoe001"),
-                    new Question("How do I query my marks?", "", "blgjoe001")
+                    new Question("When are the Libraries open?", "sdfsdf", "blgjoe001"),
+                    new Question("What is plagiarism?", "sdfdfs", "blgjoe001"),
+                    new Question("Where are the Scilabs?", "sdfsdfdsf", "blgjoe001"),
+                    new Question("Where is the hotseat?", "sdfsdfsfdsfs", "blgjoe001"),
+                    new Question("How do I query my marks?", "sdfdfsf", "blgjoe001"),
+                    new Question("Where is the cafeteria?", "sdfsdfdf", "blgjoe001"),
+                    new Question("How do I draw money?", "dsdffffdsdf", "blgjoe001"),
+                    new Question("Where is Leslie Social?", "fdsdfdss", "blgjoe001"),
+                    new Question("How do I change my tut period?", "sdfdsfs", "blgjoe001")
                 };
-
                 for (var i = 0; i < testQuestions.Length; i++)
-                    if (!context.Questions.Any(u => u.Title == testQuestions[i].Title))
+                    if (!context.Questions.Any(u => u.Title.Equals(testQuestions[i].Title)))
                     {
                         var analytic = new ContentAnalytic(testQuestions[i].Id);
                         testQuestions[i].Init(analytic);
                         context.Questions.AddAsync(testQuestions[i]).Wait();
                         context.ContentAnalytics.AddAsync(testQuestions[i].Analytic);
+                    }
+
+                Reply[] testReplies =
+                {
+                    new Reply(testQuestions[0].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[0].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[3].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[2].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[3].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[9].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[5].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[5].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[2].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[3].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[0].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[7].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[3].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[2].Id, "reply...", "brlste069"),
+                    new Reply(testQuestions[3].Id, "reply...", "brlste069")
+                };
+
+
+                for (var i = 0; i < testReplies.Length; i++)
+                    if (!context.Replies.Any(u => u.Id.Equals(testReplies[i].Id)))
+                    {
+                        var analytic = new ContentAnalytic(testReplies[i].Id);
+                        testReplies[i].Init(analytic);
+                        context.Replies.AddAsync(testReplies[i]).Wait();
+                        context.ContentAnalytics.AddAsync(testReplies[i].Analytic);
                     }
 
                 //Finished
