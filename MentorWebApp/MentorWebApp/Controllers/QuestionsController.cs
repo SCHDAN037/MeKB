@@ -67,7 +67,7 @@ namespace MentorWebApp.Controllers
             return question;
         }
 
-        public async Task<Question> DetailsVote(string id, int helpful,
+        public async Task<Question> DetailsVoteReply(string id, int helpful,
             [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
         {
             if (ModelState.IsValid)
@@ -88,7 +88,8 @@ namespace MentorWebApp.Controllers
             return question;
         }
 
-        public async Task<IActionResult> Details(string id, string reply, string delId, string voteId, int helpful)
+
+        public async Task<IActionResult> Details(string id, string reply, string delId, string voteId, int repHelpful, int qHelpful)
         {
             if (id == null)
                 return NotFound();
@@ -96,24 +97,42 @@ namespace MentorWebApp.Controllers
             var question = await _context.Questions.SingleOrDefaultAsync(m => m.Id == id);
             if (question == null)
                 return NotFound();
-            //question.CreateReply(reply);
+            
+            var questionAnal = _context.ContentAnalytics.SingleOrDefault(s => s.ContentId == id);
+            question.Analytic = questionAnal;
 
+            // QUestion voted helpful
+            if(qHelpful == 1)
+            {
+                questionAnal.Helpful++;
+                _context.Update(questionAnal);
+                _context.SaveChanges();
 
+            }
+            //Question voted unhelpful
+            else if(qHelpful == -1)
+            {
+                questionAnal.UnHelpful++;
+                _context.Update(questionAnal);
+                _context.SaveChanges();
+
+            }
+            // reply added
             if (!string.IsNullOrEmpty(reply))
             {
                 var temp = await DetailsAddReply(id, reply, question);
                 question = temp;
             }
-
+            //reply selected for deletion
             else if (!string.IsNullOrEmpty(delId))
             {
                 var temp = await DetailsDeleteReply(delId, question);
                 question = temp;
             }
-
-            else if (helpful == 1 || helpful == -1)
+            // A reply was selected for voting
+            else if (repHelpful == 1 || repHelpful == -1)
             {
-                var temp = await DetailsVote(voteId, helpful, question);
+                var temp = await DetailsVoteReply(voteId, repHelpful, question);
                 question = temp;
             }
 
@@ -136,7 +155,7 @@ namespace MentorWebApp.Controllers
                 replyEach.Analytic = anal;
             }
 
-            var sortedList = repList.OrderBy(x => x.DatePosted).ToList();
+            var sortedList = repList.OrderByDescending(x => x.Analytic.Helpful).ToList();
             question.RepList = sortedList;
 
 
@@ -163,9 +182,7 @@ namespace MentorWebApp.Controllers
                 _context.Add(question);
                 _context.Add(analytic);
                 await _context.SaveChangesAsync();
-                _context.Add(question);
-                _context.Add(analytic);
-                await _context.SaveChangesAsync();
+            
 
                 return RedirectToAction(nameof(Index));
             }
