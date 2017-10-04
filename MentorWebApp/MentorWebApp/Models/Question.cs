@@ -46,5 +46,7 @@ namespace MentorWebApp.Models
         {
             Analytic = analytic;
         }
+
+        
     }
 }
