@@ -67,6 +67,7 @@ namespace MentorWebApp.Controllers
             return question;
         }
 
+<<<<<<< HEAD
         public async Task<Question> DetailsVoteReply(string id, int helpful,
             [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
         {
@@ -90,6 +91,9 @@ namespace MentorWebApp.Controllers
 
 
         public async Task<IActionResult> Details(string id, string reply, string delId, string voteId, int repHelpful, int qHelpful)
+=======
+        public async Task<IActionResult> Details(string id, string reply, string delId)
+>>>>>>> origin/New-new-Analytics
         {
             if (id == null)
                 return NotFound();
@@ -129,12 +133,15 @@ namespace MentorWebApp.Controllers
                 var temp = await DetailsDeleteReply(delId, question);
                 question = temp;
             }
+<<<<<<< HEAD
             // A reply was selected for voting
             else if (repHelpful == 1 || repHelpful == -1)
             {
                 var temp = await DetailsVoteReply(voteId, repHelpful, question);
                 question = temp;
             }
+=======
+>>>>>>> origin/New-new-Analytics
 
             else
             {
@@ -149,6 +156,7 @@ namespace MentorWebApp.Controllers
                 select r;
             rep = rep.Where(s => s.QuestionId.Equals(id));
             var repList = await rep.ToListAsync();
+<<<<<<< HEAD
             foreach (var replyEach in repList)
             {
                 var anal = _context.ContentAnalytics.SingleOrDefault(s => s.ContentId == replyEach.Id);
@@ -156,6 +164,9 @@ namespace MentorWebApp.Controllers
             }
 
             var sortedList = repList.OrderByDescending(x => x.Analytic.Helpful).ToList();
+=======
+            var sortedList = repList.OrderBy(x => x.DatePosted).ToList();
+>>>>>>> origin/New-new-Analytics
             question.RepList = sortedList;
 
 
@@ -182,7 +193,11 @@ namespace MentorWebApp.Controllers
                 _context.Add(question);
                 _context.Add(analytic);
                 await _context.SaveChangesAsync();
+<<<<<<< HEAD
             
+=======
+                
+>>>>>>> origin/New-new-Analytics
 
                 return RedirectToAction(nameof(Index));
             }

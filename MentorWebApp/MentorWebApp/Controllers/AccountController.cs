@@ -17,12 +17,12 @@ namespace MentorWebApp.Controllers
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ApplicationDbContext _context;
 
         public AccountController(ApplicationDbContext context,
             UserManager<ApplicationUser> userManager,
@@ -125,9 +125,9 @@ namespace MentorWebApp.Controllers
                     if (result.Succeeded)
                     {
                         _logger.LogInformation("User logged in.");
-                        var analytic = user.GetAnalytic();
+                        UserAnalytic analytic = user.GetAnalytic();
                         analytic.UserLogin();
-
+                       
                         await _userManager.UpdateAsync(user);
                         _context.UserAnalytics.Update(analytic);
                         ///////////////////
@@ -280,7 +280,7 @@ namespace MentorWebApp.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser(model.UctNumber, "Mentee", model.Email, model.Email, model.Password);
-
+                
 
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)

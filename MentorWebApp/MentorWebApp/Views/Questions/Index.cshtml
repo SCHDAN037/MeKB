@@ -9,13 +9,23 @@
 
 <h2>Questions</h2>
 
+<<<<<<< HEAD
 @{
     if (SignInManager.IsSignedIn(User))
     {
         <a asp-action="Create">Ask A Question</a>
-    }
-}
+=======
+    @{
+        if (SignInManager.IsSignedIn(User))
+        {
 
+            <a asp-action="Create">Create New</a>
+        }
+>>>>>>> origin/New-new-Analytics
+    }
+
+ 
+   
 
 <table class="table">
     <thead>
@@ -64,6 +74,17 @@
                 @Html.DisplayFor(modelItem => item.DatePosted)
             </td>
 
+            @{
+                if (SignInManager.IsSignedIn(User)&& (await AuthorizationService.AuthorizeAsync(User, "Mentor")).Succeeded)
+                {
+                    <td>
+                    <a asp-action="QuestionsEdit" asp-route-id="@item.Id">Edit</a>
+                    <a asp-action="QuestionsDetails" asp-route-id="@item.Id">Details</a>
+                    <a asp-action="QuestionsDelete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                }
+            }
+          
         </tr>
     }
     </tbody>

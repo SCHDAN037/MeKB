@@ -331,7 +331,7 @@ namespace MentorWebApp.Controllers
                 _context.Add(analytic);
                 await _context.SaveChangesAsync();
 
-
+                
                 return RedirectToAction(nameof(QuestionsIndex));
             }
             return View(question);
