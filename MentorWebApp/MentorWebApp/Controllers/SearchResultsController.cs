@@ -53,12 +53,11 @@ namespace MentorWebApp.Controllers
 
             //update the succeed count for this search
             var searchResult = await _context.SearchResults.SingleOrDefaultAsync(s => s.Id == searchId);
-            var searchAnalytic =
-                await _context.SearchAnalytics.SingleOrDefaultAsync(s => s.SearchResultId == searchResult.Id);
+            var searchAnalytic = await _context.SearchAnalytics.SingleOrDefaultAsync(s => s.SearchResultId == searchResult.Id);
             searchAnalytic.SucceedClicks++;
             _context.Update(searchResult);
             _context.Update(searchAnalytic);
-
+            
             _context.SaveChanges();
 
             return Redirect(link);

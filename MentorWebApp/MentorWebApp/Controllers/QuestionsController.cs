@@ -67,28 +67,7 @@ namespace MentorWebApp.Controllers
             return question;
         }
 
-        public async Task<Question> DetailsVote(string id, int helpful,
-            [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
-        {
-            if (ModelState.IsValid)
-            {
-                var rep = from r in _context.Replies
-                    select r;
-                var trep = rep.SingleOrDefault(s => s.Id.Equals(id));
-                var analytic = _context.ContentAnalytics.SingleOrDefault(s => s.ContentId == trep.Id);
-                if (helpful == 1)
-                    analytic.Helpful++;
-                else if (helpful == -1)
-                    analytic.UnHelpful++;
-
-                _context.Update(analytic);
-                await _context.SaveChangesAsync();
-                return question;
-            }
-            return question;
-        }
-
-        public async Task<IActionResult> Details(string id, string reply, string delId, string voteId, int helpful)
+        public async Task<IActionResult> Details(string id, string reply, string delId)
         {
             if (id == null)
                 return NotFound();
@@ -111,12 +90,6 @@ namespace MentorWebApp.Controllers
                 question = temp;
             }
 
-            else if (helpful == 1 || helpful == -1)
-            {
-                var temp = await DetailsVote(voteId, helpful, question);
-                question = temp;
-            }
-
             else
             {
                 //Update this questions analytic ONLY IF THEY VISIT THE PAGE WITHOUT ADDING/DELETING A REPLY
@@ -130,12 +103,6 @@ namespace MentorWebApp.Controllers
                 select r;
             rep = rep.Where(s => s.QuestionId.Equals(id));
             var repList = await rep.ToListAsync();
-            foreach (var replyEach in repList)
-            {
-                var anal = _context.ContentAnalytics.SingleOrDefault(s => s.ContentId == replyEach.Id);
-                replyEach.Analytic = anal;
-            }
-
             var sortedList = repList.OrderBy(x => x.DatePosted).ToList();
             question.RepList = sortedList;
 
