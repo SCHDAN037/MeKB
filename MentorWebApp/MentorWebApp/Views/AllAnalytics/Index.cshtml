@@ -3,40 +3,636 @@
     ViewData["Title"] = "Site Analytics";
 }
 
-<h2>Site Analytics</h2>
-<br/>
-<h3>Searches</h3>
 
-<!--
-    
-    This is where the searches analytics will be displayed
-    
+<div class="container-fluid">
 
--->
-<br/>
-<h3>Resources</h3>
+<div class="page-header">
 
-<!--
-    
-This is where the resources analytics will be displayed
-    
+    <h1>
+        Site Analytics <small>Generated on @DateTime.Today.ToShortDateString()</small>
+    </h1>
+</div>
 
--->
-<br/>
-<h3>Questions</h3>
+<div class="panel panel-primary">
 
-<!--
-    
-This is where the questions analytics will be displayed
-    
+<div class="panel-heading">
+    <h2 class="panel-title">User and Traffic Analytics</h2>
+</div>
 
--->
-<br />
-<h3>Users and Traffic</h3>
-<!--
+<div class="panel-body">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        User Numbers <span class="badge">@Model.NumberOfUsers</span>
+                    </div>
 
-This is where the user analytics will be displayed
+                    <table class="table table-condensed">
+                        <thead>
+                        <tr>
+                            <th>
+                                Role
+                            </th>
+                            <th>
+                                Number
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                Admins
+                            </td>
+                            <td>
+                                @Model.NumberOfAdmins
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Mentors
+                            </td>
+                            <td>
+                                @Model.NumberOfMentors
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Mentees
+                            </td>
+                            <td>
+                                @Model.NumberOfMentees
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <p>
+                    Here are the key user and traffic analytics. The number of users and their roles are show, as well as the number of users per day for this week.
+                </p>
+                <p>
+                    The traffic is determined by the number of unique logins per day from Sunday to Saturday of the current week.
+                </p>
+            </div>
+        </div>
+    </div>
 
 
--->
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">This weeks traffic per day</h3>
+        </div>
 
+        
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Sunday</th>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                    <th>Friday</th>
+                    <th>Saturday</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>@Model.LoginsPerDay[0]</td>
+                    <td>@Model.LoginsPerDay[1]</td>
+                    <td>@Model.LoginsPerDay[2]</td>
+                    <td>@Model.LoginsPerDay[3]</td>
+                    <td>@Model.LoginsPerDay[4]</td>
+                    <td>@Model.LoginsPerDay[5]</td>
+                    <td>@Model.LoginsPerDay[6]</td>
+                </tr>
+                </tbody>
+            </table>
+            
+    </div>
+</div>
+
+</div>
+
+<div class="panel panel-primary">
+
+    <div class="panel-heading">
+        <h2 class="panel-title">Searches Analytics</h2>
+    </div>
+
+    <div class="panel-body">
+        <p>
+            Here are the key search analytics. The <strong>No. of Successes</strong> refers to the number of times a link was clicked after making that search. In other words, we consider a search successful when after the search was made the user clicks on a link.
+        </p>
+
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">Top 5 Most Searched Queries</h3>
+            </div>
+            
+            <div class="panel-body">
+                <p>This is useful for showing searches that are popular. This can show us what users are most interested.</p>
+            </div>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>
+                        <p>#</p>
+                    </th>
+                    <th>
+                        <p>Search Query</p>
+                    </th>
+                    <th>
+                        <p>No. of Searches</p>
+                    </th>
+                    <th>
+                        <p>No. of Results</p>
+                    </th>
+                    <th>
+                        <p>No. of Successes</p>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                @{
+                    for (int i = 0; i < @Html.ViewData.Model.Top5ViewedSearches.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                <p>
+                                    <strong>@i</strong>
+                                </p>
+                            </td>
+                            <td>
+                                <p>"@Html.ViewData.Model.Top5ViewedSearches[i].searchVal"</p>
+                            </td>
+                            <td>
+                                <p>@Html.ViewData.Model.Top5ViewedSearches[i].Analytic.Count</p>
+                            </td>
+                            <td>
+                                <p>@Html.ViewData.Model.Top5ViewedSearches[i].Analytic.NoOfResults</p>
+                            </td>
+                            <td>
+                                <p>@Html.ViewData.Model.Top5ViewedSearches[i].Analytic.SucceedClicks</p>
+                            </td>
+                        </tr>
+                    }
+                }
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">Top 5 Most Successful Searches</h3>
+            </div>
+            <div class="panel-body">
+                <p>This is useful for showing searches that are successful. This can show us what searches produce the results users are looking for.</p>
+            </div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>
+                        <p>#</p>
+                    </th>
+                    <th>
+                        <p>Search Query</p>
+                    </th>
+                    <th>
+                        <p>No. of Searches</p>
+                    </th>
+                    <th>
+                        <p>No. of Results</p>
+                    </th>
+                    <th>
+                        <p>No. of Successes</p>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                @{
+                    for (int i = 0; i < @Html.ViewData.Model.Top5SuccessfulSearches.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                <p>
+                                    <strong>@i</strong>
+                                </p>
+                            </td>
+                            <td>
+                                <p>"@Html.ViewData.Model.Top5SuccessfulSearches[i].searchVal"</p>
+                            </td>
+                            <td>
+                                <p>@Html.ViewData.Model.Top5SuccessfulSearches[i].Analytic.Count</p>
+                            </td>
+                            <td>
+                                <p>@Html.ViewData.Model.Top5SuccessfulSearches[i].Analytic.NoOfResults</p>
+                            </td>
+                            <td>
+                                <p>@Html.ViewData.Model.Top5SuccessfulSearches[i].Analytic.SucceedClicks</p>
+                            </td>
+                        </tr>
+                    }
+                }
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h3 class="panel-title">Top 5 Least Successful Searches</h3>
+            </div>
+
+            <div class="panel-body">
+                <p>This is useful for showing searches that are popular, yet are not successful. This can show us what users are looking for but not finding.</p>
+            </div>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>
+                        <p>#</p>
+                    </th>
+                    <th>
+                        <p>Search Query</p>
+                    </th>
+                    <th>
+                        <p>No. of Searches</p>
+                    </th>
+                    <th>
+                        <p>No. of Results</p>
+                    </th>
+                    <th>
+                        <p>No. of Successes</p>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                @{
+                    for (int i = 0; i < @Html.ViewData.Model.Worst5UnsuccessfulSearches.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                <p>
+                                    <strong>@i</strong>
+                                </p>
+                            </td>
+                            <td>
+                                <p>"@Html.ViewData.Model.Worst5UnsuccessfulSearches[i].searchVal"</p>
+                            </td>
+                            <td>
+                                <p>@Html.ViewData.Model.Worst5UnsuccessfulSearches[i].Analytic.Count</p>
+                            </td>
+                            <td>
+                                <p>@Html.ViewData.Model.Worst5UnsuccessfulSearches[i].Analytic.NoOfResults</p>
+                            </td>
+                            <td>
+                                <p>@Html.ViewData.Model.Worst5UnsuccessfulSearches[i].Analytic.SucceedClicks</p>
+                            </td>
+                        </tr>
+                    }
+                }
+
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">Top 5 Unanswered Searches</h3>
+            </div>
+
+            <div class="panel-body">
+                <p>This is useful for showing searches that are popular, but return no. This can show us what users are looking for but not finding.</p>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            <p>#</p>
+                        </th>
+                        <th>
+                            <p>Search Query</p>
+                        </th>
+                        <th>
+                            <p>No. of Searches</p>
+                        </th>
+                        <th>
+                            <p>No. of Results</p>
+                        </th>
+                        <th>
+                            <p>No. of Successes</p>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @{
+                        for (int i = 0; i < @Html.ViewData.Model.Worst5UnsuccessfulSearches.Count; i++)
+                        {
+                            <tr>
+                                <td>
+                                    <p>
+                                        <strong>@i</strong>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>"@Html.ViewData.Model.Worst5UnsuccessfulSearches[i].searchVal"</p>
+                                </td>
+                                <td>
+                                    <p>@Html.ViewData.Model.Worst5UnsuccessfulSearches[i].Analytic.Count</p>
+                                </td>
+                                <td>
+                                    <p>@Html.ViewData.Model.Worst5UnsuccessfulSearches[i].Analytic.NoOfResults</p>
+                                </td>
+                                <td>
+                                    <p>@Html.ViewData.Model.Worst5UnsuccessfulSearches[i].Analytic.SucceedClicks</p>
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-primary">
+
+    <div class="panel-heading">
+        <h2 class="panel-title">Resources Analytics</h2>
+    </div>
+
+    <div class="panel-body">
+        <p>
+            Here are the key resource analytics. The <strong>No. of Clicks</strong> refers to the number of times that resource's link was clicked.
+        </p>
+        <h3>
+            <strong>Total number of Resources: </strong>@Model.NumberOfResources</h3>
+
+
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">Top 5 Most Viewed Resources</h3>
+            </div>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>
+                        <p>#</p>
+                    </th>
+                    <th>
+                        <p>Title</p>
+                    </th>
+                    <th>
+                        <p>No. of Clicks</p>
+                    </th>
+
+                </tr>
+                </thead>
+                <tbody>
+
+                @{
+                    for (int i = 0; i < @Html.ViewData.Model.Top5Resources.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                <p>
+                                    <strong>@i</strong>
+                                </p>
+                            </td>
+                            <td>
+                                <p>"@Html.ViewData.Model.Top5Resources[i].Title"</p>
+                            </td>
+                            <td>
+                                <p>@Html.ViewData.Model.Top5Resources[i].Analytic.Clicks</p>
+                            </td>
+
+                        </tr>
+                    }
+                }
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h3 class="panel-title">Top 5 Least Viewed Resources</h3>
+            </div>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>
+                        <p>#</p>
+                    </th>
+                    <th>
+                        <p>Title</p>
+                    </th>
+                    <th>
+                        <p>No. of Clicks</p>
+                    </th>
+
+                </tr>
+                </thead>
+                <tbody>
+
+                @{
+                    for (int i = 0; i < @Html.ViewData.Model.Worst5Resources.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                <p>
+                                    <strong>@i</strong>
+                                </p>
+                            </td>
+                            <td>
+                                <p>"@Html.ViewData.Model.Worst5Resources[i].Title"</p>
+                            </td>
+                            <td>
+                                <p>@Html.ViewData.Model.Worst5Resources[i].Analytic.Clicks</p>
+                            </td>
+
+                        </tr>
+                    }
+                }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-primary">
+
+    <div class="panel-heading">
+        <h2 class="panel-title">Questions Analytics</h2>
+    </div>
+
+    <div class="panel-body">
+        <p>
+            Here are the key question analytics. The <strong>Helpful Votes</strong> refers to the number of times that question was voted as a helpful question. The opposite is true for <strong>Unhelpful Votes</strong>.
+        </p>
+
+        
+                <h3>
+                    Total number of Questions: <strong>@Model.NumberOfQuestions</strong></h3>
+            
+            
+                <h3>
+                    Total number of Unanswered Questions: <strong>@Model.NumberOfUnansweredQuestions</strong></h3>
+         
+
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">Top 5 Voted Helpful Questions</h3>
+            </div>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>
+                        <p>#</p>
+                    </th>
+                    <th>
+                        <p>Title</p>
+                    </th>
+                    <th>
+                        <p>Helpful Votes</p>
+                    </th>
+                    <th>
+                        <p>Unhelpful Votes</p>
+                    </th>
+                    <th>
+                        <p>Asked by</p>
+                    </th>
+                    <th>
+                        <p>Date Asked</p>
+                    </th>
+                    <th>
+                        <p>No. of Replies</p>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                @{
+                    for (int i = 0; i < @Html.ViewData.Model.Top5Questions.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                <p>
+                                    <strong>@i</strong>
+                                </p>
+                            </td>
+                            <td>
+                                <p>"@Html.ViewData.Model.Top5Questions[i].Title"</p>
+                            </td>
+                            <td>
+                                <p>@Html.ViewData.Model.Top5Questions[i].Analytic.Helpful</p>
+                            </td>
+                            <td>
+                                <p>@Html.ViewData.Model.Top5Questions[i].Analytic.UnHelpful</p>
+                            </td>
+                            <td>
+                                <p>@Html.ViewData.Model.Top5Questions[i].UctNumber</p>
+                            </td>
+                            <td>
+                                <p>@Html.ViewData.Model.Top5Questions[i].DatePosted.Date</p>
+                            </td>
+                            <td>
+                                <p>@Html.ViewData.Model.Top5Questions[i].RepList.Count</p>
+                            </td>
+                        </tr>
+                    }
+                }
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h3 class="panel-title">Top 5 Voted Unhelpful Questions</h3>
+            </div>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>
+                        <p>#</p>
+                    </th>
+                    <th>
+                        <p>Title</p>
+                    </th>
+                    <th>
+                        <p>Helpful Votes</p>
+                    </th>
+                    <th>
+                        <p>Unhelpful Votes</p>
+                    </th>
+                    <th>
+                        <p>Asked by</p>
+                    </th>
+                    <th>
+                        <p>Date Asked</p>
+                    </th>
+                    <th>
+                        <p>No. of Replies</p>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                @{
+                    for (int i = 0; i < @Html.ViewData.Model.Worst5Questions.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                <p>
+
+                                    <strong>@i</strong>
+                                </p>
+                            </td>
+                            <td>
+                                <p>"@Html.ViewData.Model.Worst5Questions[i].Title"</p>
+                            </td>
+                            <td>
+                                <p>@Html.ViewData.Model.Worst5Questions[i].Analytic.Helpful</p>
+                            </td>
+                            <td>
+                                <p>@Html.ViewData.Model.Worst5Questions[i].Analytic.UnHelpful</p>
+                            </td>
+                            <td>
+                                <p>@Html.ViewData.Model.Worst5Questions[i].UctNumber</p>
+                            </td>
+                            <td>
+                                <p>@Html.ViewData.Model.Worst5Questions[i].DatePosted.Date</p>
+                            </td>
+                            <td>
+                                <p>@Html.ViewData.Model.Worst5Questions[i].RepList.Count</p>
+                            </td>
+                        </tr>
+                    }
+                }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</div>

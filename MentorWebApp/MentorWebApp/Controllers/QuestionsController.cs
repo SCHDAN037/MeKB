@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MentorWebApp.Data;
 using MentorWebApp.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,10 +12,12 @@ namespace MentorWebApp.Controllers
     public class QuestionsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public QuestionsController(ApplicationDbContext context)
+        public QuestionsController(ApplicationDbContext context, UserManager<ApplicationUser> usermanager)
         {
             _context = context;
+            _userManager = usermanager;
         }
 
         // GET: Questions
@@ -25,26 +28,22 @@ namespace MentorWebApp.Controllers
 
         // GET: Questions/Details/5
         // adds a reply to a question and to the database
-        public async Task<Question> DetailsAddReply(string id, string reply,
+        public async Task<Question> DetailsAddReply(string id, string reply, string thisUserId, string thisUserUctNumber,
             [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
         {
             if (ModelState.IsValid)
             {
-                var r = new Reply(id, reply, "bob");
+                var r = new Reply(id, reply, thisUserUctNumber, thisUserId);
                 var analytic = new ContentAnalytic(r.Id);
                 r.Init(analytic);
-                question.Replies.Add(r);
-
+                question.RepList.Add(r);
+                question.NoOfReplies++;
                 _context.Update(question);
                 //_context.Update(r.Analytic);
-
-                try
-                {
+                
                     await _context.SaveChangesAsync();
-                }
-                catch (Exception)
-                {
-                }
+                
+                
                 return question;
             }
             return question;
@@ -59,7 +58,11 @@ namespace MentorWebApp.Controllers
                 var rep = from r in _context.Replies
                     select r;
                 var trep = rep.SingleOrDefault(s => s.Id.Equals(id));
+                question.NoOfReplies--;
+
                 _context.Replies.Remove(trep);
+                _context.Update(question);
+
                 await _context.SaveChangesAsync();
 
                 return question;
@@ -93,28 +96,42 @@ namespace MentorWebApp.Controllers
             if (id == null)
                 return NotFound();
 
+            //WE NEED THE LOGGED ON USER ID
+            var loggedInUser = (await _userManager.GetUserAsync(HttpContext.User));
+            var thisUserId = "";
+            var thisUserUctNumber = "";
+            bool loggedIn = false;
+            if (loggedInUser != null)
+            {
+                thisUserId = loggedInUser.Id;
+                thisUserUctNumber = loggedInUser.UctNumber;
+                loggedIn = true;
+            }
+
             var question = await _context.Questions.SingleOrDefaultAsync(m => m.Id == id);
             if (question == null)
                 return NotFound();
-            //question.CreateReply(reply);
 
 
-            if (!string.IsNullOrEmpty(reply))
+            if (loggedIn)
             {
-                var temp = await DetailsAddReply(id, reply, question);
-                question = temp;
-            }
+                if (!string.IsNullOrEmpty(reply))
+                {
+                    var temp = await DetailsAddReply(id, reply, thisUserId, thisUserUctNumber, question);
+                    question = temp;
+                }
 
-            else if (!string.IsNullOrEmpty(delId))
-            {
-                var temp = await DetailsDeleteReply(delId, question);
-                question = temp;
-            }
+                else if (!string.IsNullOrEmpty(delId))
+                {
+                    var temp = await DetailsDeleteReply(delId, question);
+                    question = temp;
+                }
 
-            else if (helpful == 1 || helpful == -1)
-            {
-                var temp = await DetailsVote(voteId, helpful, question);
-                question = temp;
+                else if (helpful == 1 || helpful == -1)
+                {
+                    var temp = await DetailsVote(voteId, helpful, question);
+                    question = temp;
+                }
             }
 
             else
@@ -132,8 +149,8 @@ namespace MentorWebApp.Controllers
             var repList = await rep.ToListAsync();
             foreach (var replyEach in repList)
             {
-                var anal = _context.ContentAnalytics.SingleOrDefault(s => s.ContentId == replyEach.Id);
-                replyEach.Analytic = anal;
+                var analytic = _context.ContentAnalytics.SingleOrDefault(s => s.ContentId == replyEach.Id);
+                replyEach.Analytic = analytic;
             }
 
             var sortedList = repList.OrderBy(x => x.DatePosted).ToList();
@@ -154,12 +171,25 @@ namespace MentorWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted,Title,Tags")] Question question)
+            [Bind("Anonymous,MessageContent,Id,DatePosted,Title,Tags")] Question question)
         {
-            if (ModelState.IsValid)
+            var loggedInUser = (await _userManager.GetUserAsync(HttpContext.User));
+            var thisUserId = "";
+            var thisUserUctNumber = "";
+            bool loggedIn = false;
+            if (loggedInUser != null)
+            {
+                thisUserId = loggedInUser.Id;
+                thisUserUctNumber = loggedInUser.UctNumber;
+                loggedIn = true;
+            }
+
+            if (ModelState.IsValid && loggedIn)
             {
                 var analytic = new ContentAnalytic(question.Id);
                 question.Init(analytic);
+                question.ApplicationUserId = thisUserId;
+                question.UctNumber = thisUserUctNumber;
                 _context.Add(question);
                 _context.Add(analytic);
 
@@ -234,11 +264,14 @@ namespace MentorWebApp.Controllers
                 select r;
             rep = rep.Where(s => s.QuestionId.Equals(id));
             var tempRep = await rep.ToListAsync();
+            //var noOfReplies = tempRep.Count;
             foreach (var reply in tempRep)
+
                 _context.Replies.Remove(reply);
             await _context.SaveChangesAsync();
 
             var question = await _context.Questions.SingleOrDefaultAsync(m => m.Id == id);
+
             _context.Questions.Remove(question);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

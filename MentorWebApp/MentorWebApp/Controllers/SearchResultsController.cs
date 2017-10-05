@@ -80,6 +80,7 @@ namespace MentorWebApp.Controllers
             if (string.IsNullOrEmpty(typeSelect)) typeSelect = "res";
             if (string.IsNullOrEmpty(sortSelect)) sortSelect = "alpha";
             if (string.IsNullOrEmpty(search)) search = "";
+            search = search.ToLower();
 
             //Initialize a new search result object
             try

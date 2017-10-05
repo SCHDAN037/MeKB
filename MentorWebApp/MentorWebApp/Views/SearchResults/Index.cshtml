@@ -4,93 +4,83 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Search Results</h2>
+
+<h1 class="page-header">Search Results</h1>
 <div class="form-horizontal">
 
 
     <div class="container">
-        <div class="row form-group col-md-6 col-md-offset-3">
-
-
+        <div class="row form-group">
             <form method="get" action="@Url.Action("Index", "SearchResults")">
+            <div class="col-md-5">
 
                 <div class="input-group">
-                    <input type="text" class="search-query form-control" placeholder="Search resources, ask a question" value="@ViewData.Model.searchVal" name="search">
-                    <input type="hidden" name="sortSelect" value="@ViewData.Model.sortVal"/>
-                    <input type="hidden" name="typeSelect" value="@ViewData.Model.typeVal"/>
+                    <input type="text" class="form-control" placeholder="Search resources, ask a question" value="@ViewData.Model.searchVal" name="search">
+
                     <span class="input-group-btn">
                         <button class="btn .btn-primary" type="submit" id="searchButton">
                             <span class="glyphicon glyphicon-search"></span>
                         </button>
                     </span>
                 </div>
+            </div>
+                <div class="col-md-5">
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            Sort By
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li><a class="btn-link" asp-action="Index" asp-route-sortSelect="alpha" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="@ViewData.Model.typeVal">A to Z</a></li>
+                            <li><a class="btn-link" asp-action="Index" asp-route-sortSelect="alphaRev" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="@ViewData.Model.typeVal">Z to A</a></li>
+                            <li><a class="btn-link" asp-action="Index" asp-route-sortSelect="new" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="@ViewData.Model.typeVal">Newest First</a></li>
+                            <li><a class="btn-link" asp-action="Index" asp-route-sortSelect="old" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="@ViewData.Model.typeVal">Oldest First</a></li>
+                        </ul>
+                    </div>
 
-            </form>
-        </div>
+                    <select name="typeSelect">
+                        <option value="res" selected="@(ViewData.Model.typeVal.Equals("res"))">Resources Only</option>
+                        <option value="ques" selected="@(ViewData.Model.typeVal.Equals("ques"))">Questions Only</option>
+                        <option value="both" selected="@(ViewData.Model.typeVal.Equals("both"))">Both</option>
+                    </select>
 
-        <div class="row">
-            <form method="get" action="@Url.Action("Index", "SearchResults")">
-                <label class="label">Sort: </label>
-                <input type="hidden" id="search" name="search" value="@ViewData.Model.searchVal"/>
-                <select name="sortSelect">
-                    <option value="alpha" selected="@(ViewData.Model.sortVal.Equals("alpha"))">A to Z</option>
-                    <option value="alphaRev" selected="@(ViewData.Model.sortVal.Equals("alphaRev"))">Z to A</option>
-                </select>
-
-                <label class="label">Filter: </label>
-
-                <select name="typeSelect">
-                    <option value="res" selected="@(ViewData.Model.typeVal.Equals("res"))">Resources Only</option>
-                    <option value="ques" selected="@(ViewData.Model.typeVal.Equals("ques"))">Questions Only</option>
-                    <option value="both" selected="@(ViewData.Model.typeVal.Equals("both"))">Both</option>
-                </select>
-
-                <input type="submit" class="btn-default"/>
+                    <input type="submit" class="btn-default" />
+                </div>
             </form>
         </div>
     </div>
 
-
 </div>
-<table class="table">
-    <thead>
-    <tr>
-        <th>Title</th>
-        @*<th>Posted by</th>
-        <th>Date</th>*@
-    </tr>
-    </thead>
-
-    <tbody>
-    @{
-
-        for (var i = 0; i < Model.ResultsList.Count; i++)
-        {
+<div class="panel panel-default">
+    
+        <table class="table table-striped">
+            <thead>
             <tr>
-                <td>
-
-
-                    <form method="post" asp-action="RedirectToLink" asp-controller="SearchResults">
-                        <input type="hidden" name="title" value="@Html.ViewData.Model.ResultsList[i][0]"/>
-                        <input type="hidden" name="link" value="@Html.ViewData.Model.ResultsList[i][1]"/>
-                        <input type="hidden" name="id" value="@Html.ViewData.Model.ResultsList[i][2]"/>
-                        <input type="hidden" name="searchId" value="@Html.ViewData.Model.Id"/>
-                        <input type="submit" class="btn-link" value="@Html.ViewData.Model.ResultsList[i][0]"/>
-                    </form>
-
-                </td>
-                <td>
-
-                </td>
-
+                <th>Title</th>
             </tr>
-        }
-    }
+            </thead>
+            <tbody>
+            @{
+                for (var i = 0; i < Model.ResultsList.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            <form method="post" asp-action="RedirectToLink" asp-controller="SearchResults">
+                                <input type="hidden" name="title" value="@Html.ViewData.Model.ResultsList[i][0]"/>
+                                <input type="hidden" name="link" value="@Html.ViewData.Model.ResultsList[i][1]"/>
+                                <input type="hidden" name="id" value="@Html.ViewData.Model.ResultsList[i][2]"/>
+                                <input type="hidden" name="searchId" value="@Html.ViewData.Model.Id"/>
+                                <input type="submit" class="btn-link" value="@Html.ViewData.Model.ResultsList[i][0]"/>
+                            </form>
 
-    </tbody>
-
-</table>
-
+                        </td>
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+    
+</div>
 @{
 
     if (Model.NoOfResults == 0)

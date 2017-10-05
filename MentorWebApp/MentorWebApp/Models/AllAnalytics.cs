@@ -19,13 +19,15 @@ namespace MentorWebApp.Models
             Top5ViewedSearches = new List<SearchResult>();
             Top5SuccessfulSearches = new List<SearchResult>();
             Worst5UnsuccessfulSearches = new List<SearchResult>();
+            Top5NoResultsSearches = new List<SearchResult>();
+
 
             Top5Resources = new List<Resource>();
             Worst5Resources = new List<Resource>();
 
             Top5Questions = new List<Question>();
             Worst5Questions = new List<Question>();
-
+            Top5RepliedQuestions = new List<Question>();
             LoginsPerDay = new List<int>
             {
                 //starts on sunday
@@ -37,7 +39,42 @@ namespace MentorWebApp.Models
                 0,
                 0
             };
+            NumberOfUnansweredQuestions = 0;
+            NumberOfQuestions = 0;
+            NumberOfResources = 0;
+            NumberOfUsers = 0;
+            NumberOfAdmins = 0;
+            NumberOfMentors = 0;
+            NumberOfMentees = 0;
         }
+
+        //Number of Users
+        [NotMapped]
+        public int NumberOfUsers { get; set; }
+
+        //Number of Admins
+        [NotMapped]
+        public int NumberOfAdmins { get; set; }
+
+        //Number of Mentors
+        [NotMapped]
+        public int NumberOfMentors { get; set; }
+
+        //Number of Mentees
+        [NotMapped]
+        public int NumberOfMentees { get; set; }
+
+        //Number of Resources
+        [NotMapped]
+        public int NumberOfResources { get; set; }
+
+        //Number of Questions
+        [NotMapped]
+        public int NumberOfQuestions { get; set; }
+
+        //Number of Unanswered Questions
+        [NotMapped]
+        public int NumberOfUnansweredQuestions { get; set; }
 
         //By Descending Login Count
         [NotMapped]
@@ -55,6 +92,10 @@ namespace MentorWebApp.Models
         [NotMapped]
         public List<SearchResult> Worst5UnsuccessfulSearches { get; set; }
 
+        //By Descending Search Count where no results found
+        [NotMapped]
+        public List<SearchResult> Top5NoResultsSearches { get; set; }
+
         //By Descending Click Count
         [NotMapped]
         public List<Resource> Top5Resources { get; set; }
@@ -66,6 +107,10 @@ namespace MentorWebApp.Models
         //By Descending Highest Helpful Count
         [NotMapped]
         public List<Question> Top5Questions { get; set; }
+
+        //By Descending Highest Number of Replies
+        [NotMapped]
+        public List<Question> Top5RepliedQuestions{ get; set; }
 
         //By Descending Highest UnHelpful Count
         [NotMapped]
@@ -88,6 +133,14 @@ namespace MentorWebApp.Models
 
         public void GenerateUserAnalytics()
         {
+            var users = from u in _context.ApplicationUser select u;
+
+            //Number of Users
+            NumberOfUsers = users.Count();
+            NumberOfMentees = users.Count(s => s.Permissions == "Mentee");
+            NumberOfMentors = users.Count(s => s.Permissions == "Mentor");
+            NumberOfAdmins = users.Count(s => s.Permissions == "Admin");
+
             var userAnalytics = from u in _context.UserAnalytics
                 select u;
 
@@ -114,13 +167,15 @@ namespace MentorWebApp.Models
                 select s;
 
             //Top 5 searches by views
+            //We do not include the blank searches.
 
+            
             var orderByCount = searchAnalytics.OrderByDescending(s => s.Count).ToList();
 
             for (var i = 0; i < orderByCount.Count && i < 5; i++)
             {
-                var thisSearch = _context.SearchResults.SingleOrDefault(s => s.Id == orderByCount[i].SearchResultId);
-                Top5ViewedSearches.Add(thisSearch);
+                var thisSearch = _context.SearchResults.SingleOrDefault(s => s.Id == orderByCount[i].SearchResultId && s.searchVal != null && s.searchVal != "");
+                if(thisSearch != null) Top5ViewedSearches.Add(thisSearch);
             }
 
             //Top 5 successful searches
@@ -129,8 +184,8 @@ namespace MentorWebApp.Models
 
             for (var i = 0; i < orderBySuccess.Count && i < 5; i++)
             {
-                var thisSearch = _context.SearchResults.SingleOrDefault(s => s.Id == orderBySuccess[i].SearchResultId);
-                Top5SuccessfulSearches.Add(thisSearch);
+                var thisSearch = _context.SearchResults.SingleOrDefault(s => s.Id == orderBySuccess[i].SearchResultId && s.searchVal != null && s.searchVal != "");
+                if (thisSearch != null) Top5SuccessfulSearches.Add(thisSearch);
             }
 
             //Worst 5 searches (Both unsuccessful and in order of views)
@@ -141,8 +196,18 @@ namespace MentorWebApp.Models
 
             for (var i = 0; i < worstSearches.Count && i < 5; i++)
             {
-                var thisSearch = _context.SearchResults.SingleOrDefault(s => s.Id == worstSearches[i].SearchResultId);
-                Worst5UnsuccessfulSearches.Add(thisSearch);
+                var thisSearch = _context.SearchResults.SingleOrDefault(s => s.Id == worstSearches[i].SearchResultId && s.searchVal != null && s.searchVal != "");
+                if (thisSearch != null) Worst5UnsuccessfulSearches.Add(thisSearch);
+            }
+
+            //Top 5 searches with no results
+
+            var orderByViewsNoSResults = searchAnalytics.Where(s => s.NoOfResults == 0).OrderByDescending(s=>s.Count).ToList();
+            
+            for (var i = 0; i < orderByViewsNoSResults.Count && i < 5; i++)
+            {
+                var thisSearch = _context.SearchResults.SingleOrDefault(s => s.Id == orderByViewsNoSResults[i].SearchResultId && s.searchVal != null && s.searchVal != "");
+                if (thisSearch != null) Top5NoResultsSearches.Add(thisSearch);
             }
         }
 
@@ -150,6 +215,12 @@ namespace MentorWebApp.Models
         {
             //var contentAnalytics = from c in _context.ContentAnalytics
             //    select c;
+            var resources = from r in _context.Resources select r;
+            var questions = from r in _context.Questions select r;
+
+            NumberOfQuestions = questions.Count();
+            NumberOfUnansweredQuestions = questions.Count(s => s.NoOfReplies == 0);
+            NumberOfResources = resources.Count();
 
             var resourceAnalytics = from r in _context.Resources where r.Analytic != null select r.Analytic;
             var questionAnalytics = from q in _context.Questions where q.Analytic != null select q.Analytic;
@@ -178,14 +249,25 @@ namespace MentorWebApp.Models
 
             //Questions
             
-            //Top 5 questions by vote
+            //Top 5 questions by helpful vote
 
             var qOrderByHelpful = questionAnalytics.OrderByDescending(s => s.Helpful).ToList();
 
             for (var i = 0; i < qOrderByHelpful.Count && i < 5; i++)
             {
                 var thisQuestion = _context.Questions.SingleOrDefault(s => s.Id == qOrderByHelpful[i].ContentId);
+                thisQuestion.RepList = _context.Replies.Where(s => s.QuestionId == thisQuestion.Id).ToList();
                 Top5Questions.Add(thisQuestion);
+            }
+
+            //MAKE A TOP 5 LIST OF MOST REPLIED TO QUESTIONS
+
+            var qOrderByNoOfReplies = _context.Questions.OrderByDescending(s => s.NoOfReplies).ToList();
+
+            for (var i = 0; i < qOrderByNoOfReplies.Count && i < 5; i++)
+            {
+                Top5RepliedQuestions.Add(qOrderByNoOfReplies[i]);
+                
             }
 
             //Worst 5 questions by vote
@@ -195,6 +277,7 @@ namespace MentorWebApp.Models
             for (var i = 0; i < qOrderByUnHelpful.Count && i < 5; i++)
             {
                 var thisQuestion = _context.Questions.SingleOrDefault(s => s.Id == qOrderByUnHelpful[i].ContentId);
+                thisQuestion.RepList = _context.Replies.Where(s => s.QuestionId == thisQuestion.Id).ToList();
                 Worst5Questions.Add(thisQuestion);
             }
         }

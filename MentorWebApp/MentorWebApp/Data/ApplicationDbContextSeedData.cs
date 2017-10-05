@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using MentorWebApp.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -20,7 +21,7 @@ namespace MentorWebApp.Data
                 {
                     //Admin
                     new ApplicationUser("admin", "Admin", "admin@mekb.com", "admin@mekb.com", "adminADMIN#123"),
-                    new ApplicationUser("admin2", "Admin2", "admin2@mekb.com", "admin2@mekb.com", "adminADMIN#123"),
+                    new ApplicationUser("admin2", "Admin", "admin2@mekb.com", "admin2@mekb.com", "adminADMIN#123"),
 
                     //Mentors
                     new ApplicationUser("daniel", "Mentor", "daniel@mekb.com", "daniel@mekb.com", "danielDANIEL#123"),
@@ -65,8 +66,20 @@ namespace MentorWebApp.Data
                 for (var i = 0; i < defaultUsers.Length; i++)
                     if (!context.Users.Any(u => u.UserName == defaultUsers[i].UserName))
                     {
-                        userManager.CreateAsync(defaultUsers[i]).Wait();
+                        UserAnalytic analytic = new UserAnalytic(defaultUsers[i].Id)
+                        {
+                            LastLoginDate = DateTime.Today,
+                            NumberOfQuestions = i,
+                            NumberOfReplies = i / 2,
+                            WeekLoginCheckStringStore = "0 1 1 0 1 0 1"
+                        };
+                        defaultUsers[i].Analytic = analytic;
                         var currrentRole = defaultUsers[i].Permissions;
+                        userManager.CreateAsync(defaultUsers[i]).Wait();
+
+                        //context.UserAnalytics.Add(defaultUsers[i].Analytic);
+
+                        
                         switch (currrentRole)
                         {
                             case "Admin":
@@ -290,7 +303,11 @@ namespace MentorWebApp.Data
                 for (var i = 0; i < testResources.Length; i++)
                     if (!context.Resources.Any(u => u.Link == testResources[i].Link))
                     {
-                        var analytic = new ContentAnalytic(testResources[i].ResourceId);
+                        var analytic = new ContentAnalytic(testResources[i].ResourceId)
+                        {
+                            Clicks = i
+                        };
+
                         testResources[i].Init(analytic);
                         context.Resources.AddAsync(testResources[i]).Wait();
                         context.ContentAnalytics.AddAsync(testResources[i].Analytic);
@@ -303,22 +320,29 @@ namespace MentorWebApp.Data
 
                 Question[] testQuestions =
                 {
-                    new Question("Where are the Libraries?", "UCT main library", "blgjoe001"),
-                    new Question("When are the Libraries open?", "sdfsdf", "blgjoe001"),
-                    new Question("What is plagiarism?", "sdfdfs", "blgjoe001"),
-                    new Question("Where are the Scilabs?", "sdfsdfdsf", "blgjoe001"),
-                    new Question("Where is the hotseat?", "sdfsdfsfdsfs", "blgjoe001"),
-                    new Question("How do I query my marks?", "sdfdfsf", "blgjoe001"),
-                    new Question("Where is the cafeteria?", "sdfsdfdf", "blgjoe001"),
-                    new Question("How do I draw money?", "dsdffffdsdf", "blgjoe001"),
-                    new Question("Where is Leslie Social?", "fdsdfdss", "blgjoe001"),
-                    new Question("How do I change my tut period?", "sdfdsfs", "blgjoe001")
+                    new Question("Where are the Libraries?", "UCT main library", "blgjoe001", 3),
+                    new Question("When are the Libraries open?", "sdfsdf", "blgjoe001", 0),
+                    new Question("What is plagiarism?", "sdfdfs", "blgjoe001", 5),
+                    new Question("Where are the Scilabs?", "sdfsdfdsf", "blgjoe001", 0),
+                    new Question("Where is the hotseat?", "sdfsdfsfdsfs", "blgjoe001", 2),
+                    new Question("How do I query my marks?", "sdfdfsf", "blgjoe001", 0),
+                    new Question("Where is the cafeteria?", "sdfsdfdf", "blgjoe001", 1),
+                    new Question("How do I draw money?", "dsdffffdsdf", "blgjoe001", 0),
+                    new Question("Where is Leslie Social?", "fdsdfdss", "blgjoe001", 1),
+                    new Question("How do I change my tut period?", "sdfdsfs", "blgjoe001", 0)
                 };
 
                 for (var i = 0; i < testQuestions.Length; i++)
                     if (!context.Questions.Any(u => u.Title == testQuestions[i].Title))
                     {
-                        var analytic = new ContentAnalytic(testQuestions[i].Id);
+                        var analytic = new ContentAnalytic(testQuestions[i].Id)
+                        {
+                            Clicks = i,
+                            Count = i,
+                            Helpful = i / 2,
+                            UnHelpful = Math.Abs(i/2 - 2)
+                        };
+
                         testQuestions[i].Init(analytic);
                         context.Questions.AddAsync(testQuestions[i]).Wait();
                         context.ContentAnalytics.AddAsync(testQuestions[i].Analytic);
@@ -328,28 +352,33 @@ namespace MentorWebApp.Data
 
                 Reply[] testReplies =
                 {
-                    new Reply(testQuestions[0].Id, "reply...", "brlste069"),
-                    new Reply(testQuestions[0].Id, "reply...", "brlste069"),
-                    new Reply(testQuestions[3].Id, "reply...", "brlste069"),
-                    new Reply(testQuestions[2].Id, "reply...", "brlste069"),
-                    new Reply(testQuestions[3].Id, "reply...", "brlste069"),
-                    new Reply(testQuestions[9].Id, "reply...", "brlste069"),
-                    new Reply(testQuestions[5].Id, "reply...", "brlste069"),
-                    new Reply(testQuestions[5].Id, "reply...", "brlste069"),
-                    new Reply(testQuestions[2].Id, "reply...", "brlste069"),
-                    new Reply(testQuestions[3].Id, "reply...", "brlste069"),
-                    new Reply(testQuestions[0].Id, "reply...", "brlste069"),
-                    new Reply(testQuestions[7].Id, "reply...", "brlste069"),
-                    new Reply(testQuestions[3].Id, "reply...", "brlste069"),
-                    new Reply(testQuestions[2].Id, "reply...", "brlste069"),
-                    new Reply(testQuestions[3].Id, "reply...", "brlste069")
+                    new Reply(testQuestions[0].Id, "reply...", "brlste069", "brlste069"),
+                    new Reply(testQuestions[0].Id, "reply...", "brlste069", "brlste069"),
+                    new Reply(testQuestions[3].Id, "reply...", "brlste069", "brlste069"),
+                    new Reply(testQuestions[2].Id, "reply...", "brlste069", "brlste069"),
+                    new Reply(testQuestions[3].Id, "reply...", "brlste069", "brlste069"),
+                    new Reply(testQuestions[9].Id, "reply...", "brlste069", "brlste069"),
+                    new Reply(testQuestions[5].Id, "reply...", "brlste069", "brlste069"),
+                    new Reply(testQuestions[5].Id, "reply...", "brlste069", "brlste069"),
+                    new Reply(testQuestions[2].Id, "reply...", "brlste069", "brlste069"),
+                    new Reply(testQuestions[3].Id, "reply...", "brlste069", "brlste069"),
+                    new Reply(testQuestions[0].Id, "reply...", "brlste069", "brlste069"),
+                    new Reply(testQuestions[7].Id, "reply...", "brlste069", "brlste069"),
+                    new Reply(testQuestions[3].Id, "reply...", "brlste069", "brlste069"),
+                    new Reply(testQuestions[2].Id, "reply...", "brlste069", "brlste069"),
+                    new Reply(testQuestions[3].Id, "reply...", "brlste069", "brlste069")
                 };
 
 
                 for (var i = 0; i < testReplies.Length; i++)
                     if (!context.Replies.Any(u => u.Id == testReplies[i].Id))
                     {
-                        var analytic = new ContentAnalytic(testReplies[i].Id);
+                        var analytic = new ContentAnalytic(testReplies[i].Id)
+                        {
+                            Helpful = i / 2,
+                            UnHelpful = Math.Abs(i / 2 - 2)
+                        };
+
                         testReplies[i].Init(analytic);
                         context.Replies.Add(testReplies[i]);
                         context.ContentAnalytics.Add(testReplies[i].Analytic);
