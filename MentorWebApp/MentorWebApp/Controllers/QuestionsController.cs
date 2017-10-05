@@ -172,8 +172,8 @@ namespace MentorWebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(
-            [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted,Title,Tags")] Question question)
+        public async Task<IActionResult> Create(string userId,
+            [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted,Title,Tags,ApplicationUserId")] Question question)
         {
             if (ModelState.IsValid)
             {

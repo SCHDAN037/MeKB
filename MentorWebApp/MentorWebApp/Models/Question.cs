@@ -11,6 +11,7 @@ namespace MentorWebApp.Models
         public Question()
         {
             DatePosted = DateTime.Now;
+            ApplicationUserId = "";
             Replies = new List<Reply>();
             Id = Guid.NewGuid().ToString();
         }

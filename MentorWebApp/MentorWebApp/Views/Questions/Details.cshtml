@@ -7,7 +7,7 @@
     ViewData["Title"] = "Details";
 }
 
-@*<h2>Details</h2>*@
+
 
 
 <div>
@@ -19,33 +19,33 @@
             <div class="col-md-1">
                 @{ if (SignInManager.IsSignedIn(User))
                     {
-                        <form asp-action="Details">
-                            <input type="hidden" name="id" value="@Html.ViewData.Model.Id" />
+                <form asp-action="Details">
+                    <input type="hidden" name="id" value="@Html.ViewData.Model.Id" />
 
-                            <input type="hidden" name="qHelpful" value="1" />
-                            <span class="input-group-btn">
-                                <button class="btn .btn-primary" title="Helpful" type="submit" id="searchButton">
-                                    <span class="glyphicon glyphicon-thumbs-up" style="color: green"></span>
-                                </button>
-                            </span>
+                    <input type="hidden" name="qHelpful" value="1" />
+                    <span class="input-group-btn">
+                        <button class="btn .btn-primary" title="Helpful" type="submit" id="searchButton">
+                            <span class="glyphicon glyphicon-thumbs-up" style="color: green"></span>
+                        </button>
+                    </span>
 
-                        </form>
+                </form>
                     }
                 }
                 <span class="label label-success" style="padding-left:2em;" title="People who found this helpful">@Html.ViewData.Model.Analytic.Helpful </span>
 
                 @{ if (SignInManager.IsSignedIn(User))
                     {
-                        <form asp-action="Details">
-                            <input type="hidden" name="id" value="@Html.ViewData.Model.Id" />
-                            <input type="hidden" name="qHelpful" value="-1" />
-                            <span class="input-group-btn">
-                                <button class="btn .btn-primary" title="Unhelpful" type="submit" id="searchButton">
-                                    <span class="glyphicon glyphicon-thumbs-up" style="color: red"></span>
-                                </button>
-                            </span>
+                <form asp-action="Details">
+                    <input type="hidden" name="id" value="@Html.ViewData.Model.Id" />
+                    <input type="hidden" name="qHelpful" value="-1" />
+                    <span class="input-group-btn">
+                        <button class="btn .btn-primary" title="Unhelpful" type="submit" id="searchButton">
+                            <span class="glyphicon glyphicon-thumbs-up" style="color: red"></span>
+                        </button>
+                    </span>
 
-                        </form>
+                </form>
                     }
                 }
                 <span class="label label-danger" style="padding-left:2em;" title="People who found this helpful">@Html.ViewData.Model.Analytic.UnHelpful </span>
@@ -67,25 +67,29 @@
     <div class="container">
 
         <div class="col-md-6">
-            @{
-                if (SignInManager.IsSignedIn(User) && (await AuthorizationService.AuthorizeAsync(User, "Mentee")).Succeeded)
-                {
+
+
+
+            
+              @if (SignInManager.IsSignedIn(User) && (await AuthorizationService.AuthorizeAsync(User, "Mentee")).Succeeded)
+               {
                     <form asp-action="Details">
 
                         <div class="input-group">
                             <textarea id="replyBox" class="form-control" placeholder="Add your answer..." name="reply"></textarea>
-                            @*<input type="text" class="form-control" placeholder="Add your answer..." name="reply">*@
                             <span class="input-group-btn">
                                 <button class="btn btn-primary btn-lg" type="submit">
-                                    Reply
+                                 Reply
                                 </button>
                             </span>
 
                         </div>
                     </form>
-                }
-            }
-           
+               }
+            
+
+
+
 
         </div>
     </div>
@@ -93,113 +97,86 @@
     <h2>@Html.DisplayFor(model => model.RepList.Count) answers</h2>
 
 
-    @for (var i = 0; i < Model.RepList.Count; i++)
-    {
-        <div class="jumbotron">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-1">
-                        @{ if (SignInManager.IsSignedIn(User))
+        @for (var i = 0; i < Model.RepList.Count; i++)
+        {
+            <div class="jumbotron">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-1">
+                            @if (SignInManager.IsSignedIn(User))
                             {
-                                <form asp-action="Details">
+                                    <form asp-action="Details">
+                                        <input type="hidden" name="id" value="@Html.ViewData.Model.RepList[i].QuestionId" />
+                                        <input type="hidden" name="voteId" value="@Html.ViewData.Model.RepList[i].Id" />
+                                        <input type="hidden" name="repHelpful" value="1" />
+                                        <span class="input-group-btn">
+                                            <button class="btn .btn-primary" title="Helpful" type="submit" id="searchButton">
+                                                <span class="glyphicon glyphicon-thumbs-up" style="color: green"></span>
+                                            </button>
+                                        </span>
+
+                                    </form>
+                            }
+                            
+                            <span class="label label-success" style="padding-left:2em;" title="People who found this helpful">@Html.ViewData.Model.RepList[i].Analytic.Helpful </span>
+
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                    <form asp-action="Details">
+                                        <input type="hidden" name="id" value="@Html.ViewData.Model.RepList[i].QuestionId" />
+                                        <input type="hidden" name="voteId" value="@Html.ViewData.Model.RepList[i].Id" />
+                                        <input type="hidden" name="repHelpful" value="-1" />
+                                        <span class="input-group-btn">
+                                            <button class="btn .btn-primary" title="Unhelpful" type="submit" id="searchButton">
+                                                <span class="glyphicon glyphicon-thumbs-up" style="color: red"></span>
+                                            </button>
+                                        </span>
+
+                                    </form>
+                            }
+                            
+                            <span class="label label-danger" style="padding-left:2em;" title="People who found this helpful">@Html.ViewData.Model.RepList[i].Analytic.UnHelpful </span>
+
+
+                        </div>
+                        <div class="well col-md-11">
+                            <p>@Html.ViewData.Model.RepList[i].MessageContent</p>
+
+                        </div>
+                    </div>
+
+                    <div class="help-block">
+
+                        <div class="col-xs-6 col-md-3"> answered by @Html.ViewData.Model.RepList[i].UctNumber</div>
+                    </div>
+                    @Html.ViewData.Model.RepList[i].DatePosted
+
+
+
+                    
+                        @if (SignInManager.IsSignedIn(User) && ((await AuthorizationService.AuthorizeAsync(User, "Mentor")).Succeeded))
+                        {
+                            <form asp-action="Details">
+
+                                <div class="input-group">
                                     <input type="hidden" name="id" value="@Html.ViewData.Model.RepList[i].QuestionId" />
-                                    <input type="hidden" name="voteId" value="@Html.ViewData.Model.RepList[i].Id" />
-                                    <input type="hidden" name="repHelpful" value="1" />
+                                    <input type="hidden" name="delId" value="@Html.ViewData.Model.RepList[i].Id" />
                                     <span class="input-group-btn">
-                                        <button class="btn .btn-primary" title="Helpful" type="submit" id="searchButton">
-                                            <span class="glyphicon glyphicon-thumbs-up" style="color: green"></span>
+                                        <button class="btn btn-primary btn-lg" type="submit">
+                                            Delete
                                         </button>
                                     </span>
 
-                                </form>
-                            }
+                                </div>
+                            </form>
                         }
-                        <span class="label label-success" style="padding-left:2em;" title="People who found this helpful">@Html.ViewData.Model.RepList[i].Analytic.Helpful </span>
-
-                        @{ if (SignInManager.IsSignedIn(User))
-                            {
-                                <form asp-action="Details">
-                                    <input type="hidden" name="id" value="@Html.ViewData.Model.RepList[i].QuestionId" />
-                                    <input type="hidden" name="voteId" value="@Html.ViewData.Model.RepList[i].Id" />
-                                    <input type="hidden" name="repHelpful" value="-1" />
-                                    <span class="input-group-btn">
-                                        <button class="btn .btn-primary" title="Unhelpful" type="submit" id="searchButton">
-                                            <span class="glyphicon glyphicon-thumbs-up" style="color: red"></span>
-                                        </button>
-                                    </span>
-
-                                </form>
-                            }
-                        }
-                        <span class="label label-danger" style="padding-left:2em;" title="People who found this helpful">@Html.ViewData.Model.RepList[i].Analytic.UnHelpful </span>
-
-
-                    </div>
-                    <div class="well col-md-11">
-                        <p>@Html.ViewData.Model.RepList[i].MessageContent</p>
-
-                    </div>
+                    
                 </div>
-
-                <div class="help-block">
-
-                    <div class="col-xs-6 col-md-3"> answered by @Html.ViewData.Model.RepList[i].UctNumber</div>
-                </div>
-                @Html.ViewData.Model.RepList[i].DatePosted
-                @*<a asp-controller="Questions" asp-action="DetailsDeleteReply" asp-route-id="@Model.RepList[i].Id">Delete</a>*@
-                @{
-                    if (SignInManager.IsSignedIn(User) && (await AuthorizationService.AuthorizeAsync(User, "Mentor")).Succeeded)
-                    {
-                        <form asp-action="Details">
-
-                            <div class="input-group">
-                                <input type="hidden" name="id" value="@Html.ViewData.Model.RepList[i].QuestionId" />
-                                <input type="hidden" name="delId" value="@Html.ViewData.Model.RepList[i].Id" />
-                                <span class="input-group-btn">
-                                    <button class="btn btn-primary btn-lg" type="submit">
-                                        Delete
-                                    </button>
-                                </span>
-
-                            </div>
-                        </form>
-                    }
-                }
-
-              
             </div>
-        </div>
-                            }
 
-    @*<dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.Anonymous)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Anonymous)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.MessageContent)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.MessageContent)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.UctNumber)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.UctNumber)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.DatePosted)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.DatePosted)
-            </dd>
-        </dl>*@
-</div>
-
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+            <div>
+                <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+                <a asp-action="Index">Back to List</a>
+            </div>
+        }
+    </div>

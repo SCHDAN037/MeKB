@@ -1,6 +1,6 @@
 ﻿@inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-
+@using Microsoft.AspNetCore.Identity;
 @model IEnumerable<Question>
 
 @{
@@ -12,6 +12,9 @@
 @{
     if (SignInManager.IsSignedIn(User))
     {
+        <form asp-action="Create" asp-controller="Question">
+        <input type="submit" class="btn-link" name="userId" value="@User"
+        </form>
         <a asp-action="Create">Ask A Question</a>
     }
 }
