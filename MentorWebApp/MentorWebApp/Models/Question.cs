@@ -11,6 +11,7 @@ namespace MentorWebApp.Models
         public Question()
         {
             DatePosted = DateTime.Now;
+            RepList = new List<Reply>();
             Id = Guid.NewGuid().ToString();
         }
 
@@ -18,6 +19,7 @@ namespace MentorWebApp.Models
         //ONLY USED FOR DEBUGGING/SEEDING DB
         public Question(string title, string message, string uctNumber, int noOfReplies)
         {
+            RepList = new List<Reply>();
             Id = Guid.NewGuid().ToString();
             DatePosted = DateTime.Now;
             Title = title;
@@ -45,6 +47,7 @@ namespace MentorWebApp.Models
         public void Init(ContentAnalytic analytic)
         {
             Analytic = analytic;
+            if (RepList == null) RepList = new List<Reply>();
         }
 
         

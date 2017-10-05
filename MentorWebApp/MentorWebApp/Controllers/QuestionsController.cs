@@ -39,11 +39,12 @@ namespace MentorWebApp.Controllers
                 question.RepList.Add(r);
                 question.NoOfReplies++;
                 _context.Update(question);
+                _context.Replies.Add(r);
                 //_context.Update(r.Analytic);
-                
-                    await _context.SaveChangesAsync();
-                
-                
+
+                await _context.SaveChangesAsync();
+
+
                 return question;
             }
             return question;
@@ -56,7 +57,7 @@ namespace MentorWebApp.Controllers
             if (ModelState.IsValid)
             {
                 var rep = from r in _context.Replies
-                    select r;
+                          select r;
                 var trep = rep.SingleOrDefault(s => s.Id.Equals(id));
                 question.NoOfReplies--;
 
@@ -70,13 +71,13 @@ namespace MentorWebApp.Controllers
             return question;
         }
 
-        public async Task<Question> DetailsVote(string id, int helpful,
+        public async Task<Question> DetailsVoteReply(string id, int helpful,
             [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
         {
             if (ModelState.IsValid)
             {
                 var rep = from r in _context.Replies
-                    select r;
+                          select r;
                 var trep = rep.SingleOrDefault(s => s.Id.Equals(id));
                 var analytic = _context.ContentAnalytics.SingleOrDefault(s => s.ContentId == trep.Id);
                 if (helpful == 1)
@@ -91,7 +92,7 @@ namespace MentorWebApp.Controllers
             return question;
         }
 
-        public async Task<IActionResult> Details(string id, string reply, string delId, string voteId, int helpful)
+        public async Task<IActionResult> Details(string id, string reply, string delId, string voteId, int repHelpful, int qHelpful)
         {
             if (id == null)
                 return NotFound();
@@ -115,6 +116,26 @@ namespace MentorWebApp.Controllers
 
             if (loggedIn)
             {
+                var questionAnal = _context.ContentAnalytics.SingleOrDefault(s => s.ContentId == id);
+                question.Analytic = questionAnal;
+
+                // QUestion voted helpful
+                if (qHelpful == 1)
+                {
+                    questionAnal.Helpful++;
+                    _context.Update(questionAnal);
+                    _context.SaveChanges();
+
+                }
+                //Question voted unhelpful
+                else if (qHelpful == -1)
+                {
+                    questionAnal.UnHelpful++;
+                    _context.Update(questionAnal);
+                    _context.SaveChanges();
+
+                }
+
                 if (!string.IsNullOrEmpty(reply))
                 {
                     var temp = await DetailsAddReply(id, reply, thisUserId, thisUserUctNumber, question);
@@ -127,9 +148,9 @@ namespace MentorWebApp.Controllers
                     question = temp;
                 }
 
-                else if (helpful == 1 || helpful == -1)
+                else if (repHelpful == 1 || repHelpful == -1)
                 {
-                    var temp = await DetailsVote(voteId, helpful, question);
+                    var temp = await DetailsVoteReply(voteId, repHelpful, question);
                     question = temp;
                 }
             }
@@ -144,7 +165,7 @@ namespace MentorWebApp.Controllers
             }
 
             var rep = from r in _context.Replies
-                select r;
+                      select r;
             rep = rep.Where(s => s.QuestionId.Equals(id));
             var repList = await rep.ToListAsync();
             foreach (var replyEach in repList)
@@ -155,6 +176,8 @@ namespace MentorWebApp.Controllers
 
             var sortedList = repList.OrderBy(x => x.DatePosted).ToList();
             question.RepList = sortedList;
+
+            _context.Questions.Update(question);
 
 
             return View(question);
@@ -261,7 +284,7 @@ namespace MentorWebApp.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var rep = from r in _context.Replies
-                select r;
+                      select r;
             rep = rep.Where(s => s.QuestionId.Equals(id));
             var tempRep = await rep.ToListAsync();
             //var noOfReplies = tempRep.Count;

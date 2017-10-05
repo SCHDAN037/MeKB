@@ -12,7 +12,7 @@
     <div class="container">
         <div class="row form-group">
             <form method="get" action="@Url.Action("Index", "SearchResults")">
-            <div class="col-md-5">
+            <div class="col-md-4">
 
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search resources, ask a question" value="@ViewData.Model.searchVal" name="search">
@@ -24,27 +24,32 @@
                     </span>
                 </div>
             </div>
-                <div class="col-md-5">
+            <div class="col-md-1">
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Sort By
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li><a class="btn-link" asp-action="Index" asp-route-sortSelect="alpha" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="@ViewData.Model.typeVal">A to Z</a></li>
+                        <li><a class="btn-link" asp-action="Index" asp-route-sortSelect="alphaRev" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="@ViewData.Model.typeVal">Z to A</a></li>
+                        <li><a class="btn-link" asp-action="Index" asp-route-sortSelect="new" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="@ViewData.Model.typeVal">Newest First</a></li>
+                        <li><a class="btn-link" asp-action="Index" asp-route-sortSelect="old" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="@ViewData.Model.typeVal">Oldest First</a></li>
+                    </ul>
+                </div>
+            </div>
+                <div class="col-md-1">
                     <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            Sort By
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            Filter By
                             <span class="caret"></span>
                         </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                            <li><a class="btn-link" asp-action="Index" asp-route-sortSelect="alpha" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="@ViewData.Model.typeVal">A to Z</a></li>
-                            <li><a class="btn-link" asp-action="Index" asp-route-sortSelect="alphaRev" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="@ViewData.Model.typeVal">Z to A</a></li>
-                            <li><a class="btn-link" asp-action="Index" asp-route-sortSelect="new" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="@ViewData.Model.typeVal">Newest First</a></li>
-                            <li><a class="btn-link" asp-action="Index" asp-route-sortSelect="old" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="@ViewData.Model.typeVal">Oldest First</a></li>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                            <li><a class="btn-link" asp-action="Index" asp-route-sortSelect="@ViewData.Model.sortVal" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="both">Both</a></li>
+                            <li><a class="btn-link" asp-action="Index" asp-route-sortSelect="@ViewData.Model.sortVal" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="res">Resources Only</a></li>
+                            <li><a class="btn-link" asp-action="Index" asp-route-sortSelect="@ViewData.Model.sortVal" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="ques">Questions Only</a></li>
                         </ul>
                     </div>
-
-                    <select name="typeSelect">
-                        <option value="res" selected="@(ViewData.Model.typeVal.Equals("res"))">Resources Only</option>
-                        <option value="ques" selected="@(ViewData.Model.typeVal.Equals("ques"))">Questions Only</option>
-                        <option value="both" selected="@(ViewData.Model.typeVal.Equals("both"))">Both</option>
-                    </select>
-
-                    <input type="submit" class="btn-default" />
                 </div>
             </form>
         </div>
