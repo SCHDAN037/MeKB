@@ -13,9 +13,9 @@
         <form asp-action="ResourcesCreate">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="DateAdded" class="control-label"></label>
-                <input asp-for="DateAdded" class="form-control"/>
-                <span asp-validation-for="DateAdded" class="text-danger"></span>
+                @*<label asp-for="DateAdded" class="control-label"></label>*@
+                <input asp-for="DateAdded" type="hidden"/>
+                @*<span asp-validation-for="DateAdded" class="text-danger"></span>*@
             </div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
@@ -33,9 +33,9 @@
                 <span asp-validation-for="Type" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UctNumber" class="control-label"></label>
-                <input asp-for="UctNumber" class="form-control"/>
-                <span asp-validation-for="UctNumber" class="text-danger"></span>
+                @*<label asp-for="UctNumber" class="control-label"></label>*@
+                <input asp-for="UctNumber" type="hidden"/>
+                @*<span asp-validation-for="UctNumber" class="text-danger"></span>*@
             </div>
             <div class="form-group">
                 <label asp-for="Link" class="control-label"></label>

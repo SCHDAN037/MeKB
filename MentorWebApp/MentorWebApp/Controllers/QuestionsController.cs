@@ -174,7 +174,7 @@ namespace MentorWebApp.Controllers
                 replyEach.Analytic = analytic;
             }
 
-            var sortedList = repList.OrderBy(x => x.DatePosted).ToList();
+            var sortedList = repList.OrderByDescending(x => x.Analytic.Helpful).ToList();
             question.RepList = sortedList;
 
             _context.Questions.Update(question);

@@ -62,6 +62,7 @@
             <thead>
             <tr>
                 <th>Title</th>
+                <th>Date Added</th>
             </tr>
             </thead>
             <tbody>
@@ -70,14 +71,12 @@
                 {
                     <tr>
                         <td>
-                            <form method="post" asp-action="RedirectToLink" asp-controller="SearchResults">
-                                <input type="hidden" name="title" value="@Html.ViewData.Model.ResultsList[i][0]"/>
-                                <input type="hidden" name="link" value="@Html.ViewData.Model.ResultsList[i][1]"/>
-                                <input type="hidden" name="id" value="@Html.ViewData.Model.ResultsList[i][2]"/>
-                                <input type="hidden" name="searchId" value="@Html.ViewData.Model.Id"/>
-                                <input type="submit" class="btn-link" value="@Html.ViewData.Model.ResultsList[i][0]"/>
-                            </form>
-
+                            <a asp-action="RedirectToLink" asp-controller="SearchResults" asp-route-id="@Html.ViewData.Model.ResultsList[i][2]"
+                               asp-route-link="@Html.ViewData.Model.ResultsList[i][1]" asp-route-searchId="@Html.ViewData.Model.Id" 
+                               asp-route-title="@Html.ViewData.Model.ResultsList[i][0]">@Html.ViewData.Model.ResultsList[i][0]</a>
+                        </td>
+                        <td>
+                            @Html.ViewData.Model.ResultsList[i][3]
                         </td>
                     </tr>
                 }

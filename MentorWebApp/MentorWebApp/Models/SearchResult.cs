@@ -142,8 +142,10 @@ namespace MentorWebApp.Models
                 SortAlpha(false);
             else if (sortVal.Equals("alphaRev"))
                 SortAlpha(true);
-            else if (sortVal.Equals("date"))
-                SortDate();
+            else if (sortVal.Equals("new"))
+                SortDate(true);
+            else if (sortVal.Equals("old")) 
+                SortDate(false);
             else
                 SortAlpha(false);
         }
@@ -159,8 +161,15 @@ namespace MentorWebApp.Models
             ResultsList = newResList;
         }
 
-        private void SortDate()
+        private void SortDate(bool? newFirst)
         {
+            var newResList = ResultsList;
+
+            if (newFirst == null || newFirst == true)
+                newResList.Sort((x, y) => DateTime.Compare(DateTime.Parse(x.LastOrDefault()), DateTime.Parse(y.LastOrDefault())));
+            else
+                newResList.Sort((x, y) => DateTime.Compare(DateTime.Parse(y.LastOrDefault()), DateTime.Parse(x.LastOrDefault())));
+            ResultsList = newResList;
         }
     }
 }

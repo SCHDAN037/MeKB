@@ -87,7 +87,7 @@ namespace MentorWebApp.Controllers
             {
                 // Check if this search has been done before
                 var searchResult =
-                    _context.SearchResults.Single(s => s.searchVal.Equals(search) && s.typeVal.Equals(typeSelect));
+                    _context.SearchResults.Single(s => s.searchVal.Equals(search) && s.typeVal.Equals(typeSelect) && s.sortVal.Equals(sortSelect));
                 // If it has then use that object instead
                 var searchAnalytic = _context.SearchAnalytics.Single(s => s.SearchResultId.Equals(searchResult.Id));
                 _resObject = searchResult;

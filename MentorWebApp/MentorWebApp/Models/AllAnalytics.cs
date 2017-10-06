@@ -167,7 +167,7 @@ namespace MentorWebApp.Models
                 select s;
 
             //Top 5 searches by views
-            //We do not include the blank searches.
+            //We do not include the blank searches. or duplica
 
             
             var orderByCount = searchAnalytics.OrderByDescending(s => s.Count).ToList();

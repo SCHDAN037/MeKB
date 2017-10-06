@@ -7,64 +7,51 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
 
-@{
-    if (SignInManager.IsSignedIn(User))
-    {
-        <a asp-action="Create">Create New</a>
+<div class="container-fluid">
+    <div class="help-block">
+    <h1 class="page-header">List of all questions</h1>
+    @{
+        if (SignInManager.IsSignedIn(User))
+        {
+            <a class="btn btn-default" asp-action="Create">Ask New Question</a>
+        }
     }
-}
+    </div>
+    <div class="panel panel-default">
 
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>
+                    Question
+                </th>
+                <th>
+                    Asked by
+                </th>
+                <th>
+                    Date Posted
+                </th>
 
-<table class="table">
-    <thead>
-    <tr>
-        @*<th>
-            @Html.DisplayNameFor(model => model.Anonymous)
-        </th>*@
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model.Tags)
-        </th>*@
-        @*<th>
-            @Html.DisplayNameFor(model => model.MessageContent)
-        </th>*@
-        <th>
-            @Html.DisplayNameFor(model => model.UctNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DatePosted)
-        </th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var item in Model)
-    {
-        <tr>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.Anonymous)
-            </td>*@
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Title)</a>
-            </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.Tags)
-            </td>*@
-            @*<td>
-                @Html.DisplayFor(modelItem => item.MessageContent)
-            </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.UctNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DatePosted)
-            </td>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Title)</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UctNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DatePosted)
+                    </td>
 
-        </tr>
-    }
-    </tbody>
-</table>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

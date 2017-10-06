@@ -146,10 +146,10 @@ namespace MentorWebApp.Controllers
 
                 else
                 {
-                    var setAllowed = await _userManager.SetLockoutEnabledAsync(user, false);
-                    _logger.LogWarning("User account locked out.");
+                    //var setAllowed = await _userManager.SetLockoutEnabledAsync(user, false);
+                    //_logger.LogWarning("User account locked out.");
 
-                    //ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return RedirectToAction(nameof(Lockout));
                 }
 
