@@ -12,32 +12,40 @@
     <div class="container">
         <div class="row form-group">
             <form method="get" action="@Url.Action("Index", "SearchResults")">
-            <div class="col-md-4">
+                <div class="col-md-4">
 
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search resources, ask a question" value="@ViewData.Model.searchVal" name="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search resources, ask a question" value="@ViewData.Model.searchVal" name="search">
 
-                    <span class="input-group-btn">
-                        <button class="btn .btn-primary" type="submit" id="searchButton">
-                            <span class="glyphicon glyphicon-search"></span>
+                        <span class="input-group-btn">
+                            <button class="btn .btn-primary" type="submit" id="searchButton">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            Sort By
+                            <span class="caret"></span>
                         </button>
-                    </span>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li>
+                                <a class="btn-link" asp-action="Index" asp-route-sortSelect="alpha" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="@ViewData.Model.typeVal">A to Z</a>
+                            </li>
+                            <li>
+                                <a class="btn-link" asp-action="Index" asp-route-sortSelect="alphaRev" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="@ViewData.Model.typeVal">Z to A</a>
+                            </li>
+                            <li>
+                                <a class="btn-link" asp-action="Index" asp-route-sortSelect="new" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="@ViewData.Model.typeVal">Newest First</a>
+                            </li>
+                            <li>
+                                <a class="btn-link" asp-action="Index" asp-route-sortSelect="old" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="@ViewData.Model.typeVal">Oldest First</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-1">
-                <div class="dropdown">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        Sort By
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <li><a class="btn-link" asp-action="Index" asp-route-sortSelect="alpha" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="@ViewData.Model.typeVal">A to Z</a></li>
-                        <li><a class="btn-link" asp-action="Index" asp-route-sortSelect="alphaRev" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="@ViewData.Model.typeVal">Z to A</a></li>
-                        <li><a class="btn-link" asp-action="Index" asp-route-sortSelect="new" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="@ViewData.Model.typeVal">Newest First</a></li>
-                        <li><a class="btn-link" asp-action="Index" asp-route-sortSelect="old" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="@ViewData.Model.typeVal">Oldest First</a></li>
-                    </ul>
-                </div>
-            </div>
                 <div class="col-md-1">
                     <div class="dropdown">
                         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -45,9 +53,15 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                            <li><a class="btn-link" asp-action="Index" asp-route-sortSelect="@ViewData.Model.sortVal" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="both">Both</a></li>
-                            <li><a class="btn-link" asp-action="Index" asp-route-sortSelect="@ViewData.Model.sortVal" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="res">Resources Only</a></li>
-                            <li><a class="btn-link" asp-action="Index" asp-route-sortSelect="@ViewData.Model.sortVal" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="ques">Questions Only</a></li>
+                            <li>
+                                <a class="btn-link" asp-action="Index" asp-route-sortSelect="@ViewData.Model.sortVal" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="both">Both</a>
+                            </li>
+                            <li>
+                                <a class="btn-link" asp-action="Index" asp-route-sortSelect="@ViewData.Model.sortVal" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="res">Resources Only</a>
+                            </li>
+                            <li>
+                                <a class="btn-link" asp-action="Index" asp-route-sortSelect="@ViewData.Model.sortVal" asp-route-search="@ViewData.Model.searchVal" asp-route-typeSelect="ques">Questions Only</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -57,33 +71,34 @@
 
 </div>
 <div class="panel panel-default">
-    
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Title</th>
-                <th>Date Added</th>
-            </tr>
-            </thead>
-            <tbody>
-            @{
-                for (var i = 0; i < Model.ResultsList.Count; i++)
-                {
-                    <tr>
-                        <td>
-                            <a asp-action="RedirectToLink" asp-controller="SearchResults" asp-route-id="@Html.ViewData.Model.ResultsList[i][2]"
-                               asp-route-link="@Html.ViewData.Model.ResultsList[i][1]" asp-route-searchId="@Html.ViewData.Model.Id" 
-                               asp-route-title="@Html.ViewData.Model.ResultsList[i][0]">@Html.ViewData.Model.ResultsList[i][0]</a>
-                        </td>
-                        <td>
-                            @Html.ViewData.Model.ResultsList[i][3]
-                        </td>
-                    </tr>
-                }
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Date Added</th>
+        </tr>
+        </thead>
+        <tbody>
+        @{
+            for (var i = 0; i < Model.ResultsList.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <a asp-action="RedirectToLink" asp-controller="SearchResults" asp-route-id="@Html.ViewData.Model.ResultsList[i][2]"
+                           asp-route-link="@Html.ViewData.Model.ResultsList[i][1]" asp-route-searchId="@Html.ViewData.Model.Id"
+                           asp-route-title="@Html.ViewData.Model.ResultsList[i][0]">
+                            @Html.ViewData.Model.ResultsList[i][0]</a>
+                    </td>
+                    <td>
+                        @Html.ViewData.Model.ResultsList[i][3]
+                    </td>
+                </tr>
             }
-            </tbody>
-        </table>
-    
+        }
+        </tbody>
+    </table>
+
 </div>
 @{
 

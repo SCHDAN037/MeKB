@@ -5,6 +5,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
+/**
+ * 
+ * This is for seeding the db with info to use
+ * 
+ * 
+ */
 namespace MentorWebApp.Data
 {
     public static class ApplicationDbContextSeedData
@@ -66,7 +72,7 @@ namespace MentorWebApp.Data
                 for (var i = 0; i < defaultUsers.Length; i++)
                     if (!context.Users.Any(u => u.UserName == defaultUsers[i].UserName))
                     {
-                        UserAnalytic analytic = new UserAnalytic(defaultUsers[i].Id)
+                        var analytic = new UserAnalytic(defaultUsers[i].Id)
                         {
                             LastLoginDate = DateTime.Today,
                             NumberOfQuestions = i,
@@ -79,7 +85,7 @@ namespace MentorWebApp.Data
 
                         //context.UserAnalytics.Add(defaultUsers[i].Analytic);
 
-                        
+
                         switch (currrentRole)
                         {
                             case "Admin":
@@ -340,7 +346,7 @@ namespace MentorWebApp.Data
                             Clicks = i,
                             Count = i,
                             Helpful = i / 2,
-                            UnHelpful = Math.Abs(i/2 - 2)
+                            UnHelpful = Math.Abs(i / 2 - 2)
                         };
 
                         testQuestions[i].Init(analytic);

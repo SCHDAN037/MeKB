@@ -2,6 +2,13 @@
 using MentorWebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
+/***
+ * 
+ * renders the basic home, about and contact page
+ * 
+ */
+
+
 namespace MentorWebApp.Controllers
 {
     public class HomeController : Controller

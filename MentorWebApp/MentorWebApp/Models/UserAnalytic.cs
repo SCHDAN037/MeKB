@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
+/**
+ * 
+ * the user analytic is a child of the analytic class
+ * it tracks a users logins, number of questions and replies
+ * 
+ * 
+ */
 namespace MentorWebApp.Models
 {
     public class UserAnalytic : Analytic
@@ -15,7 +22,7 @@ namespace MentorWebApp.Models
         {
             UserId = userId;
             NewIdentity = Guid.NewGuid().ToString();
-            WeekLoginCheck = new List<bool>()
+            WeekLoginCheck = new List<bool>
             {
                 false,
                 false,
@@ -82,7 +89,7 @@ namespace MentorWebApp.Models
             //Here we assume that their week check array is the current week they on now.
             //Add one to their login count
             Count++;
-            
+
             UnpackWeekList();
             //Set the flag to true for today in the week check
             switch (today)
@@ -116,6 +123,7 @@ namespace MentorWebApp.Models
             LastLoginDate = DateTime.Today;
         }
 
+        //reset the stats after a week
         private void ResetWeekStats()
         {
             //reset their week checks
@@ -125,10 +133,11 @@ namespace MentorWebApp.Models
             WeekLoginCheckStringStore = "0 0 0 0 0 0 0";
         }
 
+        //used to convert the string into a list of bool
         public void UnpackWeekList()
         {
             var week = WeekLoginCheckStringStore.Split(" ");
-            WeekLoginCheck = new List<bool>()
+            WeekLoginCheck = new List<bool>
             {
                 false,
                 false,
@@ -142,6 +151,7 @@ namespace MentorWebApp.Models
                 WeekLoginCheck[i] = week[i].Equals("1");
         }
 
+        //pack the bool list into a string
         public void PackWeekList()
         {
             var week = "";

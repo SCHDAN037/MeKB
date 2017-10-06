@@ -10,6 +10,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
+
+/**
+ * 
+ * This is the controller for the backend views.
+ * 
+ * 
+ */
+
 namespace MentorWebApp.Controllers
 {
     [Authorize(Policy = "MustBeAdmin")]
@@ -30,6 +38,7 @@ namespace MentorWebApp.Controllers
         }
 
         // GET: BackEnd
+        // main backend index
         public ActionResult Index()
         {
             return View();
@@ -116,6 +125,7 @@ namespace MentorWebApp.Controllers
             {
                 try
                 {
+                    //we need to update the user db table
                     _context.Update(applicationUser);
                     _context.SaveChanges();
                 }
@@ -126,6 +136,7 @@ namespace MentorWebApp.Controllers
                 }
                 try
                 {
+                    //This is for changing the users roles
                     var res = await applicationUser.ChangeRoleAsync(applicationUser.Permissions, oldPermissions,
                         _context.GetService<UserManager<ApplicationUser>>());
                     if (!res)
@@ -173,7 +184,12 @@ namespace MentorWebApp.Controllers
         }
 
 
+        /// /// /// ///
+        /// Resource Backend
+        /// /// /// ///
+
         // GET: Resources
+        //The resource backend index
         public async Task<IActionResult> ResourcesIndex()
         {
             return View(await _context.Resources.ToListAsync());
@@ -288,8 +304,9 @@ namespace MentorWebApp.Controllers
         }
 
 
-        ////////////
-        /// Questions
+        /// /// /// ///
+        /// Questions Backend
+        /// /// /// ///
 
         // GET: QuestionsBackEnd
         public async Task<IActionResult> QuestionsIndex()

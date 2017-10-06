@@ -10,11 +10,6 @@ namespace MentorWebApp.Models
         //Unhelpful is the opposite
         //Clicks is the number of times that resource was clicked
 
-        //public ContentAnalytic(string objectId)
-        //{
-
-        //    //this.ObjectId = objectId;
-        //}
 
         public ContentAnalytic()
         {

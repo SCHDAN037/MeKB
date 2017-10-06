@@ -1,11 +1,17 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using MentorWebApp.Data;
 using MentorWebApp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
+/**
+ * 
+ * Questions controller for rendering the views, and editing/creating/deleting questions
+ * also for tracking analytics
+ * 
+ */
 
 namespace MentorWebApp.Controllers
 {
@@ -23,12 +29,19 @@ namespace MentorWebApp.Controllers
         // GET: Questions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Questions.ToListAsync());
+            var qList = _context.Questions.ToList();
+            for (var i = 0; i < qList.Count; i++)
+            {
+                var analytic = _context.ContentAnalytics.SingleOrDefault(s => s.ContentId == qList[i].Id);
+                qList[i].Analytic = analytic;
+            }
+            return View(qList);
         }
 
         // GET: Questions/Details/5
         // adds a reply to a question and to the database
-        public async Task<Question> DetailsAddReply(string id, string reply, string thisUserId, string thisUserUctNumber,
+        public async Task<Question> DetailsAddReply(string id, string reply, string thisUserId,
+            string thisUserUctNumber,
             [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
         {
             if (ModelState.IsValid)
@@ -57,7 +70,7 @@ namespace MentorWebApp.Controllers
             if (ModelState.IsValid)
             {
                 var rep = from r in _context.Replies
-                          select r;
+                    select r;
                 var trep = rep.SingleOrDefault(s => s.Id.Equals(id));
                 question.NoOfReplies--;
 
@@ -71,13 +84,15 @@ namespace MentorWebApp.Controllers
             return question;
         }
 
+
+        //add a vote to a reply (helpful/unhelpful)
         public async Task<Question> DetailsVoteReply(string id, int helpful,
             [Bind("Anonymous,MessageContent,Id,UctNumber,DatePosted")] Question question)
         {
             if (ModelState.IsValid)
             {
                 var rep = from r in _context.Replies
-                          select r;
+                    select r;
                 var trep = rep.SingleOrDefault(s => s.Id.Equals(id));
                 var analytic = _context.ContentAnalytics.SingleOrDefault(s => s.ContentId == trep.Id);
                 if (helpful == 1)
@@ -92,16 +107,18 @@ namespace MentorWebApp.Controllers
             return question;
         }
 
-        public async Task<IActionResult> Details(string id, string reply, string delId, string voteId, int repHelpful, int qHelpful)
+        //Return the page and used for updating the content of the models
+        public async Task<IActionResult> Details(string id, string reply, string delId, string voteId, int repHelpful,
+            int qHelpful)
         {
             if (id == null)
                 return NotFound();
 
             //WE NEED THE LOGGED ON USER ID
-            var loggedInUser = (await _userManager.GetUserAsync(HttpContext.User));
+            var loggedInUser = await _userManager.GetUserAsync(HttpContext.User);
             var thisUserId = "";
             var thisUserUctNumber = "";
-            bool loggedIn = false;
+            var loggedIn = false;
             if (loggedInUser != null)
             {
                 thisUserId = loggedInUser.Id;
@@ -113,7 +130,7 @@ namespace MentorWebApp.Controllers
             if (question == null)
                 return NotFound();
 
-
+            //Make sure they are logged in to update the anaylitcs
             if (loggedIn)
             {
                 var questionAnal = _context.ContentAnalytics.SingleOrDefault(s => s.ContentId == id);
@@ -125,7 +142,6 @@ namespace MentorWebApp.Controllers
                     questionAnal.Helpful++;
                     _context.Update(questionAnal);
                     _context.SaveChanges();
-
                 }
                 //Question voted unhelpful
                 else if (qHelpful == -1)
@@ -133,21 +149,21 @@ namespace MentorWebApp.Controllers
                     questionAnal.UnHelpful++;
                     _context.Update(questionAnal);
                     _context.SaveChanges();
-
                 }
 
+                //add reply
                 if (!string.IsNullOrEmpty(reply))
                 {
                     var temp = await DetailsAddReply(id, reply, thisUserId, thisUserUctNumber, question);
                     question = temp;
                 }
-
+                //delete reply
                 else if (!string.IsNullOrEmpty(delId))
                 {
                     var temp = await DetailsDeleteReply(delId, question);
                     question = temp;
                 }
-
+                //vote reply
                 else if (repHelpful == 1 || repHelpful == -1)
                 {
                     var temp = await DetailsVoteReply(voteId, repHelpful, question);
@@ -163,9 +179,9 @@ namespace MentorWebApp.Controllers
                 _context.Update(analytic);
                 _context.SaveChanges();
             }
-
+            //gets the list of replies for that question to display
             var rep = from r in _context.Replies
-                      select r;
+                select r;
             rep = rep.Where(s => s.QuestionId.Equals(id));
             var repList = await rep.ToListAsync();
             foreach (var replyEach in repList)
@@ -173,7 +189,7 @@ namespace MentorWebApp.Controllers
                 var analytic = _context.ContentAnalytics.SingleOrDefault(s => s.ContentId == replyEach.Id);
                 replyEach.Analytic = analytic;
             }
-
+            //sorting replies by helpful
             var sortedList = repList.OrderByDescending(x => x.Analytic.Helpful).ToList();
             question.RepList = sortedList;
 
@@ -196,10 +212,11 @@ namespace MentorWebApp.Controllers
         public async Task<IActionResult> Create(
             [Bind("Anonymous,MessageContent,Id,DatePosted,Title,Tags")] Question question)
         {
-            var loggedInUser = (await _userManager.GetUserAsync(HttpContext.User));
+            //this initializes the variables for creating the question and the analyticss
+            var loggedInUser = await _userManager.GetUserAsync(HttpContext.User);
             var thisUserId = "";
             var thisUserUctNumber = "";
-            bool loggedIn = false;
+            var loggedIn = false;
             if (loggedInUser != null)
             {
                 thisUserId = loggedInUser.Id;
@@ -284,7 +301,7 @@ namespace MentorWebApp.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var rep = from r in _context.Replies
-                      select r;
+                select r;
             rep = rep.Where(s => s.QuestionId.Equals(id));
             var tempRep = await rep.ToListAsync();
             //var noOfReplies = tempRep.Count;

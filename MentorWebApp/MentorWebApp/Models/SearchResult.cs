@@ -4,6 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
+/**
+ * 
+ * this search object generates the search results based on the quiries inputted
+ * 
+ * also tracks the analytic object
+ * 
+ */
+
 namespace MentorWebApp.Models
 {
     public class SearchResult
@@ -144,7 +152,7 @@ namespace MentorWebApp.Models
                 SortAlpha(true);
             else if (sortVal.Equals("new"))
                 SortDate(true);
-            else if (sortVal.Equals("old")) 
+            else if (sortVal.Equals("old"))
                 SortDate(false);
             else
                 SortAlpha(false);
@@ -166,9 +174,11 @@ namespace MentorWebApp.Models
             var newResList = ResultsList;
 
             if (newFirst == null || newFirst == true)
-                newResList.Sort((x, y) => DateTime.Compare(DateTime.Parse(x.LastOrDefault()), DateTime.Parse(y.LastOrDefault())));
+                newResList.Sort((x, y) =>
+                    DateTime.Compare(DateTime.Parse(x.LastOrDefault()), DateTime.Parse(y.LastOrDefault())));
             else
-                newResList.Sort((x, y) => DateTime.Compare(DateTime.Parse(y.LastOrDefault()), DateTime.Parse(x.LastOrDefault())));
+                newResList.Sort((x, y) =>
+                    DateTime.Compare(DateTime.Parse(y.LastOrDefault()), DateTime.Parse(x.LastOrDefault())));
             ResultsList = newResList;
         }
     }

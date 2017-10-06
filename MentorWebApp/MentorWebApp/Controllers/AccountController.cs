@@ -11,6 +11,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
+
+/**
+ * 
+ * .NET generated this code
+ * 
+ * 
+ */
+
+
 namespace MentorWebApp.Controllers
 {
     [Authorize]
@@ -37,62 +46,11 @@ namespace MentorWebApp.Controllers
             _roleManager = roleManager;
             _emailSender = emailSender;
             _logger = logger;
-            //createRolesandUsers().Wait();
         }
 
         [TempData]
         public string ErrorMessage { get; set; }
 
-        /*
-        private async Task createRolesandUsers()
-        {
-            var x = await _roleManager.RoleExistsAsync("Admin");
-            if (!x)
-            {
-                // first we create Admin role    
-                var role = new IdentityRole
-                {
-                    Name = "Admin"
-                };
-                var create = await _roleManager.CreateAsync(role);
-
-
-                //Here we create a Admin super user who will maintain the website                   
-
-                var user = new ApplicationUser();
-                user.UserName = "admin";
-                user.Email = "admin@default.com";
-
-                var userPWD = "adminADMIN#1";
-
-                var chkUser = await _userManager.CreateAsync(user, userPWD);
-
-                //Add default User to Role Admin    
-                if (chkUser.Succeeded)
-                {
-                    var result1 = _userManager.AddToRoleAsync(user, "Admin");
-                }
-            }
-
-            // creating Creating Manager role     
-            x = await _roleManager.RoleExistsAsync("Mentor");
-            if (!x)
-            {
-                var role = new IdentityRole();
-                role.Name = "Mentor";
-                await _roleManager.CreateAsync(role);
-            }
-
-            // creating Creating Employee role     
-            x = await _roleManager.RoleExistsAsync("Mentee");
-            if (!x)
-            {
-                var role = new IdentityRole();
-                role.Name = "Mentee";
-                await _roleManager.CreateAsync(role);
-            }
-        }
-        */
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
@@ -116,7 +74,7 @@ namespace MentorWebApp.Controllers
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
 
                 var user = await _userManager.FindByEmailAsync(model.Email);
-                if (user != null && user.Enabled )
+                if (user != null && user.Enabled)
                 {
                     var setAllowed = await _userManager.SetLockoutEnabledAsync(user, false);
 
@@ -124,13 +82,14 @@ namespace MentorWebApp.Controllers
                         await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
                     if (result.Succeeded)
                     {
+                        //updating user analytics when they log in
                         _logger.LogInformation("User logged in.");
                         var analytic = user.GetAnalytic();
                         analytic.UserLogin();
 
                         await _userManager.UpdateAsync(user);
                         _context.UserAnalytics.Update(analytic);
-                        ///////////////////
+
 
                         return RedirectToLocal(returnUrl);
                     }
@@ -146,9 +105,7 @@ namespace MentorWebApp.Controllers
 
                 else
                 {
-                    //var setAllowed = await _userManager.SetLockoutEnabledAsync(user, false);
-                    //_logger.LogWarning("User account locked out.");
-
+                    //User is locked out/banned
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return RedirectToAction(nameof(Lockout));
                 }

@@ -2,6 +2,12 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+/**
+ * 
+ * model for the resource object
+ * 
+ * 
+ */
 namespace MentorWebApp.Models
 {
     public class Resource

@@ -1,5 +1,11 @@
 ﻿using System;
 
+/**
+ * 
+ * this object is a child of the analytic object
+ * It tracks info about unique searches
+ */
+
 namespace MentorWebApp.Models
 {
     public class SearchAnalytic : Analytic

@@ -25,7 +25,7 @@ namespace MentorWebApp.Models
             Title = title;
             MessageContent = message;
             UctNumber = uctNumber;
-            this.NoOfReplies = noOfReplies;
+            NoOfReplies = noOfReplies;
             //Id = Guid.NewGuid().ToString();
         }
 
@@ -34,24 +34,21 @@ namespace MentorWebApp.Models
         [NotMapped]
         public List<Reply> RepList { get; set; }
 
-        
+
         // represents whether a question is posted anonymously
         public bool Anonymous { get; set; }
-        
+
         public string Title { get; set; }
 
         public string Tags { get; set; }
         public ContentAnalytic Analytic { get; set; }
         public int NoOfReplies { get; set; }
 
+        //used to initialize the analytic
         public void Init(ContentAnalytic analytic)
         {
             Analytic = analytic;
             if (RepList == null) RepList = new List<Reply>();
         }
-
-        
-
-
     }
 }

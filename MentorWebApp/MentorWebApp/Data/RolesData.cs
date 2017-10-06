@@ -3,6 +3,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
+/***
+ * 
+ * seeds the roles into the db
+ * 
+ */
 namespace MentorWebApp.Data
 {
     public static class RolesData

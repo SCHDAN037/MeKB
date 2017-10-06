@@ -2,8 +2,14 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using MentorWebApp.Data;
-using Remotion.Linq.Clauses;
 
+/**
+ * 
+ * This is an object that is used to generate all the analytics for the site
+ * it returns lists of data to the view
+ * 
+ * 
+ */
 namespace MentorWebApp.Models
 {
     public class AllAnalytics
@@ -110,7 +116,7 @@ namespace MentorWebApp.Models
 
         //By Descending Highest Number of Replies
         [NotMapped]
-        public List<Question> Top5RepliedQuestions{ get; set; }
+        public List<Question> Top5RepliedQuestions { get; set; }
 
         //By Descending Highest UnHelpful Count
         [NotMapped]
@@ -127,7 +133,6 @@ namespace MentorWebApp.Models
             GenerateUserAnalytics();
             GenerateSearchAnalytics();
             GenerateContentAnalytics();
-            
         }
 
 
@@ -169,13 +174,14 @@ namespace MentorWebApp.Models
             //Top 5 searches by views
             //We do not include the blank searches. or duplica
 
-            
+
             var orderByCount = searchAnalytics.OrderByDescending(s => s.Count).ToList();
 
             for (var i = 0; i < orderByCount.Count && i < 5; i++)
             {
-                var thisSearch = _context.SearchResults.SingleOrDefault(s => s.Id == orderByCount[i].SearchResultId && s.searchVal != null && s.searchVal != "");
-                if(thisSearch != null) Top5ViewedSearches.Add(thisSearch);
+                var thisSearch = _context.SearchResults.SingleOrDefault(s =>
+                    s.Id == orderByCount[i].SearchResultId && s.searchVal != null && s.searchVal != "");
+                if (thisSearch != null) Top5ViewedSearches.Add(thisSearch);
             }
 
             //Top 5 successful searches
@@ -184,7 +190,8 @@ namespace MentorWebApp.Models
 
             for (var i = 0; i < orderBySuccess.Count && i < 5; i++)
             {
-                var thisSearch = _context.SearchResults.SingleOrDefault(s => s.Id == orderBySuccess[i].SearchResultId && s.searchVal != null && s.searchVal != "");
+                var thisSearch = _context.SearchResults.SingleOrDefault(s =>
+                    s.Id == orderBySuccess[i].SearchResultId && s.searchVal != null && s.searchVal != "");
                 if (thisSearch != null) Top5SuccessfulSearches.Add(thisSearch);
             }
 
@@ -196,17 +203,20 @@ namespace MentorWebApp.Models
 
             for (var i = 0; i < worstSearches.Count && i < 5; i++)
             {
-                var thisSearch = _context.SearchResults.SingleOrDefault(s => s.Id == worstSearches[i].SearchResultId && s.searchVal != null && s.searchVal != "");
+                var thisSearch = _context.SearchResults.SingleOrDefault(s =>
+                    s.Id == worstSearches[i].SearchResultId && s.searchVal != null && s.searchVal != "");
                 if (thisSearch != null) Worst5UnsuccessfulSearches.Add(thisSearch);
             }
 
             //Top 5 searches with no results
 
-            var orderByViewsNoSResults = searchAnalytics.Where(s => s.NoOfResults == 0).OrderByDescending(s=>s.Count).ToList();
-            
+            var orderByViewsNoSResults =
+                searchAnalytics.Where(s => s.NoOfResults == 0).OrderByDescending(s => s.Count).ToList();
+
             for (var i = 0; i < orderByViewsNoSResults.Count && i < 5; i++)
             {
-                var thisSearch = _context.SearchResults.SingleOrDefault(s => s.Id == orderByViewsNoSResults[i].SearchResultId && s.searchVal != null && s.searchVal != "");
+                var thisSearch = _context.SearchResults.SingleOrDefault(s =>
+                    s.Id == orderByViewsNoSResults[i].SearchResultId && s.searchVal != null && s.searchVal != "");
                 if (thisSearch != null) Top5NoResultsSearches.Add(thisSearch);
             }
         }
@@ -243,12 +253,13 @@ namespace MentorWebApp.Models
 
             for (var i = 0; i < rReverseOrderByClicks.Count && i < 5; i++)
             {
-                var thisResource = _context.Resources.SingleOrDefault(s => s.ResourceId == rReverseOrderByClicks[i].ContentId);
+                var thisResource =
+                    _context.Resources.SingleOrDefault(s => s.ResourceId == rReverseOrderByClicks[i].ContentId);
                 Worst5Resources.Add(thisResource);
             }
 
             //Questions
-            
+
             //Top 5 questions by helpful vote
 
             var qOrderByHelpful = questionAnalytics.OrderByDescending(s => s.Helpful).ToList();
@@ -265,10 +276,7 @@ namespace MentorWebApp.Models
             var qOrderByNoOfReplies = _context.Questions.OrderByDescending(s => s.NoOfReplies).ToList();
 
             for (var i = 0; i < qOrderByNoOfReplies.Count && i < 5; i++)
-            {
                 Top5RepliedQuestions.Add(qOrderByNoOfReplies[i]);
-                
-            }
 
             //Worst 5 questions by vote
 

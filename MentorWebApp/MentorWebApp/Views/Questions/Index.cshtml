@@ -10,13 +10,13 @@
 
 <div class="container-fluid">
     <div class="help-block">
-    <h1 class="page-header">List of all questions</h1>
-    @{
-        if (SignInManager.IsSignedIn(User))
-        {
-            <a class="btn btn-default" asp-action="Create">Ask New Question</a>
+        <h1 class="page-header">List of all questions</h1>
+        @{
+            if (SignInManager.IsSignedIn(User))
+            {
+                <a class="btn btn-default" asp-action="Create">Ask New Question</a>
+            }
         }
-    }
     </div>
     <div class="panel panel-default">
 
@@ -40,10 +40,17 @@
             {
                 <tr>
                     <td>
-                        <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Title)</a>
+                        <span class="badge">@Html.DisplayFor(modelItem => item.Analytic.Helpful)</span> <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Title)</a>
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.UctNumber)
+                        @if (!item.Anonymous)
+                        {
+                            <p>@Html.DisplayFor(modelItem => item.UctNumber)</p>
+                        }
+                        else
+                        {
+                            <p>Anonymous</p>
+                        }
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.DatePosted)

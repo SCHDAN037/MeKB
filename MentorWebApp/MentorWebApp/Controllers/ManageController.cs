@@ -12,6 +12,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
+/**
+ * 
+ * .NET generated this alls
+ * 
+ */
+
 namespace MentorWebApp.Controllers
 {
     [Authorize]

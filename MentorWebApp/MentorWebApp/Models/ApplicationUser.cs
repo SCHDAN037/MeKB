@@ -1,6 +1,12 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 
+/**
+ * 
+ * .Net generated some of this code
+ * 
+ * 
+ */
 namespace MentorWebApp.Models
 {
     // Add profile data for application users by adding properties to the ApplicationUser class
@@ -10,6 +16,7 @@ namespace MentorWebApp.Models
         {
         }
 
+        //constructor used to help seed data
         public ApplicationUser(string uctNumber, string permissions, string email, string username, string password)
         {
             UctNumber = uctNumber;
@@ -28,10 +35,13 @@ namespace MentorWebApp.Models
 
         public string Permissions { get; set; }
 
+        //if the user is enabled they can login 
         public bool Enabled { get; set; }
 
+        //analytic object
         public UserAnalytic Analytic { get; set; }
 
+        //needed to change this users role
         public async Task<bool> ChangeRoleAsync(string role, string old, UserManager<ApplicationUser> userManager)
         {
             var result = await userManager.RemoveFromRoleAsync(this, old);
@@ -44,13 +54,11 @@ namespace MentorWebApp.Models
             return update.Succeeded;
         }
 
-
+        //a get for analytics
         public UserAnalytic GetAnalytic()
         {
             if (Analytic != null)
-            {
                 return Analytic;
-            }
             Analytic = new UserAnalytic(Id);
             return Analytic;
         }

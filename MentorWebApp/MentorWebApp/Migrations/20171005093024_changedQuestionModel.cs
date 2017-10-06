@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
-using System.Collections.Generic;
 
 namespace MentorWebApp.Migrations
 {
@@ -9,25 +7,25 @@ namespace MentorWebApp.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Replies_Questions_QuestionId",
-                table: "Replies");
+                "FK_Replies_Questions_QuestionId",
+                "Replies");
 
             migrationBuilder.DropIndex(
-                name: "IX_Replies_QuestionId",
-                table: "Replies");
+                "IX_Replies_QuestionId",
+                "Replies");
 
             migrationBuilder.AlterColumn<string>(
-                name: "QuestionId",
-                table: "Replies",
-                type: "nvarchar(max)",
+                "QuestionId",
+                "Replies",
+                "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldNullable: true);
 
             migrationBuilder.AddColumn<int>(
-                name: "NoOfReplies",
-                table: "Questions",
-                type: "int",
+                "NoOfReplies",
+                "Questions",
+                "int",
                 nullable: false,
                 defaultValue: 0);
         }
@@ -35,27 +33,27 @@ namespace MentorWebApp.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "NoOfReplies",
-                table: "Questions");
+                "NoOfReplies",
+                "Questions");
 
             migrationBuilder.AlterColumn<string>(
-                name: "QuestionId",
-                table: "Replies",
+                "QuestionId",
+                "Replies",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)",
                 oldNullable: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Replies_QuestionId",
-                table: "Replies",
-                column: "QuestionId");
+                "IX_Replies_QuestionId",
+                "Replies",
+                "QuestionId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Replies_Questions_QuestionId",
-                table: "Replies",
-                column: "QuestionId",
-                principalTable: "Questions",
+                "FK_Replies_Questions_QuestionId",
+                "Replies",
+                "QuestionId",
+                "Questions",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }

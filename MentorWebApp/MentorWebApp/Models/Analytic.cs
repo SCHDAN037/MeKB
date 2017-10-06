@@ -1,15 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+/**
+ * 
+ * Parent analytic object
+ * 
+ */
 namespace MentorWebApp.Models
 {
     public class Analytic
     {
-        //public string ObjectId { get; set; }
-
-        //[Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        //public int Id { get; set; }
+        //Count of views
         public int Count { get; set; }
 
         [Key]
